@@ -22,7 +22,8 @@ layout = html.Div(children=[
         ],
         # fixed="top",
         justified="true",
-        style={'margin': "auto", 'width': "80%", 'text-align': "center"}
+        style={'margin': "auto", 'width': "80%", 'text-align': "center"},
+        pills=True
     ),
     html.Br(),
     html.H3('Contact Us'),
