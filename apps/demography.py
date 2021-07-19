@@ -27,6 +27,6 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.H3('Demography'),
-    ],
+    ], style={'margin': "auto", 'width': "80%"}
 )
 

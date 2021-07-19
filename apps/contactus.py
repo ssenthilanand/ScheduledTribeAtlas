@@ -27,5 +27,5 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.H3('Contact Us'),
-    ],
+    ], style={'margin': "auto", 'width': "80%"}
 )
