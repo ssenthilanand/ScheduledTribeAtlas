@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output
 
 df = pd.read_csv('data/st_population_state_india_2011.csv')
 st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
-fig = px.bar(st_df_country, 'State Name', 'ST Percentage')
+fig = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
 india_st_population = df['ST Population'].sum()
 india_total_population = df['State Population'].sum()
 india_st_percentage = india_st_population / india_total_population * 100
@@ -29,7 +29,7 @@ layout = html.Div(children=[
         pills=True
     ),
     html.Br(),
-    html.H1(['An Atlas of Scheduled Tribes of India'], style={'text-align': 'center'}),
+    html.H3(['An Atlas of Scheduled Tribes of India'], style={'text-align': 'center'}),
     html.Br(),
 
     dbc.Card(
