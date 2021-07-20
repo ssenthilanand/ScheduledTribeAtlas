@@ -5,22 +5,12 @@ import pandas as pd
 import plotly.express as px
 from dash.dependencies import Input, Output
 
-from app import app
-
-# layout = html.Div([
-#     html.H3('Home'),
-# ])
-
 df = pd.read_csv('data/st_population_state_india_2011.csv')
 st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
 fig = px.bar(st_df_country, 'State Name', 'ST Percentage')
 india_st_population = df['ST Population'].sum()
 india_total_population = df['State Population'].sum()
 india_st_percentage = india_st_population / india_total_population * 100
-
-print(india_st_population)
-print(india_total_population)
-print(india_st_percentage)
 
 layout = html.Div(children=[
 
@@ -41,19 +31,33 @@ layout = html.Div(children=[
     html.Br(),
     html.H1(['An Atlas of Scheduled Tribes of India'], style={'text-align': 'center'}),
     html.Br(),
-    html.Div([
-            html.Img(src='/assets/ST2011.png', style={'width': '80%'}),
-        ], style={'text-align': 'center'}),
-    html.Br(),
 
-    html.Label(
-        [f'Share of Scheduled Tribes population among India\'s overall population in 2011: {india_st_percentage:.2f}%'],
-        style={'text-align': 'center', 'margin': "auto", 'width': "80%"}
+    dbc.Card(
+        [
+            dbc.CardImg(src='/assets/ST2011.png', top=True),
+            dbc.CardBody(
+                [
+                    html.Label(f'Share of Scheduled Tribes population among India\'s overall population in 2011: {india_st_percentage:.2f}%')
+                ], style={'margin': "auto", 'text-align': "center"},
+            )
+        ]
     ),
-    html.Br(),
 
-    dcc.Graph(
-        figure=fig
-    )
+    dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4(
+                        ['State wide Scheduled Tribe population percentage in 2011'],
+                        style={'text-align': 'center'}
+                    ),
+                    dcc.Graph(
+                        figure=fig
+                    )
+                ]
+            )
+        ]
+    ),
+
     ], style={'margin': "auto", 'width': "80%"}
 )
