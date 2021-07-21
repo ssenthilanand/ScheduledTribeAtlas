@@ -3,7 +3,7 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 from app import app
 
@@ -13,10 +13,10 @@ from app import app
 
 df = pd.read_csv('data/st_population_state_india_2011.csv')
 state_list = sorted(df['State Name'])
-# st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
-# fig_country = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
+st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
+fig_country = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
 
-
+all_country_table = dbc.Table.from_dataframe(st_df_country.sort_values('State Name'), striped=True, bordered=True, hover=True)
 df = pd.read_csv('data/st_population_district_india_2011.csv')
 st_df = df[['State Name', 'District Name', 'ST Population', 'District Population', 'ST Percentage']]
 fig_state = px.bar(st_df, 'District Name', 'ST Percentage')
@@ -131,6 +131,12 @@ viz_card = dbc.Card(
         )
     ]
 )
+
+visualization_graph = dcc.Graph(
+    id='graph',
+    figure=fig_country
+)
+
 layout = html.Div(children=[
 
     # html.Title('An Atlas of Scheduled Tribes of India'),
@@ -178,10 +184,27 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.Br(),
-    dbc.Button("Get Data", color="primary", block=True),
+    dbc.Button("Get Data", id='viz-button', color="primary", block=True, n_clicks=0),
     html.Br(),
     html.Br(),
-    ], style={'margin': "auto", 'width': "80%"}
+
+    html.Div(
+        id='viz-table',
+        children=[
+            # all_country_table,
+        ],
+    ),
+
+
+    html.Br(),
+    html.Div(
+        id='demography-visualization',
+        children=[
+            html.Br(),
+        ],  # style={'display': 'None'}
+    ),
+
+], style={'margin': "auto", 'width': "80%"}
 )
 
 
@@ -194,3 +217,17 @@ def update_states_select_status(selected):
         return True
     else:
         return False
+
+
+@app.callback(
+    [Output('viz-table', 'children'),
+     Output('demography-visualization', 'children')],
+    [Input('viz-button', 'n_clicks')],
+)
+def on_button_click(n):
+    if n == 0:
+        return None, None
+    else:
+        return all_country_table, visualization_graph
+
+
