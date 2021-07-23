@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.express as px
 from dash.dependencies import Input, Output
 
-df = pd.read_csv('data/st_population_state_india_2011.csv')
+df = pd.read_csv('./data/st_population_state_india_2011.csv')
 st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
 fig = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
 india_st_population = df['ST Population'].sum()
