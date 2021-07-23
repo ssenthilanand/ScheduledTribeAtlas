@@ -7,16 +7,14 @@ from dash.dependencies import Input, Output, State
 
 from app import app
 
-# layout = html.Div([
-#     html.H3('Demography'),
-# ])
 
 df = pd.read_csv('./data/st_population_state_india_2011.csv')
 state_list = sorted(df['State Name'])
 st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
+sorted_st_df_country = st_df_country.sort_values('State Name')
 fig_country = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
 
-all_country_table = dbc.Table.from_dataframe(st_df_country.sort_values('State Name'), striped=True, bordered=True, hover=True)
+all_country_table = dbc.Table.from_dataframe(sorted_st_df_country, striped=True, bordered=True, hover=True)
 df = pd.read_csv('./data/st_population_district_india_2011.csv')
 st_df = df[['State Name', 'District Name', 'ST Population', 'District Population', 'ST Percentage']]
 fig_state = px.bar(st_df, 'District Name', 'ST Percentage')
@@ -58,8 +56,6 @@ bdi_card = dbc.Card(
         dbc.CardHeader("Basic Demographic Indicators"),
         dbc.CardBody(
             [
-                # html.H5("Basic Demographic Indicators", className="card-subtitle"),
-                # html.Br(),
                 html.P("Select one or more of the following basic demographic indicators", className="card-text"),
                 dbc.Checklist(
                     id='dbi-checklist',
@@ -79,8 +75,6 @@ cat_card = dbc.Card(
         dbc.CardHeader("Category"),
         dbc.CardBody(
             [
-                # html.H5("Category", className="card-subtitle"),
-                # html.Br(),
                 dbc.RadioItems(
                     id='cat-st-selector',
                     options=[
@@ -109,8 +103,6 @@ viz_card = dbc.Card(
         dbc.CardHeader("Visualize"),
         dbc.CardBody(
             [
-                # html.H5("Visualize", className="card-subtitle"),
-                # html.Br(),
                 dbc.RadioItems(
                     id='viz-table-selector',
                     options=[
@@ -137,9 +129,9 @@ visualization_graph = dcc.Graph(
     figure=fig_country
 )
 
+
 layout = html.Div(children=[
 
-    # html.Title('An Atlas of Scheduled Tribes of India'),
     dbc.Nav(
         children=[
             dbc.NavItem(dbc.NavLink("Home", href='/apps/home')),
@@ -155,22 +147,6 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.H3('Demography information of Scheduled Tribes of India', style={'text-align': 'center'}),
-
-    # dbc.Row(
-    #     [
-    #         dbc.Col(aoi_card, width=6),
-    #         dbc.Col(bdi_card, width=6)
-    #     ],
-    #     align='start'
-    # ),
-    # dbc.Row(
-    #     [
-    #         dbc.Col(cat_card, width=6),
-    #         dbc.Col(viz_card, width=6)
-    #     ],
-    #     align='start'
-    # ),
-    # html.Label('Area of Interest'),
 
     dbc.CardDeck(
         [
@@ -195,7 +171,6 @@ layout = html.Div(children=[
         ],
     ),
 
-
     html.Br(),
     html.Div(
         id='demography-visualization',
@@ -203,7 +178,6 @@ layout = html.Div(children=[
             html.Br(),
         ],  # style={'display': 'None'}
     ),
-
 ], style={'margin': "auto", 'width': "80%"}
 )
 
@@ -222,12 +196,30 @@ def update_states_select_status(selected):
 @app.callback(
     [Output('viz-table', 'children'),
      Output('demography-visualization', 'children')],
-    [Input('viz-button', 'n_clicks')],
+    [Input('viz-button', 'n_clicks'),
+     Input('aoi-select', 'value'),
+     Input('states-select', 'value'),
+     Input('viz-selector', 'value')]
 )
-def on_button_click(n):
+def get_partial_data(n, aoi, states, viz):
+    if states is None:
+        states = []
     if n == 0:
         return None, None
+    elif aoi == 'India':
+        if viz == 'graph':
+            return all_country_table, visualization_graph
+        else:
+            return all_country_table, []
     else:
-        return all_country_table, visualization_graph
-
-
+        filtered_sorted_df_country = sorted_st_df_country[sorted_st_df_country['State Name'].isin(states)]
+        fig_filtered_country = px.bar(filtered_sorted_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
+        filtered_table = dbc.Table.from_dataframe(filtered_sorted_df_country, striped=True, bordered=True, hover=True)
+        filtered_visualization = dcc.Graph(
+                                    id='graph',
+                                    figure=fig_filtered_country
+                                )
+        if viz == 'graph':
+            return filtered_table, filtered_visualization
+        else:
+            return filtered_table, []
