@@ -11,13 +11,13 @@ from app import app
 #     html.H3('Demography'),
 # ])
 
-df = pd.read_csv('data/st_population_state_india_2011.csv')
+df = pd.read_csv('./data/st_population_state_india_2011.csv')
 state_list = sorted(df['State Name'])
 st_df_country = df[['State Name', 'ST Population', 'State Population', 'ST Percentage']]
 fig_country = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
 
 all_country_table = dbc.Table.from_dataframe(st_df_country.sort_values('State Name'), striped=True, bordered=True, hover=True)
-df = pd.read_csv('data/st_population_district_india_2011.csv')
+df = pd.read_csv('./data/st_population_district_india_2011.csv')
 st_df = df[['State Name', 'District Name', 'ST Population', 'District Population', 'ST Percentage']]
 fig_state = px.bar(st_df, 'District Name', 'ST Percentage')
 
