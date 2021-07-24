@@ -17,6 +17,7 @@ fig_country = px.bar(st_df_country.sort_values('State Name'), 'State Name', 'ST 
 all_country_table = dbc.Table.from_dataframe(sorted_st_df_country, striped=True, bordered=True, hover=True)
 df = pd.read_csv('./data/st_population_district_india_2011.csv')
 st_df = df[['State Name', 'District Name', 'ST Population', 'District Population', 'ST Percentage']]
+sorted_st_df = st_df.sort_values('State Name')
 fig_state = px.bar(st_df, 'District Name', 'ST Percentage')
 
 dbi_list = ['Population', 'Literacy', 'Gender Ratio', 'Fertility Rate']
@@ -164,12 +165,6 @@ layout = html.Div(children=[
     html.Br(),
     html.Br(),
 
-    html.Div(
-        id='viz-table',
-        children=[
-            # all_country_table,
-        ],
-    ),
 
     html.Br(),
     html.Div(
@@ -178,6 +173,14 @@ layout = html.Div(children=[
             html.Br(),
         ],  # style={'display': 'None'}
     ),
+
+    html.Div(
+        id='viz-table',
+        children=[
+            # all_country_table,
+        ],
+    ),
+
 ], style={'margin': "auto", 'width': "80%"}
 )
 
@@ -212,12 +215,19 @@ def get_partial_data(n, aoi, states, viz):
         else:
             return all_country_table, []
     else:
-        filtered_sorted_df_country = sorted_st_df_country[sorted_st_df_country['State Name'].isin(states)]
-        fig_filtered_country = px.bar(filtered_sorted_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
-        filtered_table = dbc.Table.from_dataframe(filtered_sorted_df_country, striped=True, bordered=True, hover=True)
+        # filtered_sorted_df_country = sorted_st_df_country[sorted_st_df_country['State Name'].isin(states)]
+        # fig_filtered_country = px.bar(filtered_sorted_df_country.sort_values('State Name'), 'State Name', 'ST Percentage')
+        # filtered_table = dbc.Table.from_dataframe(filtered_sorted_df_country, striped=True, bordered=True, hover=True)
+        # filtered_visualization = dcc.Graph(
+        #                             id='graph',
+        #                             figure=fig_filtered_country
+        #                         )
+        filtered_sorted_df_districts = sorted_st_df[sorted_st_df['State Name'].isin(states)]
+        fig_filtered_state = px.bar(filtered_sorted_df_districts.sort_values('District Name'), x='District Name', y='ST Percentage', color='State Name')
+        filtered_table = dbc.Table.from_dataframe(filtered_sorted_df_districts, striped=True, bordered=True, hover=True)
         filtered_visualization = dcc.Graph(
                                     id='graph',
-                                    figure=fig_filtered_country
+                                    figure=fig_filtered_state
                                 )
         if viz == 'graph':
             return filtered_table, filtered_visualization
