@@ -29,5 +29,11 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.H3('ORP Religions'),
+    html.Br(),
+    html.Strong('ORP Religions:'),
+    html.P('Population Distribution of ST-ORPs'),
+    html.P('Table of ORPs sorted on descending population.'),
+    html.P('Link to the ORP Distribution Table and Map.'),
+    html.P('Map of the distribution of 20 major ORPs across India.'),
     ], style={'margin': "auto", 'width': "80%"}
 )

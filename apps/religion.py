@@ -28,6 +28,16 @@ layout = html.Div(children=[
         pills=True
     ),
     html.Br(),
-    html.H3('Religion'),
+    html.H3('Religious Profile'),
+    html.Br(),
+    html.Strong('Religion Map:'),
+    html.P('Map/Table of Total Population, ST Population, Hindu ST Population'),
+    html.P('Similarly for all religion – Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP'),
+    html.Br(),html.Br(),
+    html.Strong('Custom Table:'),
+    html.P('Religious Distribution'),
+    html.P('Total Population'),
+    html.P('Total ST poulation'),
+    html.P('Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP')
     ], style={'margin': "auto", 'width': "80%"}
 )

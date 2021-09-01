@@ -57,12 +57,12 @@ bdi_card = dbc.Card(
         dbc.CardBody(
             [
                 html.P("Select one or more of the following basic demographic indicators", className="card-text"),
-                dbc.Checklist(
+                dbc.RadioItems(
                     id='dbi-checklist',
                     options=[
                         {"label": name, "value": name} for name in dbi_list
                     ],
-                    value=['Population'],
+                    value='Population',
                     inline=True
                 )
             ]
@@ -149,10 +149,11 @@ layout = html.Div(children=[
     ),
     html.Br(),
     html.H3('Demography information of Scheduled Tribes of India', style={'text-align': 'center'}),
+    html.Br(),
 
     dbc.CardDeck(
         [
-            aoi_card, bdi_card
+            bdi_card, aoi_card
         ]
     ),
     dbc.CardDeck(
