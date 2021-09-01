@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from apps import home, demography, religion, aboutus, contactus
+from apps import home, demography, religion, orpreligions, indiantribes, aboutus, contactus
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -22,8 +22,12 @@ def display_page(pathname):
         return demography.layout
     elif pathname == '/apps/religion':
         return religion.layout
+    elif pathname == '/apps/orpreligions':
+        return orpreligions.layout
     elif pathname == '/apps/aboutus':
         return aboutus.layout
+    elif pathname == '/apps/indiantribes':
+        return indiantribes.layout
     elif pathname == '/apps/contactus':
         return contactus.layout
     else:

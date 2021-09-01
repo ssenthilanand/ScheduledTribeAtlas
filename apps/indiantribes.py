@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 from app import app
 
 # layout = html.Div([
-#     html.H3('Contact Us'),
+#     html.H3('About Us'),
 # ])
 
 layout = html.Div(children=[
@@ -16,11 +16,11 @@ layout = html.Div(children=[
         children=[
             dbc.NavItem(dbc.NavLink("Home", href='/apps/home')),
             dbc.NavItem(dbc.NavLink("Demography", href='/apps/demography')),
-            dbc.NavItem(dbc.NavLink("Religion", href='/apps/religion')),
+            dbc.NavItem(dbc.NavLink("Religious Profile", href='/apps/religion')),
             dbc.NavItem(dbc.NavLink("ORP Religions", href='/apps/orpreligions')),
-            dbc.NavItem(dbc.NavLink("Indian Tribes", href='/apps/indiantribes')),
+            dbc.NavItem(dbc.NavLink("Indian Tribes", active=True, href='/apps/indiantribes')),
             dbc.NavItem(dbc.NavLink("About Us", href='/apps/aboutus')),
-            dbc.NavItem(dbc.NavLink("Contact Us", active=True, href='/apps/contactus')),
+            dbc.NavItem(dbc.NavLink("Contact Us", href='/apps/contactus')),
         ],
         # fixed="top",
         justified="true",
@@ -28,6 +28,6 @@ layout = html.Div(children=[
         pills=True
     ),
     html.Br(),
-    html.H3('Contact Us'),
+    html.H3('Indian Tribes'),
     ], style={'margin': "auto", 'width': "80%"}
 )
