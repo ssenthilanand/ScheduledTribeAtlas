@@ -50,7 +50,7 @@ all_country_table = dash_table.DataTable(
 # all_df = df[['State Name', 'ST', 'SC', 'General',
 #              'State', 'ST %', 'SC %', 'General %']]
 # sorted_all_df = all_df.sort_values('State Name', ascending=False)
-
+sorted_all_df = sorted_all_df.sort_values('State Name', ascending=False)
 n_states = len(sorted_all_df['State Name'])
 
 fig_all = go.Figure(layout=go.Layout(
