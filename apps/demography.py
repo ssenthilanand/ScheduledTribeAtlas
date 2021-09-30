@@ -1,138 +1,197 @@
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
+import pandas as pd
+import plotly.express as px
+from dash import dash_table
+from dash.dash_table.Format import Format, Scheme, Group, Align
 import pandas as pd
 # import plotly.express as px
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
-import dash_table
-from dash_table.Format import Format, Group
+
 
 from app import app
 
-df = pd.read_csv('./data/population_state_india_2011.csv')
-state_list = sorted(df['State Name'])
-all_df = df[['State Name', 'ST', 'SC', 'General',
-             'State', 'ST %', 'SC %', 'General %']]
-sorted_all_df = all_df.sort_values('State Name')
+import requests
+from requests.exceptions import HTTPError
 
-columns = [
-    dict(id='State Name', name='State Name'),
-    dict(id='ST', name='ST', type='numeric',
-         format=Format(group=Group.yes).groups([3, 2, 2])),
-    dict(id='SC', name='SC', type='numeric',
-         format=Format(group=Group.yes).groups([3, 2, 2])),
-    dict(id='General', name='General', type='numeric',
-         format=Format(group=Group.yes).groups([3, 2, 2])),
-    dict(id='State', name='State', type='numeric',
-         format=Format(group=Group.yes).groups([3, 2, 2])),
-]
-all_country_table = dash_table.DataTable(
-    id='all_country_table',
-    columns=columns,
-    data=sorted_all_df.to_dict('records'),
-    sort_action="native",
-    sort_mode="single",
-    column_selectable="single",
-    style_as_list_view=True,
-    style_cell_conditional=[
-        {
-            'if': {'column_id': 'State Name'},
-            'textAlign': 'left'
-        }
-    ],
-    style_header={
-        'fontWeight': 'bold'
-    },
-)
+from apps.utils import *
 
-# df = pd.read_csv('./data/population_state_india_2011.csv')
-# all_df = df[['State Name', 'ST', 'SC', 'General',
-#              'State', 'ST %', 'SC %', 'General %']]
-# sorted_all_df = all_df.sort_values('State Name', ascending=False)
-sorted_all_df = sorted_all_df.sort_values('State Name', ascending=False)
-n_states = len(sorted_all_df['State Name'])
 
-fig_all = go.Figure(layout=go.Layout(
-    height=100 + (32 * n_states),
-    xaxis_title='Population',
-    yaxis_title='State',
-    title_text="Population Details for India"
-))
-fig_all.update_layout(legend=dict(orientation='h'))
-fig_all.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['ST'],
-    name='ST',
-    orientation='h',
-    # text=sorted_all_df['ST %']
-))
-fig_all.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['SC'],
-    name='SC',
-    orientation='h',
-    # visible='legendonly'
-))
-fig_all.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['General'],
-    name='General',
-    orientation='h',
-    # visible='legendonly'
-))
-fig_all.update_layout(barmode='stack')
+def get_state_population_data():
+    response = fetch_data('population')
+    data = pd.read_json(response)
+    data_population = pd.json_normalize(data['data'])
+    dp = data_population[['district_name', 'state_name', 'population_gn', 'population_sc', 'population_st']]
+    num_cols = ['population_gn', 'population_sc', 'population_st']
+    for col in num_cols:
+        dp[col] = pd.to_numeric(dp[col], errors='coerce').fillna(0).astype('int')
 
-fig_all.add_trace(go.Scatter(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['State'],
-    name='Total',
-    orientation='h',
-    mode="markers",
-    # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
-))
+    dp['population_total'] = dp['population_gn'] + dp['population_sc'] + dp['population_st']
 
-n_states = len(sorted_all_df['State Name'])
-fig_all_group = go.Figure(layout=go.Layout(
-    height=100 + (64 * n_states),
-    xaxis_title='Population',
-    yaxis_title='State',
-    title_text="Population Details for India"
-))
-fig_all_group.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['ST'],
-    name='ST',
-    orientation='h',
-    text=sorted_all_df['ST %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-))
-fig_all_group.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['SC'],
-    name='SC',
-    orientation='h',
-    text=sorted_all_df['SC %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    visible='legendonly'
-))
-fig_all_group.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['General'],
-    name='General',
-    orientation='h',
-    text=sorted_all_df['General %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    visible='legendonly'
-))
-fig_all_group.add_trace(go.Bar(
-    y=sorted_all_df['State Name'],
-    x=sorted_all_df['State'],
-    name='Total',
-    orientation='h',
-    text="100 %",
-    visible='legendonly'
-))
-fig_all_group.update_layout(barmode='group')
-# fig_all_group.update_layout(legend=dict(orientation='h'))
-fig_all_group.update_traces(textposition="outside")
+    dp_state = dp.drop('district_name', axis=1)
+    dp_sg = dp_state.groupby('state_name', as_index=False)
+
+    dp_sgf = dp_sg.sum()
+    # dp_sgf['st_per'] = (dp_sgf['population_st'] / dp_sgf['population_total']) * 100
+    # dp_sgf['sc_per'] = (dp_sgf['population_sc'] / dp_sgf['population_total']) * 100
+    # dp_sgf['gn_per'] = (dp_sgf['population_gn'] / dp_sgf['population_total']) * 100
+    return dp_sgf
+
+
+def get_district_population_data():
+    response = fetch_data('population')
+    data = pd.read_json(response)
+    data_population = pd.json_normalize(data['data'])
+    dp = data_population[['district_name', 'state_name', 'population_gn', 'population_sc', 'population_st']]
+    num_cols = ['population_gn', 'population_sc', 'population_st']
+    for col in num_cols:
+        dp[col] = pd.to_numeric(dp[col], errors='coerce').fillna(0).astype('int')
+
+    dp['population_total'] = dp['population_gn'] + dp['population_sc'] + dp['population_st']
+    return dp
+
+
+state_population = get_state_population_data()
+district_population = get_district_population_data()
+
+state_list = fetch_states()
+n_states = len(state_list)
+
+districts_list = fetch_districts()
+n_districts = len(districts_list)
+
+
+def make_all_india_table():
+    columns = [
+        dict(id='state_name', name='State Name'),
+        dict(id='population_total', name='State Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_st', name='ST Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_sc', name='SC Population', type='numeric', hideable=True,
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_gn', name='General Population', type='numeric', hideable=True,
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        # dict(id='population_total', name='State Population', type='numeric',
+        #      format=Format(group=Group.yes).groups([3, 2, 2])),
+        # dict(id='st_per', name='ST Percentage', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        hidden_columns=['population_sc, population_gn'],
+        data=state_population.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'state_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_all_india_graph():
+    state_population_d = state_population.sort_values('state_name', ascending=False)
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * n_states),
+        xaxis_title='Population',
+        yaxis_title='State',
+        title_text="Population Details for India"
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=state_population_d['state_name'],
+        x=state_population_d['population_st'],
+        name='ST',
+        orientation='h',
+        width=0.6
+        # text=sorted_all_df['ST %']
+    ))
+    fig_all.add_trace(go.Bar(
+        y=state_population_d['state_name'],
+        x=state_population_d['population_sc'],
+        name='SC',
+        orientation='h',
+        width=0.6
+        # visible='legendonly'
+    ))
+    fig_all.add_trace(go.Bar(
+        y=state_population_d['state_name'],
+        x=state_population_d['population_gn'],
+        name='General',
+        orientation='h',
+        width=0.6
+        # visible='legendonly'
+    ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
+
+
+fig_india = make_all_india_graph()
+# fig_all.update_layout(barmode='stack')
+#
+# fig_all.add_trace(go.Scatter(
+#     y=sorted_all_df['State Name'],
+#     x=sorted_all_df['State'],
+#     name='Total',
+#     orientation='h',
+#     mode="markers",
+#     # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
+# ))
+
+# n_states = len(sorted_all_df['State Name'])
+# fig_all_group = go.Figure(layout=go.Layout(
+#     height=100 + (64 * n_states),
+#     xaxis_title='Population',
+#     yaxis_title='State',
+#     title_text="Population Details for India"
+# ))
+# fig_all_group.add_trace(go.Bar(
+#     y=sorted_all_df['State Name'],
+#     x=sorted_all_df['ST'],
+#     name='ST',
+#     orientation='h',
+#     text=sorted_all_df['ST %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+# ))
+# fig_all_group.add_trace(go.Bar(
+#     y=sorted_all_df['State Name'],
+#     x=sorted_all_df['SC'],
+#     name='SC',
+#     orientation='h',
+#     text=sorted_all_df['SC %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+#     visible='legendonly'
+# ))
+# fig_all_group.add_trace(go.Bar(
+#     y=sorted_all_df['State Name'],
+#     x=sorted_all_df['General'],
+#     name='General',
+#     orientation='h',
+#     text=sorted_all_df['General %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+#     visible='legendonly'
+# ))
+# fig_all_group.add_trace(go.Bar(
+#     y=sorted_all_df['State Name'],
+#     x=sorted_all_df['State'],
+#     name='Total',
+#     orientation='h',
+#     text="100 %",
+#     visible='legendonly'
+# ))
+# fig_all_group.update_layout(barmode='group')
+# # fig_all_group.update_layout(legend=dict(orientation='h'))
+# fig_all_group.update_traces(textposition="outside")
 
 # fig_all.update_traces(texttemplate='%{text:.2s}', textposition='outside')
 
@@ -157,7 +216,7 @@ aoi_card = dbc.Card(
                 dcc.Dropdown(
                     id='states-select',
                     options=[
-                        {'label': name, 'value': name} for name in state_list
+                        {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
                     ],
                     placeholder='Select the States or UT you are interested.',
                     disabled=True
@@ -205,7 +264,7 @@ cat_card = dbc.Card(
                     options=[
                         {'label': 'Scheduled Caste', "value": 'SC'},
                         {'label': 'General', 'value': 'General'},
-                        {'label': 'Total', 'value': 'Total'}
+                        # {'label': 'Total', 'value': 'Total'}
                     ],
                     value=['ST'],
                     inline=True
@@ -229,12 +288,13 @@ viz_card = dbc.Card(
                 ),
                 html.Br(),
                 html.P("Select any other optional type of visualization", className="card-text"),
-                dbc.RadioItems(
+                dbc.Checklist(
                     id='viz-selector',
                     options=[
                         {'label': 'Graph', "value": 'graph'},
-                        {'label': 'Map', 'value': 'map'},
+                        # {'label': 'Map', 'value': 'map'},
                     ],
+                    value=['']
                 )
             ]
         )
@@ -245,15 +305,15 @@ visualization_graph = dcc.Graph(
     id='graph',
     # figure=fig_country
     # figure=fig_all
-    figure=fig_all_group,
+    figure=fig_india,
 )
 
-visualization_graph1 = dcc.Graph(
-    id='graph',
-    # figure=fig_country
-    figure=fig_all
-
-)
+# visualization_graph1 = dcc.Graph(
+#     id='graph',
+#     # figure=fig_country
+#     figure=fig_all
+#
+# )
 layout = html.Div(children=[
 
     dbc.Nav(
@@ -347,71 +407,26 @@ def get_partial_data(n, aoi, cats, states, viz):
     if n == 0:
         return None, None
     elif aoi == 'India':
-        if viz == 'graph':
-            # print(cats)
-            # for cat in cats:
-            fig_all_group.for_each_trace(
+        if viz[-1] == 'graph':
+            fig_india.for_each_trace(
                 lambda trace: trace.update(visible=True) if trace.name in cats else (),
             )
-            fig_all_group.for_each_trace(
-                lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
-            )
-            fig_all.for_each_trace(
-                lambda trace: trace.update(visible=True) if trace.name in cats else (),
-            )
-            fig_all.for_each_trace(
+            fig_india.for_each_trace(
                 lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
             )
 
-            # fig_all_group.for_each_trace(
-            #     lambda trace: trace.update(visible='legendonly') if trace.name != cat else (),
-            # )
-
-            return all_country_table, visualization_graph
+            return make_all_india_table(), visualization_graph
         else:
-            return all_country_table, []
+            return make_all_india_table(), []
     else:
-        dist_df = pd.read_csv('./data/population_district_india_2011.csv')
-        dist_all_df = dist_df[['State Name', 'District Name', 'ST', 'SC', 'General',
-                               'District', 'ST %', 'SC %', 'General %']]
-        filtered_dist_all_df = dist_all_df[dist_all_df['State Name'] == states]
-        sorted_filtered_dist_all_df = filtered_dist_all_df.sort_values('District Name', ascending=False)
-
-        district_columns = [
-            dict(id='District Name', name='District Name'),
-            dict(id='ST', name='ST', type='numeric',
-                 format=Format(group=Group.yes).groups([3, 2, 2])),
-            dict(id='SC', name='SC', type='numeric',
-                 format=Format(group=Group.yes).groups([3, 2, 2])),
-            dict(id='General', name='General', type='numeric',
-                 format=Format(group=Group.yes).groups([3, 2, 2])),
-            dict(id='District', name='District', type='numeric',
-                 format=Format(group=Group.yes).groups([3, 2, 2])),
-        ]
-
-        filtered_table = dash_table.DataTable(
-            id='all_country_table',
-            columns=district_columns,
-            data=filtered_dist_all_df.sort_values('District Name').to_dict('records'),
-            sort_action="native",
-            sort_mode="single",
-            column_selectable="single",
-            style_as_list_view=True,
-            style_cell_conditional=[
-                {
-                    'if': {'column_id': 'District Name'},
-                    'textAlign': 'left'
-                }
-            ],
-            style_header={
-                'fontWeight': 'bold'
-            },
-        )
+        filtered_table = make_filtered_state_population_table(district_population[
+                                                 district_population['state_name'] == states], states)
 
         filtered_visualization = dcc.Graph(
             id='graph',
             # figure=fig_filtered_state
-            figure=make_filtered_state_population_graph(sorted_filtered_dist_all_df, states)
+            figure=make_filtered_state_population_graph(district_population[
+                                                            district_population['state_name'] == states], states)
         )
         filtered_visualization.figure.for_each_trace(
             lambda trace: trace.update(visible=True) if trace.name in cats else (),
@@ -420,61 +435,90 @@ def get_partial_data(n, aoi, cats, states, viz):
             lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
         )
 
-        if viz == 'graph':
+        if viz[-1] == 'graph':
             return filtered_table, filtered_visualization
         else:
             return filtered_table, []
 
 
+def make_filtered_state_population_table(districts, states):
+    districts = districts.sort_values('district_name')
+    district_columns = [
+        dict(id='district_name', name='District Name'),
+        dict(id='population_total', name='State Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_st', name='ST Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_sc', name='SC Population', type='numeric', hideable=True,
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='population_gn', name='General Population', type='numeric', hideable=True,
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    filtered_state_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=district_columns,
+        hidden_columns=['population_sc, population_gn'],
+        data=districts.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'district_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return filtered_state_table
+
+
 def make_filtered_state_population_graph(districts, states):
-    districts = districts.sort_values('District Name', ascending=False)
-    n_districts = len(districts['District Name'])
+    districts = districts.sort_values('district_name', ascending=False)
+    n_district = len(districts['district_name'])
 
     fig_districts = go.Figure(layout=go.Layout(
-        height=200 + (32 * n_districts),
+        height=200 + (32 * n_district),
         xaxis_title='Population',
         yaxis_title='Districts',
         title_text="Population Details for " + states
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['District Name'],
-        x=districts['ST'],
+        y=districts['district_name'],
+        x=districts['population_st'],
         name='ST',
         orientation='h',
-        text=districts['ST %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_st'] # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['District Name'],
-        x=districts['SC'],
+        y=districts['district_name'],
+        x=districts['population_sc'],
         name='SC',
         orientation='h',
-        text=districts['SC %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_sc'], # .apply(lambda x: '{0:1.2f}%'.format(x)),
         visible='legendonly'
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['District Name'],
-        x=districts['General'],
+        y=districts['district_name'],
+        x=districts['population_gn'],
         name='General',
         orientation='h',
-        text=districts['General %'].apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_gn'], # .apply(lambda x: '{0:1.2f}%'.format(x)),
         visible='legendonly'
     ))
-    # fig_districts.add_trace(go.Bar(
-    #     y=districts['District Name'],
-    #     x=districts['District'],
+    fig_districts.update_layout(barmode='group')
+    fig_districts.update_traces(textposition="outside")
+    # fig_districts.add_trace(go.Scatter(
+    #     y=districts['district_name'],
+    #     x=districts['population_total'],
     #     name='Total',
     #     orientation='h',
-    #     text="100 %",
-    #     visible='legendonly'
+    #     mode="markers",
+    #     # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
     # ))
-    fig_districts.update_layout(barmode='stack')
-    fig_districts.update_traces(textposition="outside")
-    fig_districts.add_trace(go.Scatter(
-        y=districts['District Name'],
-        x=districts['District'],
-        name='Total',
-        orientation='h',
-        mode="markers",
-        # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    ))
     return fig_districts
+
