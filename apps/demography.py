@@ -1,27 +1,25 @@
+import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
+from dash import dash_table
 from dash import dcc
 from dash import html
-import dash_bootstrap_components as dbc
-import pandas as pd
-import plotly.express as px
-from dash import dash_table
-from dash.dash_table.Format import Format, Scheme, Group, Align
-import pandas as pd
+from dash.dash_table.Format import Format, Group, Scheme
 # import plotly.express as px
-from dash.dependencies import Input, Output
-import plotly.graph_objects as go
+from dash.dependencies import Input, Output, State
+import timeit
 
+from dash.exceptions import PreventUpdate
 
 from app import app
-
-import requests
-from requests.exceptions import HTTPError
-
 from apps.utils import *
+from babel.numbers import format_number, format_decimal, format_percent
+
+state_literacy = None
 
 
 def get_state_population_data():
-    response = fetch_data('population')
-    data = pd.read_json(response)
+    # response = fetch_data('population')
+    data = pd.read_json(state_pop)
     data_population = pd.json_normalize(data['data'])
     dp = data_population[['district_name', 'state_name', 'population_gn', 'population_sc', 'population_st']]
     num_cols = ['population_gn', 'population_sc', 'population_st']
@@ -40,10 +38,38 @@ def get_state_population_data():
     return dp_sgf
 
 
-def get_district_population_data():
-    response = fetch_data('population')
-    data = pd.read_json(response)
-    data_population = pd.json_normalize(data['data'])
+def get_state_literacy_data():
+    # response = fetch_data('literacy')
+    data = pd.read_json(state_lit)
+    data_literacy = pd.json_normalize(data['data'])
+    int_cols = ['population_gn', 'population_sc', 'population_st', 'literate_gn', 'literate_sc', 'literate_st']
+    float_cols = ['literacy_gn', 'literacy_sc', 'literacy_st']
+    for col in int_cols:
+        data_literacy[col] = pd.to_numeric(data_literacy[col], errors='coerce').fillna(0).astype('int')
+    for col in float_cols:
+        data_literacy[col] = pd.to_numeric(data_literacy[col], errors='coerce').fillna(0.00).astype('float')
+    data_literacy_pop = data_literacy.copy(deep=True)
+    data_literacy_pop = data_literacy_pop.drop(['literacy_gn', 'literacy_sc', 'literacy_st'], axis=1)
+    # data_literacy_per = data_literacy.copy(deep=True)
+    # data_literacy_per = data_literacy_per.drop(
+    #     ['literate_gn', 'literate_sc', 'literate_st', 'population_gn', 'population_sc', 'population_st'], axis=1)
+    data_literacy_pop_states = data_literacy_pop.groupby('state_name', as_index=False)
+    # data_literacy_per_states = data_literacy_per.groupby('state_name', as_index=False)
+    dlps = data_literacy_pop_states.sum()
+    dlps['literate_tot'] = dlps['literate_gn'] + dlps['literate_sc'] + dlps['literate_st']
+    dlps['population_tot'] = dlps['population_gn'] + dlps['population_sc'] + dlps['population_st']
+    dlps['literacy_gn'] = dlps['literate_gn'] / dlps['population_gn'] * 100
+    dlps['literacy_sc'] = dlps['literate_sc'] / dlps['population_sc'] * 100
+    dlps['literacy_st'] = dlps['literate_st'] / dlps['population_st'] * 100
+    dlps['literacy_tot'] = dlps['literate_tot'] / dlps['population_tot'] * 100
+    return dlps
+
+
+def get_district_population_data(state):
+    # response = fetch_data('population')
+    # data = pd.read_json(state_pop)
+    # data_population = pd.json_normalize(data['data'])
+    data_population = fetch_district_pop(state)
     dp = data_population[['district_name', 'state_name', 'population_gn', 'population_sc', 'population_st']]
     num_cols = ['population_gn', 'population_sc', 'population_st']
     for col in num_cols:
@@ -53,17 +79,43 @@ def get_district_population_data():
     return dp
 
 
-state_population = get_state_population_data()
-district_population = get_district_population_data()
+def get_district_literacy_data(state):
+    # response = fetch_data('literacy')
+    # data = pd.read_json(state_lit)
+    # data_literacy = pd.json_normalize(data['data'])
+    data_literacy = fetch_district_lit(state)
+    # print(data_literacy)
+    # data_literacy['district_code'] = data_literacy['district_code'].apply(get_district_name(data_literacy['district_code']))
+    int_cols = ['population_gn', 'population_sc', 'population_st', 'literate_gn', 'literate_sc', 'literate_st']
+    float_cols = ['literacy_gn', 'literacy_sc', 'literacy_st']
+    for col in int_cols:
+        data_literacy[col] = pd.to_numeric(data_literacy[col], errors='coerce').fillna(0).astype('int')
+    for col in float_cols:
+        data_literacy[col] = pd.to_numeric(data_literacy[col], errors='coerce').fillna(0.00).astype('float')
+    return data_literacy
 
-state_list = fetch_states()
+
+state_population = get_state_population_data()
+
+# print(state_population)
+# district_population = get_district_population_data()
+# print("received district population")
+
+if state_literacy is None:
+    state_literacy = get_state_literacy_data()
+    print("received state literacy")
+# district_literacy = get_district_literacy_data()
+# print("received district literacy")
+# print(get_state_code('Assam'))
+# state_list = fetch_states()
 n_states = len(state_list)
 
-districts_list = fetch_districts()
-n_districts = len(districts_list)
+
+# districts_list = fetch_districts()
+# n_districts = len(districts_list)
 
 
-def make_all_india_table():
+def make_all_india_population_table():
     columns = [
         dict(id='state_name', name='State Name'),
         dict(id='population_total', name='State Population', type='numeric',
@@ -82,7 +134,7 @@ def make_all_india_table():
     all_country_table = dash_table.DataTable(
         id='all_country_table',
         columns=columns,
-        hidden_columns=['population_sc, population_gn'],
+        # hidden_columns=['population_sc, population_gn'],
         data=state_population.to_dict('records'),
         sort_action="native",
         sort_mode="single",
@@ -102,13 +154,89 @@ def make_all_india_table():
     return all_country_table
 
 
-def make_all_india_graph():
+def make_all_india_literacy_table():
+    columns = [
+        dict(id='state_name', name='State Name'),
+        dict(id='literacy_tot', name='State Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_st', name='ST Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_sc', name='SC Literacy', type='numeric', hideable=True,
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_gn', name='General Literacy', type='numeric', hideable=True,
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        # dict(id='population_total', name='State Population', type='numeric',
+        #      format=Format(group=Group.yes).groups([3, 2, 2])),
+        # dict(id='st_per', name='ST Percentage', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=state_literacy.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'state_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_all_india_literacy_graph():
+    state_literacy_d = state_literacy.sort_values('state_name', ascending=False)
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * n_states),
+        xaxis=dict(title='Literacy %'),
+        yaxis=dict(title='State'),
+        title=dict(text="Population Details for India")
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=state_literacy_d['state_name'],
+        x=state_literacy_d['literacy_st'],  # .apply(lambda x: format_decimal(x, format='00.00', locale='en')),
+        name='ST',
+        orientation='h',
+        text=state_literacy_d['literate_st'].apply(lambda x: format_decimal(x, locale='en_IN')),
+    ))
+    fig_all.add_trace(go.Bar(
+        y=state_literacy_d['state_name'],
+        x=state_literacy_d['literacy_sc'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
+        # locale='en')),
+        name='SC',
+        orientation='h',
+        text=state_literacy_d['literate_sc'].apply(lambda x: format_decimal(x, locale='en_IN')),
+    ))
+    fig_all.add_trace(go.Bar(
+        y=state_literacy_d['state_name'],
+        x=state_literacy_d['literacy_gn'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
+        # locale='en')),
+        name='General',
+        orientation='h',
+        text=state_literacy_d['literate_gn'].apply(lambda x: format_decimal(x, locale='en_IN')),
+    ))
+    fig_all.update_layout(barmode='group')
+    fig_all.update_traces(textposition="outside")
+    return fig_all
+
+
+def make_all_india_population_graph():
     state_population_d = state_population.sort_values('state_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=100 + (32 * n_states),
-        xaxis_title='Population',
-        yaxis_title='State',
-        title_text="Population Details for India"
+        xaxis=dict(title='Population'),
+        yaxis=dict(title='State'),
+        title=dict(text="Population Details for India")
     ))
     fig_all.update_layout(legend=dict(orientation='h'))
     fig_all.add_trace(go.Bar(
@@ -116,7 +244,6 @@ def make_all_india_graph():
         x=state_population_d['population_st'],
         name='ST',
         orientation='h',
-        width=0.6
         # text=sorted_all_df['ST %']
     ))
     fig_all.add_trace(go.Bar(
@@ -124,7 +251,6 @@ def make_all_india_graph():
         x=state_population_d['population_sc'],
         name='SC',
         orientation='h',
-        width=0.6
         # visible='legendonly'
     ))
     fig_all.add_trace(go.Bar(
@@ -132,68 +258,13 @@ def make_all_india_graph():
         x=state_population_d['population_gn'],
         name='General',
         orientation='h',
-        width=0.6
         # visible='legendonly'
     ))
     fig_all.update_layout(barmode='group')
     return fig_all
 
 
-fig_india = make_all_india_graph()
-# fig_all.update_layout(barmode='stack')
-#
-# fig_all.add_trace(go.Scatter(
-#     y=sorted_all_df['State Name'],
-#     x=sorted_all_df['State'],
-#     name='Total',
-#     orientation='h',
-#     mode="markers",
-#     # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
-# ))
-
-# n_states = len(sorted_all_df['State Name'])
-# fig_all_group = go.Figure(layout=go.Layout(
-#     height=100 + (64 * n_states),
-#     xaxis_title='Population',
-#     yaxis_title='State',
-#     title_text="Population Details for India"
-# ))
-# fig_all_group.add_trace(go.Bar(
-#     y=sorted_all_df['State Name'],
-#     x=sorted_all_df['ST'],
-#     name='ST',
-#     orientation='h',
-#     text=sorted_all_df['ST %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-# ))
-# fig_all_group.add_trace(go.Bar(
-#     y=sorted_all_df['State Name'],
-#     x=sorted_all_df['SC'],
-#     name='SC',
-#     orientation='h',
-#     text=sorted_all_df['SC %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-#     visible='legendonly'
-# ))
-# fig_all_group.add_trace(go.Bar(
-#     y=sorted_all_df['State Name'],
-#     x=sorted_all_df['General'],
-#     name='General',
-#     orientation='h',
-#     text=sorted_all_df['General %'].apply(lambda x: '{0:1.2f}%'.format(x)),
-#     visible='legendonly'
-# ))
-# fig_all_group.add_trace(go.Bar(
-#     y=sorted_all_df['State Name'],
-#     x=sorted_all_df['State'],
-#     name='Total',
-#     orientation='h',
-#     text="100 %",
-#     visible='legendonly'
-# ))
-# fig_all_group.update_layout(barmode='group')
-# # fig_all_group.update_layout(legend=dict(orientation='h'))
-# fig_all_group.update_traces(textposition="outside")
-
-# fig_all.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+# fig_india = make_all_india_population_graph()
 
 dbi_list = ['Population', 'Literacy', 'Gender Ratio', 'Fertility Rate']
 
@@ -233,7 +304,7 @@ bdi_card = dbc.Card(
             [
                 html.P("Select one or more of the following basic demographic indicators", className="card-text"),
                 dbc.RadioItems(
-                    id='dbi-checklist',
+                    id='dbi-select',
                     options=[
                         {"label": name, "value": name} for name in dbi_list
                     ],
@@ -301,12 +372,12 @@ viz_card = dbc.Card(
     ]
 )
 
-visualization_graph = dcc.Graph(
-    id='graph',
-    # figure=fig_country
-    # figure=fig_all
-    figure=fig_india,
-)
+# visualization_graph = dcc.Graph(
+# id='graph',
+# figure=fig_country
+# figure=fig_all
+# figure=fig_india,
+# )
 
 # visualization_graph1 = dcc.Graph(
 #     id='graph',
@@ -349,29 +420,38 @@ layout = html.Div(children=[
     html.Br(),
     dbc.Button("Get Data", id='viz-button', color="primary", block=True, n_clicks=0),
     html.Br(),
+    dbc.Card(
+        id='map-card',
+        children=
+        [
+            dbc.CardImg(src='/assets/ST2011.png', top=True),
+            dbc.CardBody(
+                [
+                    html.Label(
+                        f'Detail of Map')
+                ], style={'margin': "auto", 'text-align': "center"},
+            )
+        ]
+    ),
     html.Br(),
-    # html.H4(
-    #     id='area-label',
-    #     children=[],
-    # ),
+    html.H4(
+        id='area-label',
+        children=[],
+        style={'textAlign': 'center'}
+    ),
+    html.Br(),
+    html.Div(
+        id='viz-table',
+        children=[
+            # all_country_table,
+        ],
+    ),
     html.Br(),
     html.Div(
         id='demography-visualization',
         children=[
             html.Br(),
         ],  # style={'display': 'None'}
-    ),
-    # html.Div(
-    #     id='demography-visualization1',
-    #     children=[
-    #         html.Br(),
-    #     ],  # style={'display': 'None'}
-    # ),
-    html.Div(
-        id='viz-table',
-        children=[
-            # all_country_table,
-        ],
     ),
     html.Br(),
     html.Br(),
@@ -392,56 +472,141 @@ def update_states_select_status(selected):
 
 @app.callback(
     [Output('viz-table', 'children'),
-     Output('demography-visualization', 'children')],
-    # Output('demography-visualization1', 'children')],
-    # Output('area-label', 'children')],
+     Output('demography-visualization', 'children'),
+     # Output('demography-visualization1', 'children')],
+     Output('area-label', 'children')],
     [Input('viz-button', 'n_clicks'),
-     Input('aoi-select', 'value'),
-     Input('cat-selector', 'value'),
-     Input('states-select', 'value'),
-     Input('viz-selector', 'value')]
+     State('dbi-select', 'value'),
+     State('aoi-select', 'value'),
+     State('cat-selector', 'value'),
+     State('states-select', 'value'),
+     State('viz-selector', 'value')]
 )
-def get_partial_data(n, aoi, cats, states, viz):
+def get_partial_data(n, dbi, aoi, cats, states, viz):
+    # print(dbi)
     if states is None:
         states = ''
     if n == 0:
-        return None, None
+        # raise PreventUpdate
+        return None, None, None
     elif aoi == 'India':
         if viz[-1] == 'graph':
-            fig_india.for_each_trace(
+            # fig_india.for_each_trace(
+            #     lambda trace: trace.update(visible=True) if trace.name in cats else (),
+            # )
+            # fig_india.for_each_trace(
+            #     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+            # )
+            if dbi == 'Population':
+                fig_pop = make_all_india_population_graph()
+                population_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_pop
+                )
+                all_india_table = make_all_india_population_table()
+                fig_pop.for_each_trace(
+                    lambda trace: trace.update(visible=True) if trace.name in cats else (),
+                )
+                fig_pop.for_each_trace(
+                    lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+                )
+                return all_india_table, population_visualization, dbc.Label("Population Data for India from 2011")
+            elif dbi == 'Literacy':
+                fig_lit = make_all_india_literacy_graph()
+                literacy_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_lit
+                )
+                fig_lit.for_each_trace(
+                    lambda trace: trace.update(visible=True) if trace.name in cats else (),
+                )
+                fig_lit.for_each_trace(
+                    lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+                )
+                all_india_table = make_all_india_literacy_table()
+                return all_india_table, literacy_visualization, dbc.Label("Literacy Data for India from 2011")
+        else:
+            if dbi == 'Population:':
+                all_india_table = make_all_india_population_table()
+                return all_india_table, [], dbc.Label("Population Data for India from 2011")
+            elif dbi == 'Literacy':
+                all_india_table = make_all_india_literacy_table()
+                return all_india_table, [], dbc.Label("Literacy Data for India from 2011")
+            elif dbi == 'Gender Ratio':  # TODO
+                all_india_table = make_all_india_population_table()
+                return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011")
+            elif dbi == 'Fertility Rate':  # TODO
+                all_india_table = make_all_india_population_table()
+                return all_india_table, [], dbc.Label("Fertility Data for India from 2011")
+            else:
+                all_india_table = make_all_india_population_table()
+                return all_india_table, [], dbc.Label('')
+    elif aoi == 'States':  # TODO
+        if states != '':
+            district_population = get_district_population_data(states)
+            # filtered_table = make_filtered_state_population_table(district_population[
+            # district_population['state_name'] == states])
+            filtered_table = make_filtered_state_population_table(district_population)
+
+            filtered_visualization = dcc.Graph(
+                id='graph',
+                # figure=fig_filtered_state
+                # figure=make_filtered_state_population_graph(district_population[
+                #                                                 district_population['state_name'] == states], states)
+                figure=make_filtered_state_population_graph(district_population, states)
+            )
+            filtered_visualization.figure.for_each_trace(
                 lambda trace: trace.update(visible=True) if trace.name in cats else (),
             )
-            fig_india.for_each_trace(
+            filtered_visualization.figure.for_each_trace(
                 lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
             )
 
-            return make_all_india_table(), visualization_graph
+            if viz[-1] == 'graph':
+                if dbi == 'Population':
+                    fig_pop = make_filtered_state_population_graph(district_population, states)
+                    population_visualization = dcc.Graph(
+                        id='graph',
+                        figure=fig_pop
+                    )
+                    # district_population = get_district_population_data(states)
+                    state_table = make_filtered_state_population_table(district_population)
+                    fig_pop.for_each_trace(
+                        lambda trace: trace.update(visible=True) if trace.name in cats else (),
+                    )
+                    fig_pop.for_each_trace(
+                        lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+                    )
+                    return state_table, population_visualization, \
+                           dbc.Label("Population Data for " + states + " from 2011")
+                elif dbi == 'Literacy':
+                    # print(states)
+                    district_literacy = get_district_literacy_data(states)
+                    # print(district_literacy)
+                    state_table = make_filtered_state_literacy_table(district_literacy)
+                    fig_lit = make_filtered_state_literacy_graph(district_literacy, states) # TODO
+                    literacy_visualization = dcc.Graph(
+                        id='graph',
+                        figure=fig_lit
+                    )
+                    fig_lit.for_each_trace(
+                        lambda trace: trace.update(visible=True) if trace.name in cats else (),
+                    )
+                    fig_lit.for_each_trace(
+                        lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+                    )
+                    return state_table, literacy_visualization, dbc.Label("Literacy Data for " + states + " from 2011")
+            #     return filtered_table, filtered_visualization, dbc.Label(
+            #         "Population Data for " + states + "  from 2011")
+            # else:
+            #     return filtered_table, [], dbc.Label("Population Data for " + states + "  from 2011")
         else:
-            return make_all_india_table(), []
+            return None, None, None
     else:
-        filtered_table = make_filtered_state_population_table(district_population[
-                                                 district_population['state_name'] == states], states)
-
-        filtered_visualization = dcc.Graph(
-            id='graph',
-            # figure=fig_filtered_state
-            figure=make_filtered_state_population_graph(district_population[
-                                                            district_population['state_name'] == states], states)
-        )
-        filtered_visualization.figure.for_each_trace(
-            lambda trace: trace.update(visible=True) if trace.name in cats else (),
-        )
-        filtered_visualization.figure.for_each_trace(
-            lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
-        )
-
-        if viz[-1] == 'graph':
-            return filtered_table, filtered_visualization
-        else:
-            return filtered_table, []
+        return None, None, None
 
 
-def make_filtered_state_population_table(districts, states):
+def make_filtered_state_population_table(districts):
     districts = districts.sort_values('district_name')
     district_columns = [
         dict(id='district_name', name='District Name'),
@@ -472,9 +637,49 @@ def make_filtered_state_population_table(districts, states):
         style_header={
             'fontWeight': 'bold'
         },
-        css=[{"selector": ".show-hide", "rule": "display: none"}]
+        css=[{"selector": ".show-hide", "rule": "display: none"}],
     )
     return filtered_state_table
+
+
+def make_filtered_state_literacy_table(districts):
+    # districts = districts.sort_values('district_code')
+    columns = [
+        dict(id='district_code', name='District Name'),
+        # dict(id='literacy_tot', name='District Literacy', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_st', name='ST Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_sc', name='SC Literacy', type='numeric', hideable=True,
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_gn', name='General Literacy', type='numeric', hideable=True,
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        # dict(id='population_total', name='State Population', type='numeric',
+        #      format=Format(group=Group.yes).groups([3, 2, 2])),
+        # dict(id='st_per', name='ST Percentage', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=districts.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'state_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
 
 
 def make_filtered_state_population_graph(districts, states):
@@ -483,8 +688,9 @@ def make_filtered_state_population_graph(districts, states):
 
     fig_districts = go.Figure(layout=go.Layout(
         height=200 + (32 * n_district),
-        xaxis_title='Population',
-        yaxis_title='Districts',
+        xaxis=dict(title='Population'),
+        # xaxis_title='Population',
+        yaxis=dict(title='Districts'),
         title_text="Population Details for " + states
     ))
     fig_districts.add_trace(go.Bar(
@@ -492,14 +698,14 @@ def make_filtered_state_population_graph(districts, states):
         x=districts['population_st'],
         name='ST',
         orientation='h',
-        text=districts['population_st'] # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
     fig_districts.add_trace(go.Bar(
         y=districts['district_name'],
         x=districts['population_sc'],
         name='SC',
         orientation='h',
-        text=districts['population_sc'], # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
         visible='legendonly'
     ))
     fig_districts.add_trace(go.Bar(
@@ -507,18 +713,55 @@ def make_filtered_state_population_graph(districts, states):
         x=districts['population_gn'],
         name='General',
         orientation='h',
-        text=districts['population_gn'], # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['population_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
         visible='legendonly'
     ))
     fig_districts.update_layout(barmode='group')
     fig_districts.update_traces(textposition="outside")
-    # fig_districts.add_trace(go.Scatter(
-    #     y=districts['district_name'],
-    #     x=districts['population_total'],
-    #     name='Total',
-    #     orientation='h',
-    #     mode="markers",
-    #     # text=sorted_all_df['State'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    # ))
+
     return fig_districts
+
+
+def make_filtered_state_literacy_graph(districts, states):
+    districts = districts.sort_values('district_code', ascending=False)
+    n_district = len(districts['district_code'])
+
+    fig_districts = go.Figure(layout=go.Layout(
+        height=200 + (32 * n_district),
+        xaxis=dict(title='Population'),
+        # xaxis_title='Population',
+        yaxis=dict(title='Districts'),
+        title_text="Literacy Details for " + states
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_code'],
+        x=districts['population_st'],
+        name='ST',
+        orientation='h',
+        text=districts['population_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_code'],
+        x=districts['population_sc'],
+        name='SC',
+        orientation='h',
+        text=districts['population_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        visible='legendonly'
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_code'],
+        x=districts['population_gn'],
+        name='General',
+        orientation='h',
+        text=districts['population_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        visible='legendonly'
+    ))
+    fig_districts.update_layout(barmode='group')
+    fig_districts.update_traces(textposition="outside")
+
+    return fig_districts
+
+
+def map_map(dbi, aoi, states):
+    return ''
 

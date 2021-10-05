@@ -8,6 +8,7 @@ dash = "*"
 dash-bootstrap-components = "*"
 pandas = "*"
 requests = "*"
+babel = "*"
 
 [dev-packages]
 
