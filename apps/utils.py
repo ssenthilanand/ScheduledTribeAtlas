@@ -49,11 +49,20 @@ def fetch_district_lit(state):
     return district_lit
 
 
+def fetch_district_gratio(state):
+    state_code = get_state_code(state)
+    response = fetch_data('genderratio/' + state_code)
+    data = pd.read_json(response)
+    district_gratio = pd.json_normalize(data['data'])
+    return district_gratio
+
+
 state_list = fetch_states()
 districts_list = fetch_districts()
 
 state_pop = fetch_data('population/')
 state_lit = fetch_data('literacy')
+state_gratio = fetch_data('genderratio')
 
 
 def get_state_code(state):
