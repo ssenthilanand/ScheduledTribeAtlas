@@ -101,10 +101,13 @@ def get_district_literacy_data(state):
     # data = pd.read_json(state_lit)
     # data_literacy = pd.json_normalize(data['data'])
     data_literacy = fetch_district_lit(state)
-    # print(data_literacy)
-    # data_literacy['district_code'] = data_literacy['district_code'].apply(get_district_name(data_literacy['district_code']))
-    # data_literacy['district_name'] = data_literacy['district_code']
-    # data_literacy['district_name'] = data_literacy.apply(lambda x: get_district_name(x), axis=1)
+    district_code_list = data_literacy['district_code'].to_list()
+    district_name_list = []
+    for code in district_code_list:
+        district_name_list.append(get_district_name(code))
+    district_names = pd.DataFrame({'district_code': district_code_list, 'district_name': district_name_list})
+    data_literacy = data_literacy.merge(district_names, on='district_code')
+    data_literacy = data_literacy.sort_values('district_name')
     # print(data_literacy['district_name'])
     int_cols = ['population_gn', 'population_sc', 'population_st', 'literate_gn', 'literate_sc', 'literate_st']
     float_cols = ['literacy_gn', 'literacy_sc', 'literacy_st']
@@ -117,9 +120,9 @@ def get_district_literacy_data(state):
 
 def get_district_gender_ratio_data(state):
     data = fetch_district_gratio(state)
-    data_gratio = pd.json_normalize(data['data'])
-    dgratio = data_gratio[['district_name', 'state_name', 'gender_ratio', 'gn_gr', 'sc_gr', 'st_gr']]
-    num_cols = ['population_gn', 'population_sc', 'population_st']
+    # data_gratio = pd.json_normalize(data['data'])
+    dgratio = data[['district_name', 'state_name', 'gender_ratio', 'gn_gr', 'sc_gr', 'st_gr']]
+    num_cols = ['gender_ratio', 'gn_gr', 'sc_gr', 'st_gr']
     for col in num_cols:
         dgratio[col] = pd.to_numeric(dgratio[col], errors='coerce').fillna(0).astype('int')
     return dgratio
@@ -133,7 +136,7 @@ state_population = get_state_population_data()
 
 if state_literacy is None:
     state_literacy = get_state_literacy_data()
-    print("received state literacy")
+    # print("received state literacy")
 # district_literacy = get_district_literacy_data()
 # print("received district literacy")
 # print(get_state_code('Assam'))
@@ -227,13 +230,13 @@ def make_all_india_gender_ratio_table():
     columns = [
         dict(id='state_name', name='State Name'),
         dict(id='gender_ratio', name='Gender Ratio', type='numeric',
-             format=Format(precision=2, scheme=Scheme.fixed)),
+             format=Format(precision=0, scheme=Scheme.fixed)),
         dict(id='st_gr', name='ST Gender Ratio', type='numeric',
-             format=Format(precision=2, scheme=Scheme.fixed)),
+             format=Format(precision=0, scheme=Scheme.fixed)),
         dict(id='sc_gr', name='SC Gender Ratio', type='numeric', hideable=True,
-             format=Format(precision=2, scheme=Scheme.fixed)),
+             format=Format(precision=0, scheme=Scheme.fixed)),
         dict(id='gn_gr', name='General Gender Ratio', type='numeric', hideable=True,
-             format=Format(precision=2, scheme=Scheme.fixed)),
+             format=Format(precision=0, scheme=Scheme.fixed)),
         # dict(id='population_total', name='State Population', type='numeric',
         #      format=Format(group=Group.yes).groups([3, 2, 2])),
         # dict(id='st_per', name='ST Percentage', type='numeric',
@@ -587,7 +590,7 @@ def update_states_select_status(selected):
      State('viz-selector', 'value')]
 )
 def get_partial_data(n, dbi, aoi, cats, states, viz):
-    print(dbi, aoi, cats, states, viz)
+    # print(dbi, aoi, cats, states, viz)
     if states is None:
         states = ''
     if n == 0:
@@ -655,7 +658,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 all_india_table = make_all_india_literacy_table()
                 return all_india_table, [], dbc.Label("Literacy Data for India from 2011"),\
                        make_map(dbi, aoi, states)
-            elif dbi == 'Gender Ratio':  # TODO
+            elif dbi == 'Gender Ratio':
                 all_india_table = make_all_india_gender_ratio_table()
                 return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011"),\
                        make_map(dbi, aoi, states)
@@ -668,33 +671,33 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, [], dbc.Label(''), make_map(dbi, aoi, states)
     elif aoi == 'States':  # TODO
         if states != '':
-            district_population = get_district_population_data(states)
-            # filtered_table = make_filtered_state_population_table(district_population[
-            # district_population['state_name'] == states])
-            filtered_table = make_filtered_state_population_table(district_population)
-
-            filtered_visualization = dcc.Graph(
-                id='graph',
-                # figure=fig_filtered_state
-                # figure=make_filtered_state_population_graph(district_population[
-                #                                                 district_population['state_name'] == states], states)
-                figure=make_filtered_state_population_graph(district_population, states)
-            )
-            filtered_visualization.figure.for_each_trace(
-                lambda trace: trace.update(visible=True) if trace.name in cats else (),
-            )
-            filtered_visualization.figure.for_each_trace(
-                lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
-            )
+            # district_population = get_district_population_data(states)
+            # # filtered_table = make_filtered_state_population_table(district_population[
+            # # district_population['state_name'] == states])
+            # filtered_table = make_filtered_state_population_table(district_population)
+            #
+            # filtered_visualization = dcc.Graph(
+            #     id='graph',
+            #     # figure=fig_filtered_state
+            #     # figure=make_filtered_state_population_graph(district_population[
+            #     #                                                 district_population['state_name'] == states], states)
+            #     figure=make_filtered_state_population_graph(district_population, states)
+            # )
+            # filtered_visualization.figure.for_each_trace(
+            #     lambda trace: trace.update(visible=True) if trace.name in cats else (),
+            # )
+            # filtered_visualization.figure.for_each_trace(
+            #     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+            # )
 
             if viz[-1] == 'graph':
                 if dbi == 'Population':
+                    district_population = get_district_population_data(states)
                     fig_pop = make_filtered_state_population_graph(district_population, states)
                     population_visualization = dcc.Graph(
                         id='graph',
                         figure=fig_pop
                     )
-                    # district_population = get_district_population_data(states)
                     state_table = make_filtered_state_population_table(district_population)
                     fig_pop.for_each_trace(
                         lambda trace: trace.update(visible=True) if trace.name in cats else (),
@@ -722,6 +725,24 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     )
                     return state_table, literacy_visualization, \
                            dbc.Label("Literacy Data for " + states + " from 2011"), make_map(dbi, aoi, states)
+                elif dbi == 'Gender Ratio':
+                    # print(states)
+                    district_gender_ratio = get_district_gender_ratio_data(states)
+                    # print(district_literacy)
+                    state_table = make_filtered_state_gender_ratio_table(district_gender_ratio)
+                    fig_lit = make_filtered_state_gender_ratio_graph(district_gender_ratio, states)
+                    gratio_visualization = dcc.Graph(
+                        id='graph',
+                        figure=fig_lit
+                    )
+                    fig_lit.for_each_trace(
+                        lambda trace: trace.update(visible=True) if trace.name in cats else (),
+                    )
+                    fig_lit.for_each_trace(
+                        lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
+                    )
+                    return state_table, gratio_visualization, \
+                           dbc.Label("Gender Ratio Data for " + states + " from 2011"), make_map(dbi, aoi, states)
             #     return filtered_table, filtered_visualization, dbc.Label(
             #         "Population Data for " + states + "  from 2011")
             # else:
@@ -736,7 +757,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     return state_table, [], dbc.Label("Literacy Data for India from 2011"), \
                            make_map(dbi, aoi, states)
                 elif dbi == 'Gender Ratio':  # TODO
-                    state_table = make_filtered_state_literacy_table(get_district_gender_ratio_data(states))
+                    state_table = make_filtered_state_gender_ratio_table(get_district_gender_ratio_data(states))
                     return state_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
                            make_map(dbi, aoi, states)
         else:
@@ -784,7 +805,7 @@ def make_filtered_state_population_table(districts):
 def make_filtered_state_literacy_table(districts):
     # districts = districts.sort_values('district_code')
     columns = [
-        dict(id='district_code', name='District Name'),
+        dict(id='district_name', name='District Name'),
         # dict(id='literacy_tot', name='District Literacy', type='numeric',
         #      format=Format(precision=2, scheme=Scheme.fixed)),
         dict(id='literacy_st', name='ST Literacy', type='numeric',
@@ -793,6 +814,48 @@ def make_filtered_state_literacy_table(districts):
              format=Format(precision=2, scheme=Scheme.fixed)),
         dict(id='literacy_gn', name='General Literacy', type='numeric', hideable=True,
              format=Format(precision=2, scheme=Scheme.fixed)),
+        # dict(id='population_total', name='State Population', type='numeric',
+        #      format=Format(group=Group.yes).groups([3, 2, 2])),
+        # dict(id='st_per', name='ST Percentage', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=districts.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'state_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_filtered_state_gender_ratio_table(districts):
+    districts = districts.sort_values('district_name')
+    columns = [
+        dict(id='district_name', name='District Name'),
+        # dict(id='literacy_tot', name='District Literacy', type='numeric',
+        #      format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='gender_ratio', name='Gender Ratio', type='numeric',
+             format=Format(precision=0, scheme=Scheme.fixed)),
+        dict(id='st_gr', name='ST Gender Ratio', type='numeric',
+             format=Format(precision=0, scheme=Scheme.fixed)),
+        dict(id='sc_gr', name='SC Gender Ratio', type='numeric', hideable=True,
+             format=Format(precision=0, scheme=Scheme.fixed)),
+        dict(id='gn_gr', name='General Gender Ratio', type='numeric', hideable=True,
+             format=Format(precision=0, scheme=Scheme.fixed)),
         # dict(id='population_total', name='State Population', type='numeric',
         #      format=Format(group=Group.yes).groups([3, 2, 2])),
         # dict(id='st_per', name='ST Percentage', type='numeric',
@@ -862,8 +925,8 @@ def make_filtered_state_population_graph(districts, states):
 
 
 def make_filtered_state_literacy_graph(districts, states):
-    districts = districts.sort_values('district_code', ascending=False)
-    n_district = len(districts['district_code'])
+    districts = districts.sort_values('district_name', ascending=False)
+    n_district = len(districts['district_name'])
 
     fig_districts = go.Figure(layout=go.Layout(
         height=200 + (32 * n_district),
@@ -873,26 +936,63 @@ def make_filtered_state_literacy_graph(districts, states):
         title_text="Literacy Details for " + states
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['district_code'],
-        x=districts['population_st'],
+        y=districts['district_name'],
+        x=districts['literacy_st'],
         name='ST',
         orientation='h',
-        text=districts['population_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['literate_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['district_code'],
-        x=districts['population_sc'],
+        y=districts['district_name'],
+        x=districts['literacy_sc'],
         name='SC',
         orientation='h',
-        text=districts['population_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['literate_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
         visible='legendonly'
     ))
     fig_districts.add_trace(go.Bar(
-        y=districts['district_code'],
-        x=districts['population_gn'],
+        y=districts['district_name'],
+        x=districts['literacy_gn'],
         name='General',
         orientation='h',
-        text=districts['population_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        text=districts['literate_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        visible='legendonly'
+    ))
+    fig_districts.update_layout(barmode='group')
+    fig_districts.update_traces(textposition="outside")
+
+    return fig_districts
+
+
+def make_filtered_state_gender_ratio_graph(districts, states):
+    districts = districts.sort_values('district_name', ascending=False)
+    n_district = len(districts['district_name'])
+
+    fig_districts = go.Figure(layout=go.Layout(
+        height=200 + (32 * n_district),
+        xaxis=dict(title='Population'),
+        # xaxis_title='Population',
+        yaxis=dict(title='Districts'),
+        title_text="Gender Ratio Details for " + states
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_name'],
+        x=districts['st_gr'],
+        name='ST',
+        orientation='h',
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_name'],
+        x=districts['sc_gr'],
+        name='SC',
+        orientation='h',
+        visible='legendonly'
+    ))
+    fig_districts.add_trace(go.Bar(
+        y=districts['district_name'],
+        x=districts['gn_gr'],
+        name='General',
+        orientation='h',
         visible='legendonly'
     ))
     fig_districts.update_layout(barmode='group')

@@ -80,5 +80,5 @@ def get_district_code(district):
     return district_code
 
 
-print(get_district_name('1'))
-print(get_district_code('Chennai'))
+# print(get_district_name('1'))
+# print(get_district_code('Chennai'))
