@@ -511,20 +511,64 @@ layout = html.Div(children=[
     html.Br(),
     html.H3('Demography information of Scheduled Tribes of India', style={'text-align': 'center'}),
     html.Br(),
+    html.Div(
+        className="container",
+        children=[
+            html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="column",
+                        children=[
+                            bdi_card
+                        ]
+                    ),
+                    html.Div(
+                        className="column",
+                        children=[
+                            aoi_card
+                        ]
+                    )
+                ]
+            )
+        ]
+    ),
+    html.Div(
+        className="container",
+        children=[
+            html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="column",
+                        children=[
+                            cat_card
+                        ]
+                    ),
+                    html.Div(
+                        className="column",
+                        children=[
+                            viz_card
+                        ]
+                    )
+                ]
+            )
+        ]
+    ),
 
-    dbc.CardDeck(
-        [
-            bdi_card, aoi_card
-        ]
-    ),
-    dbc.CardDeck(
-        [
-            cat_card, viz_card
-        ]
-    ),
+    # dbc.CardDeck(
+    #     [
+    #         bdi_card, aoi_card
+    #     ]
+    # ),
+    # dbc.CardDeck(
+    #     [
+    #         cat_card, viz_card
+    #     ]
+    # ),
     html.Br(),
     html.Br(),
-    dbc.Button("Get Data", id='viz-button', color="primary", block=True, n_clicks=0),
+    dbc.Button("Get Data", id='viz-button', color="primary", n_clicks=0),
     html.Br(),
     dbc.Card(
         id='map-card',
