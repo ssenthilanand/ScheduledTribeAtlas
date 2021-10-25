@@ -540,6 +540,12 @@ layout = html.Div(children=[
     ),
 
     html.Br(),
+    dcc.Loading(
+        id="loading-1",
+        type="circle",
+        children=html.Div(id="loading-output-1", style={'display': 'none'}),
+    ),
+    html.Br(),
     dbc.Card(
         id='map-card',
         children=''
@@ -560,6 +566,7 @@ layout = html.Div(children=[
         style={'textAlign': 'center'}
     ),
     html.Br(),
+
     html.Div(
         id='viz-table',
         children=[
@@ -595,7 +602,8 @@ def update_states_select_status(selected):
      Output('demography-visualization', 'children'),
      # Output('demography-visualization1', 'children')],
      Output('area-label', 'children'),
-     Output('map-card', 'children')],
+     Output('map-card', 'children'),
+     Output("loading-output-1", "children")],
     [Input('viz-button', 'n_clicks'),
      State('dbi-select', 'value'),
      State('aoi-select', 'value'),
@@ -609,7 +617,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
         states = ''
     if n == 0:
         # raise PreventUpdate
-        return None, None, None, None
+        return None, None, None, None, None
     elif aoi == 'India':
         if viz[-1] == 'graph':
             # fig_india.for_each_trace(
@@ -632,7 +640,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
                 )
                 return all_india_table, population_visualization, \
-                       dbc.Label("Population Data for India from 2011"), make_map(dbi, aoi, states)
+                       dbc.Label("Population Data for India from 2011"), make_map(dbi, aoi, states), n
             elif dbi == 'Literacy':
                 fig_lit = make_all_india_literacy_graph()
                 literacy_visualization = dcc.Graph(
@@ -647,7 +655,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 )
                 all_india_table = make_all_india_literacy_table()
                 return all_india_table, literacy_visualization, \
-                       dbc.Label("Literacy Data for India from 2011"), make_map(dbi, aoi, states)
+                       dbc.Label("Literacy Data for India from 2011"), make_map(dbi, aoi, states), n
             elif dbi == 'Gender Ratio':
                 fig_lit = make_all_india_gender_ratio_graph()
                 gender_ratio_visualization = dcc.Graph(
@@ -662,27 +670,27 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 )
                 all_india_table = make_all_india_gender_ratio_table()
                 return all_india_table, gender_ratio_visualization, \
-                       dbc.Label("Gender Ratio Data for India from 2011"), make_map(dbi, aoi, states)
+                       dbc.Label("Gender Ratio Data for India from 2011"), make_map(dbi, aoi, states), n
         else:
             if dbi == 'Population:':
                 all_india_table = make_all_india_population_table()
                 return all_india_table, [], dbc.Label("Population Data for India from 2011"), \
-                       make_map(dbi, aoi, states)
+                       make_map(dbi, aoi, states), n
             elif dbi == 'Literacy':
                 all_india_table = make_all_india_literacy_table()
                 return all_india_table, [], dbc.Label("Literacy Data for India from 2011"), \
-                       make_map(dbi, aoi, states)
+                       make_map(dbi, aoi, states), n
             elif dbi == 'Gender Ratio':
                 all_india_table = make_all_india_gender_ratio_table()
                 return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
-                       make_map(dbi, aoi, states)
+                       make_map(dbi, aoi, states), n
             elif dbi == 'Fertility Rate':  # TODO
                 all_india_table = make_all_india_population_table()
                 return all_india_table, [], dbc.Label("Fertility Data for India from 2011"), \
-                       make_map(dbi, aoi, states)
+                       make_map(dbi, aoi, states), n
             else:
                 all_india_table = make_all_india_population_table()
-                return all_india_table, [], dbc.Label(''), make_map(dbi, aoi, states)
+                return all_india_table, [], dbc.Label(''), make_map(dbi, aoi, states), n
     elif aoi == 'States':  # TODO
         if states != '':
             # district_population = get_district_population_data(states)
@@ -720,7 +728,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                         lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
                     )
                     return state_table, population_visualization, \
-                           dbc.Label("Population Data for " + states + " from 2011"), make_map(dbi, aoi, states)
+                           dbc.Label("Population Data for " + states + " from 2011"), make_map(dbi, aoi, states), n
                 elif dbi == 'Literacy':
                     # print(states)
                     district_literacy = get_district_literacy_data(states)
@@ -738,7 +746,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                         lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
                     )
                     return state_table, literacy_visualization, \
-                           dbc.Label("Literacy Data for " + states + " from 2011"), make_map(dbi, aoi, states)
+                           dbc.Label("Literacy Data for " + states + " from 2011"), make_map(dbi, aoi, states), n
                 elif dbi == 'Gender Ratio':
                     # print(states)
                     district_gender_ratio = get_district_gender_ratio_data(states)
@@ -756,7 +764,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                         lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
                     )
                     return state_table, gratio_visualization, \
-                           dbc.Label("Gender Ratio Data for " + states + " from 2011"), make_map(dbi, aoi, states)
+                           dbc.Label("Gender Ratio Data for " + states + " from 2011"), make_map(dbi, aoi, states), n
             #     return filtered_table, filtered_visualization, dbc.Label(
             #         "Population Data for " + states + "  from 2011")
             # else:
@@ -765,19 +773,19 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 if dbi == 'Population:':
                     state_table = make_filtered_state_population_table(get_district_population_data(states))
                     return state_table, [], dbc.Label("Population Data for India from 2011"), \
-                           make_map(dbi, aoi, states)
+                           make_map(dbi, aoi, states), n
                 elif dbi == 'Literacy':
                     state_table = make_filtered_state_literacy_table(get_district_literacy_data(states))
                     return state_table, [], dbc.Label("Literacy Data for India from 2011"), \
-                           make_map(dbi, aoi, states)
+                           make_map(dbi, aoi, states), n
                 elif dbi == 'Gender Ratio':  # TODO
                     state_table = make_filtered_state_gender_ratio_table(get_district_gender_ratio_data(states))
                     return state_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
-                           make_map(dbi, aoi, states)
+                           make_map(dbi, aoi, states), n
         else:
-            return None, None, None, None
+            return None, None, None, None, None
     else:
-        return None, None, None, None
+        return None, None, None, None, None
 
 
 def make_filtered_state_population_table(districts):
