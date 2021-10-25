@@ -144,6 +144,8 @@ if state_literacy is None:
 n_states = len(state_list)
 
 state_gender_ratio = get_state_gender_ratio_data()
+
+
 # districts_list = fetch_districts()
 # n_districts = len(districts_list)
 
@@ -350,7 +352,7 @@ def make_all_india_gender_ratio_graph():
         x=state_gratio_d['st_gr'],  # .apply(lambda x: format_decimal(x, format='00.00', locale='en')),
         name='ST',
         orientation='h',
-        ))
+    ))
     fig_all.add_trace(go.Bar(
         y=state_gratio_d['state_name'],
         x=state_gratio_d['sc_gr'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
@@ -400,7 +402,7 @@ aoi_card = dbc.Card(
                 )
             ],
         )
-    ]
+    ],
 )
 
 bdi_card = dbc.Card(
@@ -413,6 +415,10 @@ bdi_card = dbc.Card(
                     id='dbi-select',
                     options=[
                         {"label": name, "value": name} for name in dbi_list
+                        # {'label': 'Population', 'value': 'Population'},
+                        # {'label': 'Literacy', 'value': 'Literacy'},
+                        # {'label': 'Gender Ratio', 'value': 'Gender Ratio'},
+                        # {'label': 'Fertility Rate', 'value': 'Fertility Rate'},
                     ],
                     value='Population',
                     inline=True
@@ -511,64 +517,28 @@ layout = html.Div(children=[
     html.Br(),
     html.H3('Demography information of Scheduled Tribes of India', style={'text-align': 'center'}),
     html.Br(),
-    html.Div(
-        className="container",
-        children=[
-            html.Div(
-                className="row",
-                children=[
-                    html.Div(
-                        className="column",
-                        children=[
-                            bdi_card
-                        ]
-                    ),
-                    html.Div(
-                        className="column",
-                        children=[
-                            aoi_card
-                        ]
-                    )
-                ]
-            )
-        ]
+    dbc.CardGroup(
+        [
+            bdi_card,
+            aoi_card
+        ],
     ),
-    html.Div(
-        className="container",
-        children=[
-            html.Div(
-                className="row",
-                children=[
-                    html.Div(
-                        className="column",
-                        children=[
-                            cat_card
-                        ]
-                    ),
-                    html.Div(
-                        className="column",
-                        children=[
-                            viz_card
-                        ]
-                    )
-                ]
-            )
+    dbc.CardGroup(
+        [
+            cat_card,
+            viz_card
         ]
     ),
 
-    # dbc.CardDeck(
-    #     [
-    #         bdi_card, aoi_card
-    #     ]
-    # ),
-    # dbc.CardDeck(
-    #     [
-    #         cat_card, viz_card
-    #     ]
-    # ),
     html.Br(),
     html.Br(),
-    dbc.Button("Get Data", id='viz-button', color="primary", n_clicks=0),
+    html.Div(
+        [
+            dbc.Button("Get Data", id='viz-button', color="primary", n_clicks=0),
+        ],
+        className="d-grid gap-2",
+    ),
+
     html.Br(),
     dbc.Card(
         id='map-card',
@@ -696,15 +666,15 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
         else:
             if dbi == 'Population:':
                 all_india_table = make_all_india_population_table()
-                return all_india_table, [], dbc.Label("Population Data for India from 2011"),\
+                return all_india_table, [], dbc.Label("Population Data for India from 2011"), \
                        make_map(dbi, aoi, states)
             elif dbi == 'Literacy':
                 all_india_table = make_all_india_literacy_table()
-                return all_india_table, [], dbc.Label("Literacy Data for India from 2011"),\
+                return all_india_table, [], dbc.Label("Literacy Data for India from 2011"), \
                        make_map(dbi, aoi, states)
             elif dbi == 'Gender Ratio':
                 all_india_table = make_all_india_gender_ratio_table()
-                return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011"),\
+                return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
                        make_map(dbi, aoi, states)
             elif dbi == 'Fertility Rate':  # TODO
                 all_india_table = make_all_india_population_table()
