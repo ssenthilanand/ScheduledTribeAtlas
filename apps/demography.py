@@ -693,25 +693,6 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, [], dbc.Label(''), make_map(dbi, aoi, states), n
     elif aoi == 'States':  # TODO
         if states != '':
-            # district_population = get_district_population_data(states)
-            # # filtered_table = make_filtered_state_population_table(district_population[
-            # # district_population['state_name'] == states])
-            # filtered_table = make_filtered_state_population_table(district_population)
-            #
-            # filtered_visualization = dcc.Graph(
-            #     id='graph',
-            #     # figure=fig_filtered_state
-            #     # figure=make_filtered_state_population_graph(district_population[
-            #     #                                                 district_population['state_name'] == states], states)
-            #     figure=make_filtered_state_population_graph(district_population, states)
-            # )
-            # filtered_visualization.figure.for_each_trace(
-            #     lambda trace: trace.update(visible=True) if trace.name in cats else (),
-            # )
-            # filtered_visualization.figure.for_each_trace(
-            #     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
-            # )
-
             if viz[-1] == 'graph':
                 if dbi == 'Population':
                     district_population = get_district_population_data(states)
@@ -770,7 +751,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
             # else:
             #     return filtered_table, [], dbc.Label("Population Data for " + states + "  from 2011")
             else:
-                if dbi == 'Population:':
+                if dbi == 'Population':
                     state_table = make_filtered_state_population_table(get_district_population_data(states))
                     return state_table, [], dbc.Label("Population Data for India from 2011"), \
                            make_map(dbi, aoi, states), n

@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 dash = "*"
-dash-bootstrap-components = "*"
+dash-bootstrap-components = "==1.0.0"
 pandas = "*"
 requests = "*"
 babel = "*"
