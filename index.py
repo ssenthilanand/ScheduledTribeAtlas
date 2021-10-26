@@ -2,7 +2,7 @@ from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
 
-from app import app
+from app import app, server
 from apps import home, demography, religion, orpreligions, indiantribes, aboutus, contactus
 
 app.layout = html.Div([
