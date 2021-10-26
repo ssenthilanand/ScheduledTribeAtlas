@@ -10,6 +10,7 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+app.title = "Scheduled Tribe Atlas"
 
 @app.callback(Output('page-content', 'children'),
               Input('url', 'pathname'))
