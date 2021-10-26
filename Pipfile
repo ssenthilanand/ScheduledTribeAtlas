@@ -9,6 +9,7 @@ dash-bootstrap-components = "==1.0.0"
 pandas = "*"
 requests = "*"
 babel = "*"
+gunicorn = "*"
 
 [dev-packages]
 
