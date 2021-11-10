@@ -143,7 +143,7 @@ layout = html.Div(children=[
 
     dbc.Card(
         [
-            dbc.CardImg(src='/assets/ST2011.png', top=True),
+            dbc.CardImg(src='/assets/maps/home/STIndia2011.png', top=True),
             dbc.CardBody(
                 [
                     html.Label(
