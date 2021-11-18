@@ -2,8 +2,8 @@ import pandas as pd
 import requests
 from requests.exceptions import HTTPError
 
-host = "http://tribedemo.expertsoftware.in/"
-# host = "http://95.217.5.215:8080/"
+# host = "http://tribedemo.expertsoftware.in/"
+host = "http://95.217.5.215:8080/"
 
 
 def fetch_data(path):
@@ -75,12 +75,13 @@ def fetch_server_data(path):
 state_list = fetch_states()
 districts_list = fetch_districts()
 
-state_pop = fetch_server_data('http://95.217.5.215:8080/population/')
-state_gratio = fetch_server_data('http://95.217.5.215:8080/genderratio/')
-state_lit = fetch_server_data('http://95.217.5.215:8080/literacy/')
+# state_pop = fetch_server_data('http://95.217.5.215:8080/population/')
+# state_gratio = fetch_server_data('http://95.217.5.215:8080/genderratio/')
+# state_lit = fetch_server_data('http://95.217.5.215:8080/literacy/')
 
-# state_lit = fetch_data('literacy')
-# state_gratio = fetch_data('genderratio')
+state_pop = fetch_data('population')
+state_lit = fetch_data('literacy')
+state_gratio = fetch_data('genderratio')
 
 
 def get_state_code(state):
