@@ -4,10 +4,64 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 
 from app import app
+from apps.utils import *
 
 # layout = html.Div([
 #     html.H3('Religion'),
 # ])
+
+religions = ['All', 'Hindu', 'Muslim', 'Christian']
+aoi_card = dbc.Card(
+    [
+        dbc.CardHeader("Areas of Interest"),
+        dbc.CardBody(
+            [
+                html.P("Select Either India or one of the States or UTs", className="card-text"),
+                dbc.RadioItems(
+                    id='aoi-select',
+                    options=[
+                        {'label': 'All of India', 'value': 'India'},
+                        {'label': 'A State or UT', 'value': 'States'}
+                    ],
+                    value='India',
+                    inline=True
+                ),
+
+                dcc.Dropdown(
+                    id='states-select',
+                    options=[
+                        {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
+                    ],
+                    placeholder='Select the States or UT you are interested.',
+                    disabled=True
+                )
+            ],
+        )
+    ],
+)
+
+rel_card = dbc.Card(
+    [
+        dbc.CardHeader("Religions"),
+        dbc.CardBody(
+            [
+                html.P("Select one or more of the following religions", className="card-text"),
+                dbc.RadioItems(
+                    id='rel-select',
+                    options=[
+                        {"label": name, "value": name} for name in religions
+                        # {'label': 'Population', 'value': 'Population'},
+                        # {'label': 'Literacy', 'value': 'Literacy'},
+                        # {'label': 'Gender Ratio', 'value': 'Gender Ratio'},
+                        # {'label': 'Fertility Rate', 'value': 'Fertility Rate'},
+                    ],
+                    value='All',
+                    inline=True
+                )
+            ]
+        )
+    ]
+)
 
 layout = html.Div(children=[
 
@@ -30,14 +84,21 @@ layout = html.Div(children=[
     html.Br(),
     html.H3('Religious Profile'),
     html.Br(),
-    html.Strong('Religion Map:'),
-    html.P('Map/Table of Total Population, ST Population, Hindu ST Population'),
-    html.P('Similarly for all religion – Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP'),
-    html.Br(),html.Br(),
-    html.Strong('Custom Table:'),
-    html.P('Religious Distribution'),
-    html.P('Total Population'),
-    html.P('Total ST poulation'),
-    html.P('Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP')
+    dbc.CardGroup(
+        [
+            rel_card,
+            aoi_card
+        ],
+    ),
+    html.Br()
+    # html.Strong('Religion Map:'),
+    # html.P('Map/Table of Total Population, ST Population, Hindu ST Population'),
+    # html.P('Similarly for all religion – Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP'),
+    # html.Br(),html.Br(),
+    # html.Strong('Custom Table:'),
+    # html.P('Religious Distribution'),
+    # html.P('Total Population'),
+    # html.P('Total ST poulation'),
+    # html.P('Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP')
     ], style={'margin': "auto", 'width': "80%"}
 )
