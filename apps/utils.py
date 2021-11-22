@@ -101,3 +101,11 @@ def get_district_code(district):
 
 # print(get_district_name('1'))
 # print(get_district_code('Chennai'))
+
+# Religion Page
+
+
+religious_demo = fetch_data('religiousdemo')
+
+
+
