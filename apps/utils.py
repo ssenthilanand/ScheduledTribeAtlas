@@ -108,4 +108,10 @@ def get_district_code(district):
 religious_demo = fetch_data('religiousdemo')
 
 
+def fetch_rel_district_demo(state):
+    state_code = get_state_code(state)
+    response = fetch_data('religiousdemo/all/' + state_code)
+    data = pd.read_json(response)
+    district_rel_demo = pd.json_normalize(data['data'])
+    return district_rel_demo
 

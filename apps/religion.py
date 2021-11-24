@@ -2,19 +2,20 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 from dash.dash_table.Format import Group, Format
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash import dash_table
 import plotly.graph_objects as go
 
 from app import app
 from apps.utils import *
 
+
 # layout = html.Div([
 #     html.H3('Religion'),
 # ])
 
 
-def get_religious_demography():
+def get_religious_demography_all():
     data = pd.read_json(religious_demo)
     data_reldem = pd.json_normalize(data['data'])
     int_cols = ['buddhists', 'christians', 'hindus', 'jains', 'muslims', 'orp', 'rns', 'sikhs', 'total']
@@ -27,7 +28,20 @@ def get_religious_demography():
     return data_reldem
 
 
-religious_demography = get_religious_demography()
+def get_religious_demography_state(state):
+    data = fetch_rel_district_demo(state)
+    int_cols = ['buddhists', 'christians', 'hindus', 'jains', 'muslims', 'orp', 'rns', 'sikhs', 'total']
+    for col in int_cols:
+        data[col] = pd.to_numeric(data[col], errors='coerce').fillna(0).astype('int')
+    float_cols = ['per_buddhists', 'per_christians', 'per_hindus', 'per_jains', 'per_muslims',
+                  'per_orp', 'per_rns', 'per_sikhs']
+    for col in float_cols:
+        data[col] = pd.to_numeric(data[col], errors='coerce').fillna(0.00).astype('float')
+        data[col] = 100 * data[col]
+    return data
+
+
+religious_demography = get_religious_demography_all()
 n_states = len(state_list)
 
 
@@ -74,6 +88,52 @@ def make_all_india_religious_demography_table():
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
+
+
+def make_religious_demography_state_table(state):
+    religious_demography_state = fetch_rel_district_demo(state)
+    columns = [
+        dict(id='district_name', name='District Name'),
+        dict(id='total', name='State', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='buddhists', name='Buddhist', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='christians', name='Christian', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='hindus', name='Hindu', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='jains', name='Jain', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='muslims', name='Muslim', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='orp', name='ORP', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='rns', name='RNS', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='sikhs', name='Sikh', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    state_table = dash_table.DataTable(
+        id='rel_state_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=religious_demography_state.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'district_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return state_table
 
 
 def make_all_india_religious_demography_graph():
@@ -151,7 +211,7 @@ def make_all_india_religious_demography_graph():
     return fig_all
 
 
-religions = ['All', 'Hindu', 'Muslim', 'Christian']
+religions = ['All', 'Hindus', 'Muslims', 'Christians']
 aoi_card = dbc.Card(
     [
         dbc.CardHeader("Areas of Interest"),
@@ -159,7 +219,7 @@ aoi_card = dbc.Card(
             [
                 html.P("Select Either India or one of the States or UTs", className="card-text"),
                 dbc.RadioItems(
-                    id='aoi-select',
+                    id='rel-aoi-select',
                     options=[
                         {'label': 'All of India', 'value': 'India'},
                         {'label': 'A State or UT', 'value': 'States'}
@@ -169,7 +229,7 @@ aoi_card = dbc.Card(
                 ),
 
                 dcc.Dropdown(
-                    id='states-select',
+                    id='rel-states-select',
                     options=[
                         {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
                     ],
@@ -232,24 +292,43 @@ layout = html.Div(children=[
         ],
     ),
     html.Br(),
-    html.H4("ST Religious Population Data for India from 2011"),
     html.Div(
-        id='viz-table',
+        [
+            dbc.Button("Get Data", id='rel-viz-button', color="primary", n_clicks=0),
+        ],
+        className="d-grid gap-2",
+    ),
+    html.Br(),
+    dcc.Loading(
+        id="loading-2",
+        type="circle",
+        children=html.Div(id="loading-output-2", style={'display': 'none'}),
+    ),
+    html.H4(
+        id='rel-area-label',
+        children=[],
+        style={'textAlign': 'center'}
+    ),
+    html.Br(),
+    # html.H4("ST Religious Population Data for India from 2011"),
+    html.Div(
+        id='rel-viz-table',
         children=[
-            make_all_india_religious_demography_table(),
+            # make_all_india_religious_demography_table(),
         ],
     ),
     html.Br(),
     html.Div(
         id='religion-visualization',
         children=[
-            dcc.Graph(
-                id='graph',
-                figure=make_all_india_religious_demography_graph()
-            )
+            # dcc.Graph(
+            #     id='graph',
+            #     # figure=make_all_india_religious_demography_graph()
+            # )
 
         ],  # style={'display': 'None'}
     ),
+
     # html.Strong('Religion Map:'),
     # html.P('Map/Table of Total Population, ST Population, Hindu ST Population'),
     # html.P('Similarly for all religion – Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP'),
@@ -261,3 +340,44 @@ layout = html.Div(children=[
     # html.P('Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP')
 ], style={'margin': "auto", 'width': "80%"}
 )
+
+
+@app.callback(
+    Output("rel-states-select", "disabled"),
+    [Input("rel-aoi-select", "value")],
+)
+def update_religion_states_select_status(selected):
+    if selected == 'India':
+        return True
+    else:
+        return False
+
+
+@app.callback(
+    [Output('rel-viz-table', 'children'),
+     Output('religion-visualization', 'children'),
+     # Output('demography-visualization1', 'children')],
+     Output('rel-area-label', 'children'),
+     Output("loading-output-2", "children")],
+    [Input('rel-viz-button', 'n_clicks'),
+     State('rel-select', 'value'),
+     State('rel-aoi-select', 'value'),
+     State('rel-states-select', 'value')]
+)
+def get_religions_data(n, rel, aoi, states):
+    if n == 0:
+        return None, None, None, None
+    if rel == 'All':
+        if aoi == 'India':
+            fig_rel_demo = make_all_india_religious_demography_graph()
+            rel_demo_visualization = dcc.Graph(
+                id='graph',
+                figure=fig_rel_demo
+            )
+            return make_all_india_religious_demography_table(), rel_demo_visualization, \
+                   dbc.Label("ST Religious Population Data for India in 2011"), n
+        elif aoi == 'States':
+            if states != '':
+                return make_religious_demography_state_table(states), [], \
+                    dbc.Label("ST Religious population for " + states + " in 2011"), n
+    return None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
