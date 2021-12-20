@@ -28,6 +28,33 @@ def get_religious_demography_all():
     return data_reldem
 
 
+def get_religion_demography(religion):
+    data = pd.read_json(fetch_data('religiousdemo/' + religion))
+    data_rel = pd.json_normalize(data)
+    int_cols = [religion, 'state_code', 'total']
+    float_cols = ['per_'+religion]
+    for col in int_cols:
+        data_rel[col] = pd.to_numeric(data_rel[col], errors='coerce').fillna(0).astype('int')
+    for col in float_cols:
+        data_rel[col] = pd.to_numeric(data_rel[col], errors='coerce').fillna(0.00).astype('float')
+        data_rel[col] = 100 * data_rel[col]
+    return data_rel
+
+
+def get_religion_demography_state(religion, state):
+    state_code = get_state_code(state)
+    data = pd.read_json(fetch_data('religiousdemo/' + religion + '/' + state_code))
+    data_rel = pd.json_normalize(data)
+    int_cols = [religion, 'district_code', 'total']
+    float_cols = ['per_'+religion]
+    for col in int_cols:
+        data_rel[col] = pd.to_numeric(data_rel[col], errors='coerce').fillna(0).astype('int')
+    for col in float_cols:
+        data_rel[col] = pd.to_numeric(data_rel[col], errors='coerce').fillna(0.00).astype('float')
+        data_rel[col] = 100 * data_rel[col]
+    return data_rel
+
+
 def get_religious_demography_state(state):
     data = fetch_rel_district_demo(state)
     int_cols = ['buddhists', 'christians', 'hindus', 'jains', 'muslims', 'orp', 'rns', 'sikhs', 'total']
