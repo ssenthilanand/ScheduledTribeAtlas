@@ -30,7 +30,7 @@ def get_religious_demography_all():
 
 def get_religion_demography(religion):
     data = pd.read_json(fetch_data('religiousdemo/' + religion))
-    data_rel = pd.json_normalize(data)
+    data_rel = pd.json_normalize(data['data'])
     int_cols = [religion, 'state_code', 'total']
     float_cols = ['per_'+religion]
     for col in int_cols:
@@ -99,6 +99,40 @@ def make_all_india_religious_demography_table():
         columns=columns,
         # hidden_columns=['population_sc, population_gn'],
         data=religious_demography.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'state_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_all_india_religion_table(religion):
+    rel_india_table = get_religion_demography(religion)
+    columns = [
+        dict(id='state_name', name='State Name'),
+        dict(id='total', name='State', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id=religion.lower(), name=religion.title(), type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='per_' + religion, name='% of ' + religion + ' in ST population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=rel_india_table.to_dict('records'),
         sort_action="native",
         sort_mode="single",
         column_selectable="single",
@@ -407,4 +441,13 @@ def get_religions_data(n, rel, aoi, states):
             if states != '':
                 return make_religious_demography_state_table(states), [], \
                     dbc.Label("ST Religious population for " + states + " in 2011"), n
+    else:
+        if aoi == 'India':
+            # fig_rel = make_all_india_religion_table(rel)
+            # rel_visualization = dcc.Grapj(
+            #     id='graph',
+            #     figure=fig_rel
+            # )
+            return make_all_india_religion_table(rel.lower()), [], \
+                    dbc.Label("ST " + rel + " Population Data for India in 2011"), n
     return None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
