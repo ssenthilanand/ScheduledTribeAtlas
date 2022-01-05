@@ -44,7 +44,7 @@ def get_religion_demography(religion):
 def get_religion_demography_state(religion, state):
     state_code = get_state_code(state)
     data = pd.read_json(fetch_data('religiousdemo/' + religion + '/' + state_code))
-    data_rel = pd.json_normalize(data)
+    data_rel = pd.json_normalize(data['data'])
     int_cols = [religion, 'district_code', 'total']
     float_cols = ['per_'+religion]
     for col in int_cols:
@@ -179,6 +179,40 @@ def make_religious_demography_state_table(state):
         columns=columns,
         # hidden_columns=['population_sc, population_gn'],
         data=religious_demography_state.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'district_name'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return state_table
+
+
+def make_religion_state_table(religion, state):
+    religion_state = get_religion_demography_state(religion, state)
+    columns = [
+        dict(id='district_name', name='District Name'),
+        dict(id='total', name='State Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id=religion.lower(), name=religion.title(), type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='per_' + religion, name='% of ' + religion + ' in ST population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    state_table = dash_table.DataTable(
+        id='rel_state_table',
+        columns=columns,
+        # hidden_columns=['population_sc, population_gn'],
+        data=religion_state.to_dict('records'),
         sort_action="native",
         sort_mode="single",
         column_selectable="single",
@@ -450,4 +484,7 @@ def get_religions_data(n, rel, aoi, states):
             # )
             return make_all_india_religion_table(rel.lower()), [], \
                     dbc.Label("ST " + rel + " Population Data for India in 2011"), n
+        else:
+            return make_religion_state_table(rel.lower(), states), [], \
+                    dbc.Label("ST " + rel + " Population Data for " + states + " in 2011"), n
     return None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
