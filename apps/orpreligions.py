@@ -25,6 +25,18 @@ def get_orp_religions_list():
 orp_list = get_orp_religions_list().sort_values('religion_name')
 
 
+def get_orp_all_states():
+    data = pd.read_json(fetch_data('orp/state/'))
+    data_orp = pd.json_normalize(data['data'])
+    int_cols = ['religion_code', 'state_code', 'total']
+    for col in int_cols:
+        data_orp[col] = pd.to_numeric(data_orp[col], errors='coerce').fillna(0).astype('int')
+    return data_orp
+
+
+orp_all_state_list = get_orp_all_states().sort_values('state_name')
+
+
 def make_all_india_orp_table():
     columns = [
         dict(id='religion_code', name='Religion Code'),  # , type='numeric',
@@ -48,6 +60,45 @@ def make_all_india_orp_table():
             },
             {
                 'if': {'column_id': 'religion_code'},
+                'textAlign': 'left'
+            },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_all_state_orp_table():
+    columns = [
+        dict(id='state_name', name='State Name'),
+        dict(id='religion_code', name='ORP Code'),  # , type='numeric',
+        # format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='religion_name', name='ORP Name'),
+        dict(id='total', name='Total', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        data=orp_all_state_list.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'religion_name'},
+                'textAlign': 'left'
+            },
+            {
+                'if': {'column_id': 'religion_code'},
+                'textAlign': 'left'
+            },
+            {
+                'if': {'column_id': 'state_name'},
                 'textAlign': 'left'
             },
         ],
@@ -110,9 +161,20 @@ aoi_card = dbc.Card(
                     options=[
                         {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
                     ],
+                    placeholder='Select the District you are interested.',
+                    disabled=True,
+                    value=None
+                ),
+
+                dcc.Dropdown(
+                    id='orp-districts-select',
+                    options=[
+                        {'label': name, 'value': name} for name in list(districts_list['district_name'].sort_values())
+                    ],
                     placeholder='Select the States or UT you are interested.',
-                    disabled=True
-                )
+                    disabled=True,
+                    value=None
+                ),
             ],
         )
     ],
@@ -187,6 +249,28 @@ def update_religion_states_select_status(selected):
 
 
 @app.callback(
+    Output("orp-states-select", "disabled"),
+    [Input("orp-aoi-select", "value")]
+)
+def update_aoi_states_select_status(selected):
+    if selected == 'India':
+        return True
+    else:
+        return False
+
+
+@app.callback(
+    Output("orp-districts-select", "disabled"),
+    [Input("orp-states-select", "value")]
+)
+def update_religion_districts_select_status(selected):
+    if selected is None:
+        return True
+    else:
+        return False
+
+
+@app.callback(
     [Output('orp-viz-table', 'children'),
      Output('orp-area-label', 'children'),
      Output("loading-output-3", "children")],
@@ -197,5 +281,7 @@ def update_religion_states_select_status(selected):
 )
 def get_orp_data(n, orp, aoi, states):
     if n == 0:
-        return None, None, None
+        return make_all_india_orp_table(), dbc.Label("ORP Data for India from 2011"), None
+    if orp == 'All' and aoi == 'India':
+        return make_all_state_orp_table(), dbc.Label("State wise ORP Data for India from 2011"), None
     return make_all_india_orp_table(), dbc.Label("ORP Data for India from 2011"), None
