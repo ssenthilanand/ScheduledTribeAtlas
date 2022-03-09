@@ -108,6 +108,43 @@ def make_state_tribe_literacy_table(state):
     return all_country_table
 
 
+def make_state_tribe_gender_ratio_table(state):
+    tribe_state_list = get_tribe_demography_for_state(state)
+    columns = [
+        # dict(id='state_name', name='State Name'),
+        dict(id='tribe_name', name='Tribe Name'),
+        dict(id='population', name='Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='gender_ratio', name='Gender Ratio', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        data=tribe_state_list.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'tribe_name'},
+                'textAlign': 'left'
+            },
+            # {
+            #     'if': {'column_id': 'state_name'},
+            #     'textAlign': 'left'
+            # },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+
 tribe_dbi_list = ['Population', 'Literacy', 'Gender Ratio']
 
 tribe_bdi_card = dbc.Card(
@@ -244,6 +281,9 @@ def get_tribe_data(n, dbi, aoi, states):
         elif dbi == 'Literacy':
             return make_state_tribe_literacy_table(states), dbc.Label(
                 "State wise Tribe Literacy Data for " + states + " from 2011"), None
+        elif dbi == 'Gender Ratio':
+            return make_state_tribe_gender_ratio_table(states), dbc.Label(
+                "State wise Gender Ratio Data for " + states + " from 2011"), None
     else:
-        return None, dbc.Label("Select Population or Literacy and a State before getting data."), None
+        return None, dbc.Label("Select a demographic indicator and a State before getting data."), None
     return None, None, None
