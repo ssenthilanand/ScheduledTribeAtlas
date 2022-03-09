@@ -2,11 +2,12 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-from dash.dash_table.Format import Group, Format
+from dash.dash_table.Format import Group, Format, Scheme
 from dash import dash_table
 
 from app import app
 from apps.utils import *
+
 
 # layout = html.Div([
 #     html.H3('About Us'),
@@ -22,6 +23,15 @@ def get_tribe_population_for_state(state):
     return data_pop
 
 
+def get_tribe_demography_for_state(state):
+    data = pd.read_json(fetch_data('tribes/demography/' + get_state_code(state)))
+    data_pop = pd.json_normalize(data['data'])
+    int_cols = ['population', 'literate', 'literacy_male', 'literacy_female', 'literacy', 'gender_ratio']
+    for col in int_cols:
+        data_pop[col] = pd.to_numeric(data_pop[col], errors='coerce').fillna(0).astype('int')
+    return data_pop
+
+
 def make_state_tribe_population_table(state):
     tribe_state_list = get_tribe_population_for_state(state)
     columns = [
@@ -29,6 +39,48 @@ def make_state_tribe_population_table(state):
         dict(id='tribe_name', name='Tribe Name'),
         dict(id='population', name='Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        data=tribe_state_list.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'tribe_name'},
+                'textAlign': 'left'
+            },
+            # {
+            #     'if': {'column_id': 'state_name'},
+            #     'textAlign': 'left'
+            # },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_state_tribe_literacy_table(state):
+    tribe_state_list = get_tribe_demography_for_state(state)
+    columns = [
+        # dict(id='state_name', name='State Name'),
+        dict(id='tribe_name', name='Tribe Name'),
+        dict(id='population', name='Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='literate', name='Literate', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='literacy', name='Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_male', name='Male Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
+        dict(id='literacy_female', name='Female Literacy', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
     ]
     all_country_table = dash_table.DataTable(
         id='all_country_table',
@@ -186,7 +238,12 @@ def get_tribe_data(n, dbi, aoi, states):
     if n == 0:
         return None, dbc.Label("Select Population and a State before getting data."), None
     if aoi != 'India':
-        return make_state_tribe_population_table(states), dbc.Label("State wise Tribe Population Data for " + states + " from 2011"), None
+        if dbi == 'Population':
+            return make_state_tribe_population_table(states), dbc.Label(
+                "State wise Tribe Population Data for " + states + " from 2011"), None
+        elif dbi == 'Literacy':
+            return make_state_tribe_literacy_table(states), dbc.Label(
+                "State wise Tribe Literacy Data for " + states + " from 2011"), None
     else:
-        return None, dbc.Label("Select Population and a State before getting data."), None
+        return None, dbc.Label("Select Population or Literacy and a State before getting data."), None
     return None, None, None
