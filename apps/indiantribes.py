@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from dash.dash_table.Format import Group, Format, Scheme
 from dash import dash_table
+from dash.exceptions import PreventUpdate
 
 from app import app
 from apps.utils import *
@@ -30,6 +31,23 @@ def get_tribe_demography_for_state(state):
     for col in int_cols:
         data_pop[col] = pd.to_numeric(data_pop[col], errors='coerce').fillna(0).astype('int')
     return data_pop
+
+
+def get_tribe_list_for_state(state):
+    data = pd.read_json(fetch_data('tribelist/' + get_state_code(state)))
+    data_list = pd.json_normalize(data['data'])
+    data_list = data_list.drop('state_name', axis=1)
+    data_list = data_list.drop('state_code', axis=1)
+    int_cols = ['tribe_code']
+    for col in int_cols:
+        data_list[col] = pd.to_numeric(data_list[col], errors='coerce').fillna(0).astype('int')
+    return data_list
+
+
+def get_tribe_code_from_name(state, name):
+    data = get_tribe_list_for_state(state)
+    tribe_code = data.loc[data['tribe_name'] == name]
+    return tribe_code
 
 
 def make_state_tribe_population_table(state):
@@ -144,19 +162,92 @@ def make_state_tribe_gender_ratio_table(state):
     return all_country_table
 
 
+# def make_state_tribe_distribution(state, tribe):
+#     tribe_state_list = get_tribe_population_for_state(state)
+#     columns = [
+#         # dict(id='state_name', name='State Name'),
+#         dict(id='tribe_name', name='Tribe Name'),
+#         dict(id='population', name='Population', type='numeric',
+#              format=Format(group=Group.yes).groups([3, 2, 2])),
+#     ]
+#     all_country_table = dash_table.DataTable(
+#         id='all_country_table',
+#         columns=columns,
+#         data=tribe_state_list.to_dict('records'),
+#         sort_action="native",
+#         sort_mode="single",
+#         column_selectable="single",
+#         style_as_list_view=True,
+#         style_cell_conditional=[
+#             {
+#                 'if': {'column_id': 'tribe_name'},
+#                 'textAlign': 'left'
+#             },
+#             # {
+#             #     'if': {'column_id': 'state_name'},
+#             #     'textAlign': 'left'
+#             # },
+#         ],
+#         style_header={
+#             'fontWeight': 'bold'
+#         },
+#         css=[{"selector": ".show-hide", "rule": "display: none"}]
+#     )
+#     return all_country_table
+#
 
 tribe_dbi_list = ['Population', 'Literacy', 'Gender Ratio']
+tribe_ind_dbi_list = ['Population', 'Literacy', 'Gender Ratio', 'Children per Hundred']
 
 tribe_bdi_card = dbc.Card(
     [
         dbc.CardHeader("Basic Demographic Indicators"),
         dbc.CardBody(
             [
-                html.P("Select one or more of the following basic demographic indicators", className="card-text"),
+                html.P("Select one of the following basic demographic indicators", className="card-text"),
                 dbc.RadioItems(
                     id='tribe-dbi-select',
                     options=[
                         {"label": name, "value": name} for name in tribe_dbi_list
+                    ],
+                    value='Population',
+                    inline=True
+                )
+            ]
+        )
+    ]
+)
+
+tribe_ind_bdi_card = dbc.Card(
+    [
+        dbc.CardHeader("Basic Demographic Indicators"),
+        dbc.CardBody(
+            [
+                html.P("Select one of the following basic demographic indicators", className="card-text"),
+                dbc.RadioItems(
+                    id='tribe-ind-dbi-select',
+                    options=[
+                        {"label": name, "value": name} for name in tribe_ind_dbi_list
+                    ],
+                    value='Population',
+                    inline=True
+                )
+            ]
+        )
+    ]
+)
+
+tribe_ind_distribution_list = ['District', 'Major Religion', 'ORP']
+tribe_ind_distribution_card = dbc.Card(
+    [
+        dbc.CardHeader("Distribution"),
+        dbc.CardBody(
+            [
+                html.P("Select one of the following distributions", className="card-text"),
+                dbc.RadioItems(
+                    id='tribe-ind-dbi-select',
+                    options=[
+                        {"label": name, "value": name} for name in tribe_ind_distribution_list
                     ],
                     value='Population',
                     inline=True
@@ -189,7 +280,50 @@ tribe_aoi_card = dbc.Card(
                     ],
                     placeholder='Select the States or UT you are interested.',
                     disabled=True
-                )
+                ),
+
+                # dcc.Dropdown(
+                #     id='tribe-list-states-select',
+                #     placeholder='Select the Tribe you are interested.',
+                #     # value='None',
+                #     disabled=True
+                # ),
+            ],
+        )
+    ],
+)
+
+tribe_ind_aoi_card = dbc.Card(
+    [
+        dbc.CardHeader("Areas of Interest"),
+        dbc.CardBody(
+            [
+                # html.P("Select Either India or one of the States or UTs", className="card-text"),
+                # dbc.RadioItems(
+                #     id='tribe-aoi-select',
+                #     options=[
+                #         {'label': 'All of India', 'value': 'India'},
+                #         {'label': 'A State or UT', 'value': 'States'}
+                #     ],
+                #     value='India',
+                #     inline=True
+                # ),
+
+                dcc.Dropdown(
+                    id='tribe-ind-state-select',
+                    options=[
+                        {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
+                    ],
+                    placeholder='Select the States or UT you are interested.',
+                    disabled=False
+                ),
+
+                dcc.Dropdown(
+                    id='tribe-ind-list-states-select',
+                    placeholder='Select the Tribe you are interested.',
+                    # value='None',
+                    disabled=True
+                ),
             ],
         )
     ],
@@ -216,37 +350,84 @@ layout = html.Div(children=[
     html.Br(),
     html.H3('Indian Tribes'),
     html.Br(),
-    dbc.CardGroup(
-        [
-            tribe_bdi_card,
-            tribe_aoi_card
-        ],
-    ),
-    html.Br(),
-    html.Div(
-        [
-            dbc.Button("Get Data", id='tribe-viz-button', color="primary", n_clicks=0),
-        ],
-        className="d-grid gap-2",
-    ),
-    html.Br(),
-    dcc.Loading(
-        id="loading-4",
-        type="circle",
-        children=html.Div(id="loading-output-4", style={'display': 'none'}),
-    ),
-    html.H4(
-        id='tribe-area-label',
-        children=[],
-        style={'textAlign': 'center'}
-    ),
-    html.Br(),
-    html.Div(
-        id='tribe-viz-table',
-        children=[
-        ],
-    ),
-    html.Br(),
+    dbc.Tabs(id="tabs-tribes", children=[
+        dbc.Tab(label='Summary', activeTabClassName="fw-bold", children=[
+            dbc.CardGroup(
+                [
+                    tribe_bdi_card,
+                    tribe_aoi_card
+                ],
+            ),
+            html.Br(),
+            html.Div(
+                [
+                    dbc.Button("Get Data", id='tribe-viz-button', color="primary", n_clicks=0),
+                ],
+                className="d-grid gap-2",
+            ),
+            html.Br(),
+            dcc.Loading(
+                id="loading-4",
+                type="circle",
+                children=html.Div(id="loading-output-4", style={'display': 'none'}),
+            ),
+            html.H4(
+                id='tribe-area-label',
+                children=[],
+                style={'textAlign': 'center'}
+            ),
+            html.Br(),
+            html.Div(
+                id='tribe-viz-table',
+                children=[
+                ],
+            ),
+            html.Br(),
+        ]),
+        dbc.Tab(label='Individual Tribes', activeTabClassName="fw-bold", children=[
+            dbc.CardGroup(
+                [
+                    tribe_ind_bdi_card,
+                ],
+            ),
+            dbc.CardGroup(
+                [
+                    tribe_ind_aoi_card
+                ],
+            ),
+            dbc.CardGroup(
+                [
+                    tribe_ind_distribution_card,
+                ],
+            ),
+            html.Br(),
+            html.Div(
+                [
+                    dbc.Button("Get Data", id='tribe-ind-viz-button', color="primary", n_clicks=0),
+                ],
+                className="d-grid gap-2",
+            ),
+            html.Br(),
+            dcc.Loading(
+                id="loading-5",
+                type="circle",
+                children=html.Div(id="loading-output-5", style={'display': 'none'}),
+            ),
+            html.H4(
+                id='tribe-ind-area-label',
+                children=[],
+                style={'textAlign': 'center'}
+            ),
+            html.Br(),
+            html.Div(
+                id='tribe-ind-viz-table',
+                children=[
+                ],
+            ),
+            html.Br(),
+        ]),
+    ]),
+
 ], style={'margin': "auto", 'width': "80%"}
 )
 
@@ -262,6 +443,22 @@ def update_aoi_states_select_status(selected):
         return False
 
 
+# @app.callback(
+#     Output("tribe-list-states-select", "disabled"),
+#     Output("tribe-list-states-select", "options"),
+#     [Input("tribe-states-select", "value")]
+# )
+# def update_tribe_states_select_status(selected):
+#     if not selected:
+#         raise PreventUpdate
+#     if selected != 'None':
+#         tribes = get_tribe_list_for_state(selected)
+#         # print(get_tribe_code_from_name(selected))
+#         return False, [{'label': i, 'value': i} for i in (list(tribes['tribe_name']))]
+#     else:
+#         return True, None
+
+
 @app.callback(
     [Output('tribe-viz-table', 'children'),
      Output('tribe-area-label', 'children'),
@@ -269,7 +466,8 @@ def update_aoi_states_select_status(selected):
     [Input('tribe-viz-button', 'n_clicks'),
      State('tribe-dbi-select', 'value'),
      State('tribe-aoi-select', 'value'),
-     State('tribe-states-select', 'value')]
+     State('tribe-states-select', 'value'), ]
+    # State('tribe-list-states-select', 'value')]
 )
 def get_tribe_data(n, dbi, aoi, states):
     if n == 0:
