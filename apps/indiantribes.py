@@ -33,6 +33,15 @@ def get_tribe_demography_for_state(state):
     return data_pop
 
 
+def get_tribe_distribution_in_state(state, tribe):
+    data = pd.read_json(fetch_data('tribes/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+    data_dist = pd.json_normalize(data['data'])
+    int_cols = ['district_code', 'population', 'state_code', 'tribe_code']
+    for col in int_cols:
+        data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
+    return data_dist
+
+
 def get_tribe_list_for_state(state):
     data = pd.read_json(fetch_data('tribelist/' + get_state_code(state)))
     data_list = pd.json_normalize(data['data'])
@@ -46,8 +55,13 @@ def get_tribe_list_for_state(state):
 
 def get_tribe_code_from_name(state, name):
     data = get_tribe_list_for_state(state)
-    tribe_code = data.loc[data['tribe_name'] == name]
+    tribe = data.loc[data['tribe_name'] == name]
+    tribe_code = tribe['tribe_code'].iloc[0]
+    # print(tribe_code)
     return tribe_code
+
+#
+# get_tribe_code_from_name('Rajasthan', 'Bhil Mina')
 
 
 def make_state_tribe_population_table(state):
@@ -162,39 +176,40 @@ def make_state_tribe_gender_ratio_table(state):
     return all_country_table
 
 
-# def make_state_tribe_distribution(state, tribe):
-#     tribe_state_list = get_tribe_population_for_state(state)
-#     columns = [
-#         # dict(id='state_name', name='State Name'),
-#         dict(id='tribe_name', name='Tribe Name'),
-#         dict(id='population', name='Population', type='numeric',
-#              format=Format(group=Group.yes).groups([3, 2, 2])),
-#     ]
-#     all_country_table = dash_table.DataTable(
-#         id='all_country_table',
-#         columns=columns,
-#         data=tribe_state_list.to_dict('records'),
-#         sort_action="native",
-#         sort_mode="single",
-#         column_selectable="single",
-#         style_as_list_view=True,
-#         style_cell_conditional=[
-#             {
-#                 'if': {'column_id': 'tribe_name'},
-#                 'textAlign': 'left'
-#             },
-#             # {
-#             #     'if': {'column_id': 'state_name'},
-#             #     'textAlign': 'left'
-#             # },
-#         ],
-#         style_header={
-#             'fontWeight': 'bold'
-#         },
-#         css=[{"selector": ".show-hide", "rule": "display: none"}]
-#     )
-#     return all_country_table
-#
+def make_state_tribe_distribution(state, tribe):
+    tribe_state_list = get_tribe_distribution_in_state(state,tribe)
+    tribe_code = get_tribe_code_from_name(state, tribe)
+    columns = [
+        # dict(id='state_name', name='State Name'),
+        dict(id='district_name', name='District Name'),
+        dict(id='population', name='Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        data=tribe_state_list.to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'district_name'},
+                'textAlign': 'left'
+            },
+            # {
+            #     'if': {'column_id': 'state_name'},
+            #     'textAlign': 'left'
+            # },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
 
 tribe_dbi_list = ['Population', 'Literacy', 'Gender Ratio']
 tribe_ind_dbi_list = ['Population', 'Literacy', 'Gender Ratio', 'Children per Hundred']
@@ -245,11 +260,11 @@ tribe_ind_distribution_card = dbc.Card(
             [
                 html.P("Select one of the following distributions", className="card-text"),
                 dbc.RadioItems(
-                    id='tribe-ind-dbi-select',
+                    id='tribe-ind-distribution-select',
                     options=[
                         {"label": name, "value": name} for name in tribe_ind_distribution_list
                     ],
-                    value='Population',
+                    value='District',
                     inline=True
                 )
             ]
@@ -443,20 +458,20 @@ def update_aoi_states_select_status(selected):
         return False
 
 
-# @app.callback(
-#     Output("tribe-list-states-select", "disabled"),
-#     Output("tribe-list-states-select", "options"),
-#     [Input("tribe-states-select", "value")]
-# )
-# def update_tribe_states_select_status(selected):
-#     if not selected:
-#         raise PreventUpdate
-#     if selected != 'None':
-#         tribes = get_tribe_list_for_state(selected)
-#         # print(get_tribe_code_from_name(selected))
-#         return False, [{'label': i, 'value': i} for i in (list(tribes['tribe_name']))]
-#     else:
-#         return True, None
+@app.callback(
+    Output("tribe-ind-list-states-select", "disabled"),
+    Output("tribe-ind-list-states-select", "options"),
+    [Input("tribe-ind-state-select", "value")]
+)
+def update_tribe_states_select_status(selected):
+    if not selected:
+        raise PreventUpdate
+    if selected != 'None':
+        tribes = get_tribe_list_for_state(selected)
+        # print(get_tribe_code_from_name(selected))
+        return False, [{'label': i, 'value': i} for i in (list(tribes['tribe_name']))]
+    else:
+        return True, None
 
 
 @app.callback(
@@ -485,3 +500,26 @@ def get_tribe_data(n, dbi, aoi, states):
     else:
         return None, dbc.Label("Select a demographic indicator and a State before getting data."), None
     return None, None, None
+
+
+@app.callback(
+    [Output('tribe-ind-viz-table', 'children'),
+     Output('tribe-ind-area-label', 'children'),
+     Output("loading-output-5", "children")],
+    [Input('tribe-ind-viz-button', 'n_clicks'),
+     State('tribe-ind-dbi-select', 'value'),
+     # State('tribe-ind-aoi-select', 'value'),
+     State('tribe-ind-state-select', 'value'),
+     State('tribe-ind-list-states-select', 'value'),
+     State('tribe-ind-distribution-select', 'value')]
+)
+def get_individual_tribe_data(n, dbi, states, tribe, distrib):
+    if n == 0:
+        return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+    if dbi == 'Population':
+        return make_state_tribe_distribution(states, tribe), dbc.Label(
+            "State wise Tribe distribution for " + tribe + " in the state of " +states + " from 2011"), None
+    else:
+        return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+    return None, None, None
+
