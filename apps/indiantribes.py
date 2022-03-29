@@ -34,9 +34,20 @@ def get_tribe_demography_for_state(state):
 
 
 def get_tribe_distribution_in_state(state, tribe):
-    data = pd.read_json(fetch_data('tribes/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+    data = pd.read_json(
+        fetch_data('tribes/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
     data_dist = pd.json_normalize(data['data'])
     int_cols = ['district_code', 'population', 'state_code', 'tribe_code']
+    for col in int_cols:
+        data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
+    return data_dist
+
+
+def get_tribe_distribution_across_religions_in_state(state, tribe):
+    data = pd.read_json(fetch_data(
+        'tribes/majorreligion/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+    data_dist = pd.json_normalize(data['data'])
+    int_cols = ['religion_code', 'population', 'state_code', 'tribe_code']
     for col in int_cols:
         data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
     return data_dist
@@ -59,6 +70,7 @@ def get_tribe_code_from_name(state, name):
     tribe_code = tribe['tribe_code'].iloc[0]
     # print(tribe_code)
     return tribe_code
+
 
 #
 # get_tribe_code_from_name('Rajasthan', 'Bhil Mina')
@@ -177,7 +189,7 @@ def make_state_tribe_gender_ratio_table(state):
 
 
 def make_state_tribe_distribution(state, tribe):
-    tribe_state_list = get_tribe_distribution_in_state(state,tribe)
+    tribe_state_list = get_tribe_distribution_in_state(state, tribe)
     tribe_code = get_tribe_code_from_name(state, tribe)
     columns = [
         # dict(id='state_name', name='State Name'),
@@ -196,6 +208,41 @@ def make_state_tribe_distribution(state, tribe):
         style_cell_conditional=[
             {
                 'if': {'column_id': 'district_name'},
+                'textAlign': 'left'
+            },
+            # {
+            #     'if': {'column_id': 'state_name'},
+            #     'textAlign': 'left'
+            # },
+        ],
+        style_header={
+            'fontWeight': 'bold'
+        },
+        css=[{"selector": ".show-hide", "rule": "display: none"}]
+    )
+    return all_country_table
+
+
+def make_state_tribe_distribution_across_religions(state, tribe):
+    tribe_state_list = get_tribe_distribution_across_religions_in_state(state, tribe)
+    tribe_state_list.sort_values('religion_name')
+    columns = [
+        # dict(id='state_name', name='State Name'),
+        dict(id='religion_name', name='Religion Name'),
+        dict(id='population', name='Population', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+    ]
+    all_country_table = dash_table.DataTable(
+        id='all_country_table',
+        columns=columns,
+        data=tribe_state_list.sort_values('religion_name').to_dict('records'),
+        sort_action="native",
+        sort_mode="single",
+        column_selectable="single",
+        style_as_list_view=True,
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'religion_name'},
                 'textAlign': 'left'
             },
             # {
@@ -517,9 +564,12 @@ def get_individual_tribe_data(n, dbi, states, tribe, distrib):
     if n == 0:
         return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
     if dbi == 'Population':
-        return make_state_tribe_distribution(states, tribe), dbc.Label(
-            "State wise Tribe distribution for " + tribe + " in the state of " +states + " from 2011"), None
+        if distrib == 'District':
+            return make_state_tribe_distribution(states, tribe), dbc.Label(
+                "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), None
+        elif distrib == 'Major Religion':
+            return make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
+                "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), None
     else:
         return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
     return None, None, None
-
