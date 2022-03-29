@@ -57,6 +57,8 @@ def get_tribe_distribution_across_orp_in_state(state, tribe):
     data = pd.read_json(fetch_data(
         'tribes/orpreligion/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
     data_dist = pd.json_normalize(data['data'])
+    if data_dist.empty:
+        return data_dist
     int_cols = ['religion_code', 'population', 'state_code', 'tribe_code']
     for col in int_cols:
         data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
@@ -270,6 +272,8 @@ def make_state_tribe_distribution_across_religions(state, tribe):
 
 def make_state_tribe_distribution_across_orp(state, tribe):
     tribe_state_list = get_tribe_distribution_across_orp_in_state(state, tribe)
+    if tribe_state_list.empty:
+        return dbc.Label("Requested data is not available.")
     tribe_state_list.sort_values('religion_name')
     columns = [
         # dict(id='state_name', name='State Name'),
