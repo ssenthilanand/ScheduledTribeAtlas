@@ -13,48 +13,12 @@ from apps.utils import *
 #     html.H3('About Us'),
 # ])
 
-state_list_options = [
-    {'label': 'India', 'value': 'India'},
-    {'label': '-----', 'value': '-----', 'disabled': True},
-    {'label': 'Andaman & Nicobar Islands', 'value': 'Andaman & Nicobar Islands'},
-    {'label': 'Andhra Pradesh', 'value': 'Andhra Pradesh'},
-    {'label': 'Arunachal Pradesh', 'value': 'Arunachal Pradesh'},
-    {'label': 'Assam', 'value': 'Assam'},
-    {'label': 'Bihar', 'value': 'Bihar'},
-    {'label': 'Chandigarh', 'value': 'Chandigarh'},
-    {'label': 'Chhattisgarh', 'value': 'Chhattisgarh'},
-    {'label': 'Dadra & Nagar Haveli', 'value': 'Dadra & Nagar Haveli'},
-    {'label': 'Daman & Diu', 'value': 'Daman & Diu'},
-    {'label': 'Delhi', 'value': 'Delhi'},
-    {'label': 'Goa', 'value': 'Goa'},
-    {'label': 'Gujarat', 'value': 'Gujarat'},
-    {'label': 'Haryana', 'value': 'Haryana'},
-    {'label': 'Himachal Pradesh', 'value': 'Himachal Pradesh'},
-    {'label': 'Jammu & Kashmir', 'value': 'Jammu & Kashmir'},
-    {'label': 'Jharkhand', 'value': 'Jharkhand'},
-    {'label': 'Karnataka', 'value': 'Karnataka'},
-    {'label': 'Kerala', 'value': 'Kerala'},
-    {'label': 'Lakshadweep', 'value': 'Lakshadweep'},
-    {'label': 'Madhya Pradesh', 'value': 'Madhya Pradesh'},
-    {'label': 'Maharashtra', 'value': 'Maharashtra'},
-    {'label': 'Manipur', 'value': 'Manipur'},
-    {'label': 'Meghalaya', 'value': 'Meghalaya'},
-    {'label': 'Mizoram', 'value': 'Mizoram'},
-    {'label': 'Nagaland', 'value': 'Nagaland'},
-    {'label': 'Odisha', 'value': 'Odisha'},
-    {'label': 'Puducherry', 'value': 'Puducherry'},
-    {'label': 'Punjab', 'value': 'Punjab'},
-    {'label': 'Rajasthan', 'value': 'Rajasthan'},
-    {'label': 'Sikkim', 'value': 'Sikkim'},
-    {'label': 'Tamilnadu', 'value': 'Tamilnadu'},
-    {'label': 'Tripura', 'value': 'Tripura'},
-    {'label': 'Uttar Pradesh', 'value': 'Uttar Pradesh'},
-    {'label': 'Uttarakhand', 'value': 'Uttarakhand'},
-    {'label': 'West Bengal', 'value': 'West Bengal'},
-]
+state_list = state_list['state_name'].sort_values()
 
-ind_state_list = list(state_list['state_name'].sort_values())
-ind_state_list.insert(0, 'India')
+
+ind_state_list = [{'label': 'India', 'value': 'India'}, {'label': '-----', 'value': '-----', 'disabled': True}]
+for state in state_list:
+    ind_state_list.append({'label': state, 'value': state})
 
 
 def get_tribe_population_for_state(state):
@@ -429,46 +393,7 @@ tribe_aoi_card = dbc.Card(
 
                 dcc.Dropdown(
                     id='tribe-states-select',
-                    options=state_list_options,
-                    # options=[
-                    #     {'label': 'India', 'value': 'India'},
-                    #     {'label': '-----', 'value': '-----', 'disabled': True},
-                    #     {'label': 'Andaman & Nicobar Islands', 'value': 'Andaman & Nicobar Islands'},
-                    #     {'label': 'Andhra Pradesh', 'value': 'Andhra Pradesh'},
-                    #     {'label': 'Arunachal Pradesh', 'value': 'Arunachal Pradesh'},
-                    #     {'label': 'Assam', 'value': 'Assam'},
-                    #     {'label': 'Bihar', 'value': 'Bihar'},
-                    #     {'label': 'Chandigarh', 'value': 'Chandigarh'},
-                    #     {'label': 'Chhattisgarh', 'value': 'Chhattisgarh'},
-                    #     {'label': 'Dadra & Nagar Haveli', 'value': 'Dadra & Nagar Haveli'},
-                    #     {'label': 'Daman & Diu', 'value': 'Daman & Diu'},
-                    #     {'label': 'Delhi', 'value': 'Delhi'},
-                    #     {'label': 'Goa', 'value': 'Goa'},
-                    #     {'label': 'Gujarat', 'value': 'Gujarat'},
-                    #     {'label': 'Haryana', 'value': 'Haryana'},
-                    #     {'label': 'Himachal Pradesh', 'value': 'Himachal Pradesh'},
-                    #     {'label': 'Jammu & Kashmir', 'value': 'Jammu & Kashmir'},
-                    #     {'label': 'Jharkhand', 'value': 'Jharkhand'},
-                    #     {'label': 'Karnataka', 'value': 'Karnataka'},
-                    #     {'label': 'Kerala', 'value': 'Kerala'},
-                    #     {'label': 'Lakshadweep', 'value': 'Lakshadweep'},
-                    #     {'label': 'Madhya Pradesh', 'value': 'Madhya Pradesh'},
-                    #     {'label': 'Maharashtra', 'value': 'Maharashtra'},
-                    #     {'label': 'Manipur', 'value': 'Manipur'},
-                    #     {'label': 'Meghalaya', 'value': 'Meghalaya'},
-                    #     {'label': 'Mizoram', 'value': 'Mizoram'},
-                    #     {'label': 'Nagaland', 'value': 'Nagaland'},
-                    #     {'label': 'Odisha', 'value': 'Odisha'},
-                    #     {'label': 'Puducherry', 'value': 'Puducherry'},
-                    #     {'label': 'Punjab', 'value': 'Punjab'},
-                    #     {'label': 'Rajasthan', 'value': 'Rajasthan'},
-                    #     {'label': 'Sikkim', 'value': 'Sikkim'},
-                    #     {'label': 'Tamilnadu', 'value': 'Tamilnadu'},
-                    #     {'label': 'Tripura', 'value': 'Tripura'},
-                    #     {'label': 'Uttar Pradesh', 'value': 'Uttar Pradesh'},
-                    #     {'label': 'Uttarakhand', 'value': 'Uttarakhand'},
-                    #     {'label': 'West Bengal', 'value': 'West Bengal'},
-                    # ],
+                    options=ind_state_list,
                     placeholder='Select the States or UT you are interested.',
                     disabled=False
                 ),
@@ -503,7 +428,7 @@ tribe_ind_aoi_card = dbc.Card(
                 dcc.Dropdown(
                     id='tribe-ind-state-select',
                     options=[
-                        {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
+                        {'label': name, 'value': name} for name in list(state_list)
                     ],
                     placeholder='Select the States or UT you are interested.',
                     disabled=False
