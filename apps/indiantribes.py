@@ -9,10 +9,52 @@ from dash.exceptions import PreventUpdate
 from app import app
 from apps.utils import *
 
-
 # layout = html.Div([
 #     html.H3('About Us'),
 # ])
+
+state_list_options = [
+    {'label': 'India', 'value': 'India'},
+    {'label': '-----', 'value': '-----', 'disabled': True},
+    {'label': 'Andaman & Nicobar Islands', 'value': 'Andaman & Nicobar Islands'},
+    {'label': 'Andhra Pradesh', 'value': 'Andhra Pradesh'},
+    {'label': 'Arunachal Pradesh', 'value': 'Arunachal Pradesh'},
+    {'label': 'Assam', 'value': 'Assam'},
+    {'label': 'Bihar', 'value': 'Bihar'},
+    {'label': 'Chandigarh', 'value': 'Chandigarh'},
+    {'label': 'Chhattisgarh', 'value': 'Chhattisgarh'},
+    {'label': 'Dadra & Nagar Haveli', 'value': 'Dadra & Nagar Haveli'},
+    {'label': 'Daman & Diu', 'value': 'Daman & Diu'},
+    {'label': 'Delhi', 'value': 'Delhi'},
+    {'label': 'Goa', 'value': 'Goa'},
+    {'label': 'Gujarat', 'value': 'Gujarat'},
+    {'label': 'Haryana', 'value': 'Haryana'},
+    {'label': 'Himachal Pradesh', 'value': 'Himachal Pradesh'},
+    {'label': 'Jammu & Kashmir', 'value': 'Jammu & Kashmir'},
+    {'label': 'Jharkhand', 'value': 'Jharkhand'},
+    {'label': 'Karnataka', 'value': 'Karnataka'},
+    {'label': 'Kerala', 'value': 'Kerala'},
+    {'label': 'Lakshadweep', 'value': 'Lakshadweep'},
+    {'label': 'Madhya Pradesh', 'value': 'Madhya Pradesh'},
+    {'label': 'Maharashtra', 'value': 'Maharashtra'},
+    {'label': 'Manipur', 'value': 'Manipur'},
+    {'label': 'Meghalaya', 'value': 'Meghalaya'},
+    {'label': 'Mizoram', 'value': 'Mizoram'},
+    {'label': 'Nagaland', 'value': 'Nagaland'},
+    {'label': 'Odisha', 'value': 'Odisha'},
+    {'label': 'Puducherry', 'value': 'Puducherry'},
+    {'label': 'Punjab', 'value': 'Punjab'},
+    {'label': 'Rajasthan', 'value': 'Rajasthan'},
+    {'label': 'Sikkim', 'value': 'Sikkim'},
+    {'label': 'Tamilnadu', 'value': 'Tamilnadu'},
+    {'label': 'Tripura', 'value': 'Tripura'},
+    {'label': 'Uttar Pradesh', 'value': 'Uttar Pradesh'},
+    {'label': 'Uttarakhand', 'value': 'Uttarakhand'},
+    {'label': 'West Bengal', 'value': 'West Bengal'},
+]
+
+ind_state_list = list(state_list['state_name'].sort_values())
+ind_state_list.insert(0, 'India')
 
 
 def get_tribe_population_for_state(state):
@@ -374,23 +416,61 @@ tribe_aoi_card = dbc.Card(
         dbc.CardBody(
             [
                 html.P("Select Either India or one of the States or UTs", className="card-text"),
-                dbc.RadioItems(
-                    id='tribe-aoi-select',
-                    options=[
-                        {'label': 'All of India', 'value': 'India'},
-                        {'label': 'A State or UT', 'value': 'States'}
-                    ],
-                    value='India',
-                    inline=True
-                ),
+                # dbc.RadioItems(
+                #     id='tribe-aoi-select',
+                #     options=[
+                #         {'label': 'All of India', 'value': 'India'},
+                #         {'label': 'A State or UT', 'value': 'States'}
+                #     ],
+                #     value='India',
+                #     inline=True,
+                #     hidden=True,
+                # ),
 
                 dcc.Dropdown(
                     id='tribe-states-select',
-                    options=[
-                        {'label': name, 'value': name} for name in list(state_list['state_name'].sort_values())
-                    ],
+                    options=state_list_options,
+                    # options=[
+                    #     {'label': 'India', 'value': 'India'},
+                    #     {'label': '-----', 'value': '-----', 'disabled': True},
+                    #     {'label': 'Andaman & Nicobar Islands', 'value': 'Andaman & Nicobar Islands'},
+                    #     {'label': 'Andhra Pradesh', 'value': 'Andhra Pradesh'},
+                    #     {'label': 'Arunachal Pradesh', 'value': 'Arunachal Pradesh'},
+                    #     {'label': 'Assam', 'value': 'Assam'},
+                    #     {'label': 'Bihar', 'value': 'Bihar'},
+                    #     {'label': 'Chandigarh', 'value': 'Chandigarh'},
+                    #     {'label': 'Chhattisgarh', 'value': 'Chhattisgarh'},
+                    #     {'label': 'Dadra & Nagar Haveli', 'value': 'Dadra & Nagar Haveli'},
+                    #     {'label': 'Daman & Diu', 'value': 'Daman & Diu'},
+                    #     {'label': 'Delhi', 'value': 'Delhi'},
+                    #     {'label': 'Goa', 'value': 'Goa'},
+                    #     {'label': 'Gujarat', 'value': 'Gujarat'},
+                    #     {'label': 'Haryana', 'value': 'Haryana'},
+                    #     {'label': 'Himachal Pradesh', 'value': 'Himachal Pradesh'},
+                    #     {'label': 'Jammu & Kashmir', 'value': 'Jammu & Kashmir'},
+                    #     {'label': 'Jharkhand', 'value': 'Jharkhand'},
+                    #     {'label': 'Karnataka', 'value': 'Karnataka'},
+                    #     {'label': 'Kerala', 'value': 'Kerala'},
+                    #     {'label': 'Lakshadweep', 'value': 'Lakshadweep'},
+                    #     {'label': 'Madhya Pradesh', 'value': 'Madhya Pradesh'},
+                    #     {'label': 'Maharashtra', 'value': 'Maharashtra'},
+                    #     {'label': 'Manipur', 'value': 'Manipur'},
+                    #     {'label': 'Meghalaya', 'value': 'Meghalaya'},
+                    #     {'label': 'Mizoram', 'value': 'Mizoram'},
+                    #     {'label': 'Nagaland', 'value': 'Nagaland'},
+                    #     {'label': 'Odisha', 'value': 'Odisha'},
+                    #     {'label': 'Puducherry', 'value': 'Puducherry'},
+                    #     {'label': 'Punjab', 'value': 'Punjab'},
+                    #     {'label': 'Rajasthan', 'value': 'Rajasthan'},
+                    #     {'label': 'Sikkim', 'value': 'Sikkim'},
+                    #     {'label': 'Tamilnadu', 'value': 'Tamilnadu'},
+                    #     {'label': 'Tripura', 'value': 'Tripura'},
+                    #     {'label': 'Uttar Pradesh', 'value': 'Uttar Pradesh'},
+                    #     {'label': 'Uttarakhand', 'value': 'Uttarakhand'},
+                    #     {'label': 'West Bengal', 'value': 'West Bengal'},
+                    # ],
                     placeholder='Select the States or UT you are interested.',
-                    disabled=True
+                    disabled=False
                 ),
 
                 # dcc.Dropdown(
@@ -409,16 +489,16 @@ tribe_ind_aoi_card = dbc.Card(
         dbc.CardHeader("Areas of Interest"),
         dbc.CardBody(
             [
-                # html.P("Select Either India or one of the States or UTs", className="card-text"),
-                # dbc.RadioItems(
-                #     id='tribe-aoi-select',
-                #     options=[
-                #         {'label': 'All of India', 'value': 'India'},
-                #         {'label': 'A State or UT', 'value': 'States'}
-                #     ],
-                #     value='India',
-                #     inline=True
-                # ),
+                html.P("Select Either India or one of the States or UTs", className="card-text"),
+                dbc.RadioItems(
+                    id='tribe-ind-aoi-select',
+                    options=[
+                        {'label': 'All of India', 'value': 'India'},
+                        {'label': 'A State or UT', 'value': 'States'}
+                    ],
+                    value='India',
+                    inline=True
+                ),
 
                 dcc.Dropdown(
                     id='tribe-ind-state-select',
@@ -544,8 +624,8 @@ layout = html.Div(children=[
 
 
 @app.callback(
-    Output("tribe-states-select", "disabled"),
-    [Input("tribe-aoi-select", "value")]
+    Output("tribe-ind-state-select", "disabled"),
+    [Input("tribe-ind-aoi-select", "value")]
 )
 def update_aoi_states_select_status(selected):
     if selected == 'India':
@@ -576,11 +656,16 @@ def update_tribe_states_select_status(selected):
      Output("loading-output-4", "children")],
     [Input('tribe-viz-button', 'n_clicks'),
      State('tribe-dbi-select', 'value'),
-     State('tribe-aoi-select', 'value'),
+     # State('tribe-aoi-select', 'value'),
      State('tribe-states-select', 'value'), ]
     # State('tribe-list-states-select', 'value')]
 )
-def get_tribe_data(n, dbi, aoi, states):
+def get_tribe_data(n, dbi, states):
+    aoi = 'India'
+    if states == 'India':
+        aoi = 'India'
+    else:
+        aoi = ''
     if n == 0:
         return None, dbc.Label("Select Population and a State before getting data."), None
     if aoi != 'India':
