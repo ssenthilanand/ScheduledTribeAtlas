@@ -75,6 +75,11 @@ def fetch_server_data(path):
 state_list = fetch_states()
 districts_list = fetch_districts()
 
+
+ind_state_list = [{'label': 'India', 'value': 'India'}, {'label': '-----', 'value': '-----', 'disabled': True}]
+for state in state_list['state_name'].sort_values():
+    ind_state_list.append({'label': state, 'value': state})
+
 # state_pop = fetch_server_data('http://95.217.5.215:8080/population/')
 # state_gratio = fetch_server_data('http://95.217.5.215:8080/genderratio/')
 # state_lit = fetch_server_data('http://95.217.5.215:8080/literacy/')
