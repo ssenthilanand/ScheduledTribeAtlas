@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output, State
 from dash.dash_table.Format import Group, Format, Scheme
 from dash import dash_table
 from dash.exceptions import PreventUpdate
+import plotly.graph_objects as go
 
 from app import app
 from apps.utils import *
@@ -207,8 +208,8 @@ def make_state_tribe_gender_ratio_table(state):
 
 
 def make_state_tribe_distribution(state, tribe):
-    tribe_state_list = get_tribe_distribution_in_state(state, tribe)
-    tribe_code = get_tribe_code_from_name(state, tribe)
+    tribe_state_list = get_tribe_distribution_in_state(state, tribe).sort_values('district_name')
+    # tribe_code = get_tribe_code_from_name(state, tribe)
     columns = [
         # dict(id='state_name', name='State Name'),
         dict(id='district_name', name='District Name'),
@@ -239,6 +240,40 @@ def make_state_tribe_distribution(state, tribe):
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
+
+
+def make_state_tribe_distribution_graph(state, tribe):
+    tribe_state_list = get_tribe_distribution_in_state(state, tribe).sort_values('district_name', ascending=False)
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * len(tribe_state_list)),
+        xaxis=dict(title='Population'),
+        yaxis=dict(title='District Name'),
+        title=dict(text=tribe + " population details for " + state)
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=tribe_state_list['district_name'],
+        x=tribe_state_list['population'],
+        name='Population',
+        orientation='h',
+        text=tribe_state_list['population']
+    ))
+    # fig_all.add_trace(go.Bar(
+    #     y=tribe_state_list['state_name'],
+    #     x=tribe_state_list['population_sc'],
+    #     name='SC',
+    #     orientation='h',
+    #     # visible='legendonly'
+    # ))
+    # fig_all.add_trace(go.Bar(
+    #     y=tribe_state_list['state_name'],
+    #     x=tribe_state_list['population_gn'],
+    #     name='General',
+    #     orientation='h',
+    #     # visible='legendonly'
+    # ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
 
 
 def make_state_tribe_distribution_across_religions(state, tribe):
@@ -414,16 +449,17 @@ tribe_ind_aoi_card = dbc.Card(
         dbc.CardHeader("Areas of Interest"),
         dbc.CardBody(
             [
-                html.P("Select Either India or one of the States or UTs", className="card-text"),
-                dbc.RadioItems(
-                    id='tribe-ind-aoi-select',
-                    options=[
-                        {'label': 'All of India', 'value': 'India'},
-                        {'label': 'A State or UT', 'value': 'States'}
-                    ],
-                    value='India',
-                    inline=True
-                ),
+                # html.P("Select Either India or one of the States or UTs", className="card-text"),
+                html.P("Select one of the States or UTs and their district", className="card-text"),
+                # dbc.RadioItems(
+                #     id='tribe-ind-aoi-select',
+                #     options=[
+                #         {'label': 'All of India', 'value': 'India'},
+                #         {'label': 'A State or UT', 'value': 'States'}
+                #     ],
+                #     value='India',
+                #     inline=True
+                # ),
 
                 dcc.Dropdown(
                     id='tribe-ind-state-select',
@@ -541,6 +577,12 @@ layout = html.Div(children=[
                 ],
             ),
             html.Br(),
+            html.Div(
+                id='tribe-ind-viz-graph',
+                children=[
+                ],
+            ),
+            html.Br(),
         ]),
     ]),
 
@@ -548,15 +590,15 @@ layout = html.Div(children=[
 )
 
 
-@app.callback(
-    Output("tribe-ind-state-select", "disabled"),
-    [Input("tribe-ind-aoi-select", "value")]
-)
-def update_aoi_states_select_status(selected):
-    if selected == 'India':
-        return True
-    else:
-        return False
+# @app.callback(
+#     Output("tribe-ind-state-select", "disabled"),
+#     [Input("tribe-ind-aoi-select", "value")]
+# )
+# def update_aoi_states_select_status(selected):
+#     if selected == 'India':
+#         return True
+#     else:
+#         return False
 
 
 @app.callback(
@@ -610,6 +652,7 @@ def get_tribe_data(n, dbi, states):
 
 @app.callback(
     [Output('tribe-ind-viz-table', 'children'),
+     Output('tribe-ind-viz-graph', 'children'),
      Output('tribe-ind-area-label', 'children'),
      Output("loading-output-5", "children")],
     [Input('tribe-ind-viz-button', 'n_clicks'),
@@ -621,16 +664,23 @@ def get_tribe_data(n, dbi, states):
 )
 def get_individual_tribe_data(n, dbi, states, tribe, distrib):
     if n == 0:
-        return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+        return None, None,  dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+    if tribe is None:
+        return None, None,  dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
     if dbi == 'Population':
         if distrib == 'District':
-            return make_state_tribe_distribution(states, tribe), dbc.Label(
+            fig_dist = make_state_tribe_distribution_graph(states, tribe)
+            district_visualization = dcc.Graph(
+                id='graph',
+                figure=fig_dist
+            )
+            return make_state_tribe_distribution(states, tribe),district_visualization , dbc.Label(
                 "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), None
         elif distrib == 'Major Religion':
-            return make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
+            return make_state_tribe_distribution_across_religions(states, tribe), None,  dbc.Label(
                 "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), None
         elif distrib == 'ORP':
-            return make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
+            return make_state_tribe_distribution_across_orp(states, tribe), None, dbc.Label(
                 "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
     else:
         return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
