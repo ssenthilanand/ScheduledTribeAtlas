@@ -72,6 +72,17 @@ def fetch_server_data(path):
     return response.text
 
 
+def fetch_local_data(path):
+    try:
+        data = open(path, 'r').read()
+        # data = pd.json_normalize(file['data'])
+    except Exception as err:
+        print(f'Error occurred: {err}')
+    else:
+        pass
+    return data
+
+
 state_list = fetch_states()
 districts_list = fetch_districts()
 
@@ -85,7 +96,7 @@ for state in state_list['state_name'].sort_values():
 # state_lit = fetch_server_data('http://95.217.5.215:8080/literacy/')
 
 state_pop = fetch_data('population')
-state_lit = fetch_data('literacy')
+state_lit = fetch_local_data('data/literacy.json')
 state_gratio = fetch_data('genderratio')
 
 
