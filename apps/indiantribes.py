@@ -288,7 +288,7 @@ def make_state_tribe_distribution_across_religions(state, tribe):
     all_country_table = dash_table.DataTable(
         id='all_country_table',
         columns=columns,
-        data=tribe_state_list.sort_values('religion_name').to_dict('records'),
+        data=tribe_state_list.sort_values('population', ascending=False).to_dict('records'),
         sort_action="native",
         sort_mode="single",
         column_selectable="single",
