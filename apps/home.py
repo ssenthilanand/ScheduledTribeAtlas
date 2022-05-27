@@ -5,7 +5,7 @@ from dash import dash_table
 from dash import dcc
 from dash import html
 from dash.dash_table.Format import Format, Scheme, Group
-
+from app import app
 from apps.utils import fetch_data
 
 pd.options.mode.chained_assignment = None
@@ -122,6 +122,8 @@ all_country_table = dash_table.DataTable(
 layout = html.Div(children=[
 
     html.Title('An Atlas of Scheduled Tribes of India'),
+    html.Div(html.Img(src=app.get_asset_url('cps_logo.png'),
+                      style={'margin': "auto", 'width': "100%", 'text-align': "center"}, )),
     dbc.Nav(
         children=[
             dbc.NavItem(dbc.NavLink("Home", active=True, href='/apps/home')),

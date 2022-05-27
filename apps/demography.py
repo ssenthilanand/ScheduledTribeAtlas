@@ -498,7 +498,8 @@ viz_card = dbc.Card(
 #
 # )
 layout = html.Div(children=[
-
+    html.Div(html.Img(src=app.get_asset_url('cps_logo.png'),
+                      style={'margin': "auto", 'width': "100%", 'text-align': "center"}, )),
     dbc.Nav(
         children=[
             dbc.NavItem(dbc.NavLink("Home", href='/apps/home')),
