@@ -15,6 +15,9 @@ from apps.utils import *
 from babel.numbers import format_number, format_decimal, format_percent
 
 state_literacy = None
+state_pop = fetch_data('population')
+state_gratio = fetch_data('genderratio')
+state_lit = fetch_local_data('data/literacy.json')
 
 
 def get_state_population_data():

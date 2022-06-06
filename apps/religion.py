@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 from app import app
 from apps.utils import *
 
-
+religious_demo = fetch_data('religiousdemo')
 # layout = html.Div([
 #     html.H3('Religion'),
 # ])

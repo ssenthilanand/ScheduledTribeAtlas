@@ -95,9 +95,9 @@ for state in state_list['state_name'].sort_values():
 # state_gratio = fetch_server_data('http://95.217.5.215:8080/genderratio/')
 # state_lit = fetch_server_data('http://95.217.5.215:8080/literacy/')
 
-state_pop = fetch_data('population')
-state_lit = fetch_local_data('data/literacy.json')
-state_gratio = fetch_data('genderratio')
+# state_pop = fetch_data('population')
+# state_lit = fetch_local_data('data/literacy.json')
+# state_gratio = fetch_data('genderratio')
 
 
 def get_state_code(state):
@@ -121,7 +121,7 @@ def get_district_code(district):
 # Religion Page
 
 
-religious_demo = fetch_data('religiousdemo')
+# religious_demo = fetch_data('religiousdemo')
 
 
 def fetch_rel_district_demo(state):
