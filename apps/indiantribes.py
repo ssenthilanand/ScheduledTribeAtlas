@@ -16,7 +16,6 @@ from apps.utils import *
 
 state_list = state_list['state_name'].sort_values()
 
-
 ind_state_list = [{'label': 'India', 'value': 'India'}, {'label': '-----', 'value': '-----', 'disabled': True}]
 for state in state_list:
     ind_state_list.append({'label': state, 'value': state})
@@ -243,7 +242,10 @@ def make_state_tribe_distribution(state, tribe):
 
 
 def make_state_tribe_distribution_graph(state, tribe):
-    tribe_state_list = get_tribe_distribution_in_state(state, tribe).sort_values('district_name', ascending=False)
+    tribe_state_list = get_tribe_distribution_in_state(state, tribe)
+    if tribe_state_list.empty:
+        return None
+    tribe_state_list = tribe_state_list.sort_values('district_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=100 + (32 * len(tribe_state_list)),
         xaxis=dict(title='Population'),
@@ -258,20 +260,6 @@ def make_state_tribe_distribution_graph(state, tribe):
         orientation='h',
         text=tribe_state_list['population']
     ))
-    # fig_all.add_trace(go.Bar(
-    #     y=tribe_state_list['state_name'],
-    #     x=tribe_state_list['population_sc'],
-    #     name='SC',
-    #     orientation='h',
-    #     # visible='legendonly'
-    # ))
-    # fig_all.add_trace(go.Bar(
-    #     y=tribe_state_list['state_name'],
-    #     x=tribe_state_list['population_gn'],
-    #     name='General',
-    #     orientation='h',
-    #     # visible='legendonly'
-    # ))
     fig_all.update_layout(barmode='group')
     return fig_all
 
@@ -311,6 +299,29 @@ def make_state_tribe_distribution_across_religions(state, tribe):
     return all_country_table
 
 
+def make_state_tribe_distribution_across_religion_graph(state, tribe):
+    tribe_state_list = get_tribe_distribution_across_religions_in_state(state, tribe)
+    if tribe_state_list.empty:
+        return None
+    tribe_state_list = tribe_state_list.sort_values('population', ascending=True)
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * len(tribe_state_list)),
+        xaxis=dict(title='Population'),
+        yaxis=dict(title='Religion Name'),
+        title=dict(text=tribe + " population details for " + state)
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=tribe_state_list['religion_name'],
+        x=tribe_state_list['population'],
+        name='Population',
+        orientation='h',
+        text=tribe_state_list['population']
+    ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
+
+
 def make_state_tribe_distribution_across_orp(state, tribe):
     tribe_state_list = get_tribe_distribution_across_orp_in_state(state, tribe)
     if tribe_state_list.empty:
@@ -346,6 +357,30 @@ def make_state_tribe_distribution_across_orp(state, tribe):
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
+
+
+def make_state_tribe_distribution_across_orp_graph(state, tribe):
+    tribe_state_list = get_tribe_distribution_across_orp_in_state(state, tribe)
+    if tribe_state_list.empty:
+        return None
+    tribe_state_list = tribe_state_list.sort_values('population', ascending=True)
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * len(tribe_state_list)),
+        xaxis=dict(title='Population'),
+        yaxis=dict(title='Religion Name'),
+        title=dict(text=tribe + " population details for " + state)
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+
+    fig_all.add_trace(go.Bar(
+        y=tribe_state_list['religion_name'],
+        x=tribe_state_list['population'],
+        name='Population',
+        orientation='h',
+        text=tribe_state_list['population']
+    ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
 
 
 tribe_dbi_list = ['Population', 'Literacy', 'Gender Ratio']
@@ -485,7 +520,7 @@ layout = html.Div(children=[
 
     html.Title('An Atlas of Scheduled Tribes of India'),
     html.Div(html.Img(src=app.get_asset_url('cps_logo.png'),
-                      style={'margin': "auto", 'width': "100%", 'text-align': "center"},)),
+                      style={'margin': "auto", 'width': "100%", 'text-align': "center"}, )),
     dbc.Nav(
         children=[
             dbc.NavItem(dbc.NavLink("Home", href='/apps/home')),
@@ -666,23 +701,42 @@ def get_tribe_data(n, dbi, states):
 )
 def get_individual_tribe_data(n, dbi, states, tribe, distrib):
     if n == 0:
-        return None, None,  dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+        return None, None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
     if tribe is None:
-        return None, None,  dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+        return None, None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
     if dbi == 'Population':
         if distrib == 'District':
             fig_dist = make_state_tribe_distribution_graph(states, tribe)
-            district_visualization = dcc.Graph(
-                id='graph',
-                figure=fig_dist
-            )
-            return make_state_tribe_distribution(states, tribe),district_visualization , dbc.Label(
+            if fig_dist is not None:
+                district_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_dist
+                )
+            else:
+                district_visualization = None
+            return make_state_tribe_distribution(states, tribe), district_visualization, dbc.Label(
                 "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), None
         elif distrib == 'Major Religion':
-            return make_state_tribe_distribution_across_religions(states, tribe), None,  dbc.Label(
+            fig_religion = make_state_tribe_distribution_across_religion_graph(states, tribe)
+            if fig_religion is not None:
+                district_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_religion
+                )
+            else:
+                district_visualization = None
+            return make_state_tribe_distribution_across_religions(states, tribe), district_visualization, dbc.Label(
                 "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), None
         elif distrib == 'ORP':
-            return make_state_tribe_distribution_across_orp(states, tribe), None, dbc.Label(
+            fig_orp = make_state_tribe_distribution_across_orp_graph(states, tribe)
+            if fig_orp is not None:
+                district_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_orp
+                )
+            else:
+                district_visualization = None
+            return make_state_tribe_distribution_across_orp(states, tribe), district_visualization, dbc.Label(
                 "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
     else:
         return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
