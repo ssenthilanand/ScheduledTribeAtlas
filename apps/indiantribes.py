@@ -39,19 +39,33 @@ def get_tribe_demography_for_state(state):
     return data_pop
 
 
+# def get_tribe_distribution_in_state(state, tribe):
+#     data = pd.read_json(
+#         fetch_data('tribes/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+#     data_dist = pd.json_normalize(data['data'])
+#     int_cols = ['district_code', 'population', 'state_code', 'tribe_code']
+#     for col in int_cols:
+#         data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
+#     return data_dist
+
+
 def get_tribe_distribution_in_state(state, tribe):
     data = pd.read_json(
-        fetch_data('tribes/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+        fetch_data(
+            'tribe-atlas/demography/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
     data_dist = pd.json_normalize(data['data'])
-    int_cols = ['district_code', 'population', 'state_code', 'tribe_code']
+    int_cols = ['children', 'district_code', 'gender_ratio', 'population', 'state_code', 'tribe_code']
+    float_cols = ['literacy']
     for col in int_cols:
         data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0).astype('int')
+    for col in float_cols:
+        data_dist[col] = pd.to_numeric(data_dist[col], errors='coerce').fillna(0.00).astype('float')
     return data_dist
 
 
 def get_tribe_distribution_across_religions_in_state(state, tribe):
     data = pd.read_json(fetch_data(
-        'tribes/majorreligion/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+        'tribe-atlas/major-religion/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
     data_dist = pd.json_normalize(data['data'])
     int_cols = ['religion_code', 'population', 'state_code', 'tribe_code']
     for col in int_cols:
@@ -61,7 +75,7 @@ def get_tribe_distribution_across_religions_in_state(state, tribe):
 
 def get_tribe_distribution_across_orp_in_state(state, tribe):
     data = pd.read_json(fetch_data(
-        'tribes/orpreligion/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
+        'tribe-atlas/orp/' + str(get_state_code(state)) + '/' + str(get_tribe_code_from_name(state, tribe))))
     data_dist = pd.json_normalize(data['data'])
     if data_dist.empty:
         return data_dist
@@ -214,6 +228,10 @@ def make_state_tribe_distribution(state, tribe):
         dict(id='district_name', name='District Name'),
         dict(id='population', name='Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='children', name='Children', type='numeric'),
+        dict(id='gender_ratio', name='Gender Ratio', type='numeric'),
+        dict(id='literacy', name='Literacy %', type='numeric',
+             format=Format(precision=2, scheme=Scheme.fixed)),
     ]
     all_country_table = dash_table.DataTable(
         id='all_country_table',
@@ -481,7 +499,7 @@ tribe_aoi_card = dbc.Card(
 
 tribe_ind_aoi_card = dbc.Card(
     [
-        dbc.CardHeader("Areas of Interest"),
+        # dbc.CardHeader("Areas of Interest"),
         dbc.CardBody(
             [
                 # html.P("Select Either India or one of the States or UTs", className="card-text"),
@@ -541,21 +559,21 @@ layout = html.Div(children=[
     html.Br(),
     dbc.Tabs(id="tabs-tribes", children=[
         dbc.Tab(label='Individual Tribes', activeTabClassName="fw-bold", children=[
-            dbc.CardGroup(
-                [
-                    tribe_ind_bdi_card,
-                ],
-            ),
+            # dbc.CardGroup(
+            #     [
+            #         tribe_ind_bdi_card,
+            #     ],
+            # ),
             dbc.CardGroup(
                 [
                     tribe_ind_aoi_card
                 ],
             ),
-            dbc.CardGroup(
-                [
-                    tribe_ind_distribution_card,
-                ],
-            ),
+            # dbc.CardGroup(
+            #     [
+            #         tribe_ind_distribution_card,
+            #     ],
+            # ),
             html.Br(),
             html.Div(
                 [
@@ -570,13 +588,35 @@ layout = html.Div(children=[
                 children=html.Div(id="loading-output-5", style={'display': 'none'}),
             ),
             html.H4(
-                id='tribe-ind-area-label',
+                id='tribe-ind-area-label1',
                 children=[],
                 style={'textAlign': 'center'}
             ),
             html.Br(),
             html.Div(
-                id='tribe-ind-viz-table',
+                id='tribe-ind-viz-table1',
+                children=[
+                ],
+            ),
+            html.Br(),
+            html.H4(
+                id='tribe-ind-area-label2',
+                children=[],
+                style={'textAlign': 'center'}
+            ),
+            html.Div(
+                id='tribe-ind-viz-table2',
+                children=[
+                ],
+            ),
+            html.Br(),
+            html.H4(
+                id='tribe-ind-area-label3',
+                children=[],
+                style={'textAlign': 'center'}
+            ),
+            html.Div(
+                id='tribe-ind-viz-table3',
                 children=[
                 ],
             ),
@@ -648,7 +688,6 @@ def update_tribe_states_select_status(selected):
         raise PreventUpdate
     if selected != 'None':
         tribes = get_tribe_list_for_state(selected)
-        # print(get_tribe_code_from_name(selected))
         return False, [{'label': i, 'value': i} for i in (list(tribes['tribe_name']))]
     else:
         return True, None
@@ -665,7 +704,7 @@ def update_tribe_states_select_status(selected):
     # State('tribe-list-states-select', 'value')]
 )
 def get_tribe_data(n, dbi, states):
-    aoi = 'India'
+    # aoi = 'India'
     if states == 'India':
         aoi = 'India'
     else:
@@ -688,56 +727,70 @@ def get_tribe_data(n, dbi, states):
 
 
 @app.callback(
-    [Output('tribe-ind-viz-table', 'children'),
-     Output('tribe-ind-viz-graph', 'children'),
-     Output('tribe-ind-area-label', 'children'),
+    [Output('tribe-ind-viz-table1', 'children'),
+     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-area-label1', 'children'),
+     Output('tribe-ind-viz-table2', 'children'),
+     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-area-label2', 'children'),
+     Output('tribe-ind-viz-table3', 'children'),
+     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-area-label3', 'children'),
      Output("loading-output-5", "children")],
     [Input('tribe-ind-viz-button', 'n_clicks'),
-     State('tribe-ind-dbi-select', 'value'),
+     # State('tribe-ind-dbi-select', 'value'),
      # State('tribe-ind-aoi-select', 'value'),
      State('tribe-ind-state-select', 'value'),
-     State('tribe-ind-list-states-select', 'value'),
-     State('tribe-ind-distribution-select', 'value')]
+     State('tribe-ind-list-states-select', 'value')]
+    # State('tribe-ind-distribution-select', 'value')]
 )
-def get_individual_tribe_data(n, dbi, states, tribe, distrib):
+def get_individual_tribe_data(n, states, tribe):
+    dbi = "Population"
+    distrib = "District"
     if n == 0:
-        return None, None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
+        return None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None
     if tribe is None:
-        return None, None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
-    if dbi == 'Population':
-        if distrib == 'District':
-            fig_dist = make_state_tribe_distribution_graph(states, tribe)
-            if fig_dist is not None:
-                district_visualization = dcc.Graph(
-                    id='graph',
-                    figure=fig_dist
-                )
-            else:
-                district_visualization = None
-            return make_state_tribe_distribution(states, tribe), district_visualization, dbc.Label(
-                "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), None
-        elif distrib == 'Major Religion':
-            fig_religion = make_state_tribe_distribution_across_religion_graph(states, tribe)
-            if fig_religion is not None:
-                district_visualization = dcc.Graph(
-                    id='graph',
-                    figure=fig_religion
-                )
-            else:
-                district_visualization = None
-            return make_state_tribe_distribution_across_religions(states, tribe), district_visualization, dbc.Label(
-                "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), None
-        elif distrib == 'ORP':
-            fig_orp = make_state_tribe_distribution_across_orp_graph(states, tribe)
-            if fig_orp is not None:
-                district_visualization = dcc.Graph(
-                    id='graph',
-                    figure=fig_orp
-                )
-            else:
-                district_visualization = None
-            return make_state_tribe_distribution_across_orp(states, tribe), district_visualization, dbc.Label(
+        return None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None
+    # if dbi == 'Population':
+    #     if distrib == 'District':
+    #         # fig_dist = make_state_tribe_distribution_graph(states, tribe)
+    #         # if fig_dist is not None:
+    #         #     district_visualization = dcc.Graph(
+    #         #         id='graph',
+    #         #         figure=fig_dist
+    #         #     )
+    #         # else:
+    #         district_visualization = None
+    #         # print(states + " : " + tribe)
+    #         # print(get_state_code(states))
+    #         # print(get_tribe_code_from_name(states, tribe))
+    #         return make_state_tribe_distribution(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), None
+    #     elif distrib == 'Major Religion':
+    #         # fig_religion = make_state_tribe_distribution_across_religion_graph(states, tribe)
+    #         # if fig_religion is not None:
+    #         #     district_visualization = dcc.Graph(
+    #         #         id='graph',
+    #         #         figure=fig_religion
+    #         #     )
+    #         # else:
+    #         district_visualization = None
+    #         return make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), None
+    #     elif distrib == 'ORP':
+    #         # fig_orp = make_state_tribe_distribution_across_orp_graph(states, tribe)
+    #         # if fig_orp is not None:
+    #         #     district_visualization = dcc.Graph(
+    #         #         id='graph',
+    #         #         figure=fig_orp
+    #         #     )
+    #         # else:
+    #         district_visualization = None
+    #         return make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
+    # else:
+    #     return None, dbc.Label("Select a State and a Tribe before getting data."), None
+    return make_state_tribe_distribution(states, tribe), dbc.Label(
+                "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
+                "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
                 "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
-    else:
-        return None, dbc.Label("Select a demographic indicator, State and a Tribe before getting data."), None
-    return None, None, None
