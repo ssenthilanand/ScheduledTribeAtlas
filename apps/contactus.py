@@ -20,7 +20,7 @@ layout = html.Div(children=[
             dbc.NavItem(dbc.NavLink("Demography", href='/apps/demography')),
             dbc.NavItem(dbc.NavLink("Religion", href='/apps/religion')),
             dbc.NavItem(dbc.NavLink("ORP Religions", href='/apps/orpreligions')),
-            dbc.NavItem(dbc.NavLink("Indian Tribes", href='/apps/indiantribes')),
+            dbc.NavItem(dbc.NavLink("Tribe Atlas", href='/apps/indiantribes')),
             dbc.NavItem(dbc.NavLink("About Us", href='/apps/aboutus')),
             dbc.NavItem(dbc.NavLink("Contact Us", active=True, href='/apps/contactus')),
         ],

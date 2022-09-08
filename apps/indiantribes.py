@@ -527,7 +527,7 @@ layout = html.Div(children=[
             dbc.NavItem(dbc.NavLink("Demography", href='/apps/demography')),
             dbc.NavItem(dbc.NavLink("Religious Profile", href='/apps/religion')),
             dbc.NavItem(dbc.NavLink("ORP Religions", href='/apps/orpreligions')),
-            dbc.NavItem(dbc.NavLink("Indian Tribes", active=True, href='/apps/indiantribes')),
+            dbc.NavItem(dbc.NavLink("Tribe Atlas", active=True, href='/apps/indiantribes')),
             dbc.NavItem(dbc.NavLink("About Us", href='/apps/aboutus')),
             dbc.NavItem(dbc.NavLink("Contact Us", href='/apps/contactus')),
         ],
@@ -537,7 +537,7 @@ layout = html.Div(children=[
         pills=True
     ),
     html.Br(),
-    html.H3('Indian Tribes'),
+    html.H3('Tribe Atlas'),
     html.Br(),
     dbc.Tabs(id="tabs-tribes", children=[
         dbc.Tab(label='Summary', activeTabClassName="fw-bold", children=[
