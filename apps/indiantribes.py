@@ -540,39 +540,6 @@ layout = html.Div(children=[
     html.H3('Tribe Atlas'),
     html.Br(),
     dbc.Tabs(id="tabs-tribes", children=[
-        dbc.Tab(label='Summary', activeTabClassName="fw-bold", children=[
-            dbc.CardGroup(
-                [
-                    tribe_bdi_card,
-                    tribe_aoi_card
-                ],
-            ),
-            html.Br(),
-            html.Div(
-                [
-                    dbc.Button("Get Data", id='tribe-viz-button', color="primary", n_clicks=0),
-                ],
-                className="d-grid gap-2",
-            ),
-            html.Br(),
-            dcc.Loading(
-                id="loading-4",
-                type="circle",
-                children=html.Div(id="loading-output-4", style={'display': 'none'}),
-            ),
-            html.H4(
-                id='tribe-area-label',
-                children=[],
-                style={'textAlign': 'center'}
-            ),
-            html.Br(),
-            html.Div(
-                id='tribe-viz-table',
-                children=[
-                ],
-            ),
-            html.Br(),
-        ]),
         dbc.Tab(label='Individual Tribes', activeTabClassName="fw-bold", children=[
             dbc.CardGroup(
                 [
@@ -616,6 +583,39 @@ layout = html.Div(children=[
             html.Br(),
             html.Div(
                 id='tribe-ind-viz-graph',
+                children=[
+                ],
+            ),
+            html.Br(),
+        ]),
+        dbc.Tab(label='Summary', activeTabClassName="fw-bold", children=[
+            dbc.CardGroup(
+                [
+                    tribe_bdi_card,
+                    tribe_aoi_card
+                ],
+            ),
+            html.Br(),
+            html.Div(
+                [
+                    dbc.Button("Get Data", id='tribe-viz-button', color="primary", n_clicks=0),
+                ],
+                className="d-grid gap-2",
+            ),
+            html.Br(),
+            dcc.Loading(
+                id="loading-4",
+                type="circle",
+                children=html.Div(id="loading-output-4", style={'display': 'none'}),
+            ),
+            html.H4(
+                id='tribe-area-label',
+                children=[],
+                style={'textAlign': 'center'}
+            ),
+            html.Br(),
+            html.Div(
+                id='tribe-viz-table',
                 children=[
                 ],
             ),
