@@ -21,6 +21,21 @@ for state in state_list:
     ind_state_list.append({'label': state, 'value': state})
 
 
+def make_map(state, tribe):
+    state_map = dbc.Card(
+        [
+            dbc.CardImg(src='/assets/maps/home/STIndia2011_25.png', top=True),
+            dbc.CardBody(
+                [
+                    html.Label(
+                        "Details of " + tribe + " in " + state)
+                ], style={'margin': "auto", 'text-align': "center"},
+            )
+        ]
+    )
+    return state_map
+
+
 def get_tribe_population_for_state(state):
     data = pd.read_json(fetch_data('tribes/population/' + get_state_code(state)))
     data_pop = pd.json_normalize(data['data'])
@@ -751,6 +766,7 @@ def get_tribe_data(n, dbi, states):
      Output('tribe-ind-viz-table3', 'children'),
      Output('tribe-ind-viz-graph3', 'children'),
      Output('tribe-ind-area-label3', 'children'),
+     Output('tribe-ind-viz-map', 'children'),
      Output("loading-output-5", "children")],
     [Input('tribe-ind-viz-button', 'n_clicks'),
      # State('tribe-ind-dbi-select', 'value'),
@@ -761,9 +777,9 @@ def get_tribe_data(n, dbi, states):
 )
 def get_individual_tribe_data(n, states, tribe):
     if n == 0:
-        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None
+        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
     if tribe is None:
-        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None
+        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
     # if dbi == 'Population':
     #     if distrib == 'District':
     #         # fig_dist = make_state_tribe_distribution_graph(states, tribe)
@@ -830,8 +846,8 @@ def get_individual_tribe_data(n, states, tribe):
             id='graph',
             figure=fig_orp
         )
-
-    return ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, ind_table3, ind_graph3, ind_label3, None
+    ind_map = make_map(states, tribe)
+    return ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, ind_table3, ind_graph3, ind_label3, ind_map, None
     # return make_state_tribe_distribution(states, tribe), dbc.Label(
     #             "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
     #             "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
