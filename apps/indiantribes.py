@@ -587,6 +587,12 @@ layout = html.Div(children=[
                 type="circle",
                 children=html.Div(id="loading-output-5", style={'display': 'none'}),
             ),
+            html.Div(
+                id='tribe-ind-viz-map',
+                children=[
+                ],
+            ),
+            html.Br(),
             html.H4(
                 id='tribe-ind-area-label1',
                 children=[],
@@ -595,6 +601,11 @@ layout = html.Div(children=[
             html.Br(),
             html.Div(
                 id='tribe-ind-viz-table1',
+                children=[
+                ],
+            ),
+            html.Div(
+                id='tribe-ind-viz-graph1',
                 children=[
                 ],
             ),
@@ -609,6 +620,11 @@ layout = html.Div(children=[
                 children=[
                 ],
             ),
+            html.Div(
+                id='tribe-ind-viz-graph2',
+                children=[
+                ],
+            ),
             html.Br(),
             html.H4(
                 id='tribe-ind-area-label3',
@@ -620,9 +636,8 @@ layout = html.Div(children=[
                 children=[
                 ],
             ),
-            html.Br(),
             html.Div(
-                id='tribe-ind-viz-graph',
+                id='tribe-ind-viz-graph3',
                 children=[
                 ],
             ),
@@ -728,13 +743,13 @@ def get_tribe_data(n, dbi, states):
 
 @app.callback(
     [Output('tribe-ind-viz-table1', 'children'),
-     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-viz-graph1', 'children'),
      Output('tribe-ind-area-label1', 'children'),
      Output('tribe-ind-viz-table2', 'children'),
-     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-viz-graph2', 'children'),
      Output('tribe-ind-area-label2', 'children'),
      Output('tribe-ind-viz-table3', 'children'),
-     # Output('tribe-ind-viz-graph', 'children'),
+     Output('tribe-ind-viz-graph3', 'children'),
      Output('tribe-ind-area-label3', 'children'),
      Output("loading-output-5", "children")],
     [Input('tribe-ind-viz-button', 'n_clicks'),
@@ -745,12 +760,10 @@ def get_tribe_data(n, dbi, states):
     # State('tribe-ind-distribution-select', 'value')]
 )
 def get_individual_tribe_data(n, states, tribe):
-    dbi = "Population"
-    distrib = "District"
     if n == 0:
-        return None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None
+        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None
     if tribe is None:
-        return None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None
+        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None
     # if dbi == 'Population':
     #     if distrib == 'District':
     #         # fig_dist = make_state_tribe_distribution_graph(states, tribe)
@@ -790,7 +803,36 @@ def get_individual_tribe_data(n, states, tribe):
     #             "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
     # else:
     #     return None, dbc.Label("Select a State and a Tribe before getting data."), None
-    return make_state_tribe_distribution(states, tribe), dbc.Label(
-                "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
-                "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
-                "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
+    ind_table1 = make_state_tribe_distribution(states, tribe)
+    ind_label1 = dbc.Label("District wise demography of " + tribe)
+    ind_graph1 = None
+    fig_dist = make_state_tribe_distribution_graph(states, tribe)
+    if fig_dist is not None:
+        ind_graph1 = dcc.Graph(
+            id='graph',
+            figure=fig_dist
+        )
+    ind_table2 = make_state_tribe_distribution_across_religions(states, tribe)
+    ind_label2 = dbc.Label("Distribution of " + tribe + " among major religions")
+    ind_graph2 = None
+    fig_religion = make_state_tribe_distribution_across_religion_graph(states, tribe)
+    if fig_religion is not None:
+        ind_graph2 = dcc.Graph(
+            id='graph',
+            figure=fig_religion
+        )
+    ind_table3 = make_state_tribe_distribution_across_orp(states, tribe)
+    ind_label3 = dbc.Label("Distribution of " + tribe + " among ORP")
+    ind_graph3 = None
+    fig_orp = make_state_tribe_distribution_across_orp_graph(states, tribe)
+    if fig_orp is not None:
+        ind_graph3 = dcc.Graph(
+            id='graph',
+            figure=fig_orp
+        )
+
+    return ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, ind_table3, ind_graph3, ind_label3, None
+    # return make_state_tribe_distribution(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
+    #             "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
