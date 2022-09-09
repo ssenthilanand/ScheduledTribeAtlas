@@ -338,20 +338,20 @@ def make_state_tribe_distribution_across_religion_graph(state, tribe):
         return None
     tribe_state_list = tribe_state_list.sort_values('population', ascending=True)
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (32 * len(tribe_state_list)),
-        xaxis=dict(title='Population'),
-        yaxis=dict(title='Religion Name'),
+        # height=100 + (32 * len(tribe_state_list)),
+        yaxis=dict(title='Population'),
+        xaxis=dict(title='Religion Name'),
         title=dict(text=tribe + " population details for " + state)
     ))
     fig_all.update_layout(legend=dict(orientation='h'))
     fig_all.add_trace(go.Bar(
-        y=tribe_state_list['religion_name'],
-        x=tribe_state_list['population'],
+        x=tribe_state_list['religion_name'],
+        y=tribe_state_list['population'],
         name='Population',
-        orientation='h',
+        # orientation='h',
         text=tribe_state_list['population']
     ))
-    fig_all.update_layout(barmode='group')
+    # fig_all.update_layout(barmode='group')
     return fig_all
 
 
@@ -398,21 +398,21 @@ def make_state_tribe_distribution_across_orp_graph(state, tribe):
         return None
     tribe_state_list = tribe_state_list.sort_values('population', ascending=True)
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (32 * len(tribe_state_list)),
-        xaxis=dict(title='Population'),
-        yaxis=dict(title='Religion Name'),
+        # height=100 + (32 * len(tribe_state_list)),
+        yaxis=dict(title='Population'),
+        xaxis=dict(title='Religion Name'),
         title=dict(text=tribe + " population details for " + state)
     ))
     fig_all.update_layout(legend=dict(orientation='h'))
 
     fig_all.add_trace(go.Bar(
-        y=tribe_state_list['religion_name'],
-        x=tribe_state_list['population'],
+        x=tribe_state_list['religion_name'],
+        y=tribe_state_list['population'],
         name='Population',
-        orientation='h',
+        # orientation='h',
         text=tribe_state_list['population']
     ))
-    fig_all.update_layout(barmode='group')
+    # fig_all.update_layout(barmode='group')
     return fig_all
 
 
