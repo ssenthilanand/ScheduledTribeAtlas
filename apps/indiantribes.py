@@ -24,14 +24,16 @@ for state in state_list:
 def make_map(state, tribe):
     state_map = dbc.Card(
         [
-            dbc.CardImg(src='/assets/maps/home/STIndia2011_25.png', top=True),
+            dbc.CardImg(src='/assets/maps/home/STIndia2011_125.png', top=True),
             dbc.CardBody(
                 [
                     html.Label(
                         "Details of " + tribe + " in " + state)
                 ], style={'margin': "auto", 'text-align': "center"},
-            )
-        ]
+            ),
+
+        ],
+        style={"width": "30rem", "text-align": "center", 'margin': "auto"},
     )
     return state_map
 
