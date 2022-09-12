@@ -38,6 +38,26 @@ def make_map(state, tribe):
     return state_map
 
 
+def get_ind_tribe_info(tribe):
+    tribe_info = html.Div(
+        [
+            dbc.Button(
+                "About " + tribe,
+                id="tribe-ind-collapse-button",
+                className="mb-3",
+                color="primary",
+                n_clicks=0,
+            ),
+            dbc.Collapse(
+                dbc.Card(dbc.CardBody("This contains information about " + tribe)),
+                id="tribe-ind-collapse",
+                is_open=False,
+            ),
+        ]
+    )
+    return tribe_info
+
+
 def get_tribe_population_for_state(state):
     data = pd.read_json(fetch_data('tribes/population/' + get_state_code(state)))
     data_pop = pd.json_normalize(data['data'])
@@ -605,6 +625,12 @@ layout = html.Div(children=[
                 children=html.Div(id="loading-output-5", style={'display': 'none'}),
             ),
             html.Div(
+                id='tribe-ind-info',
+                children=[
+                ],
+            ),
+            html.Br(),
+            html.Div(
                 id='tribe-ind-viz-map',
                 children=[
                 ],
@@ -714,6 +740,16 @@ layout = html.Div(children=[
 #     else:
 #         return False
 
+@app.callback(
+    Output("tribe-ind-collapse", "is_open"),
+    [Input("tribe-ind-collapse-button", "n_clicks")],
+    [State("tribe-ind-collapse", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
+
 
 @app.callback(
     Output("tribe-ind-list-states-select", "disabled"),
@@ -764,7 +800,8 @@ def get_tribe_data(n, dbi, states):
 
 
 @app.callback(
-    [Output('tribe-ind-viz-table1', 'children'),
+    [Output('tribe-ind-info', 'children'),
+     Output('tribe-ind-viz-table1', 'children'),
      Output('tribe-ind-viz-graph1', 'children'),
      Output('tribe-ind-area-label1', 'children'),
      Output('tribe-ind-viz-table2', 'children'),
@@ -784,9 +821,9 @@ def get_tribe_data(n, dbi, states):
 )
 def get_individual_tribe_data(n, states, tribe):
     if n == 0:
-        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
+        return None, None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
     if tribe is None:
-        return None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
+        return None, None, None, dbc.Label("Select a State and a Tribe before getting data."), None, None, None, None, None, None, None, None
     # if dbi == 'Population':
     #     if distrib == 'District':
     #         # fig_dist = make_state_tribe_distribution_graph(states, tribe)
@@ -826,6 +863,7 @@ def get_individual_tribe_data(n, states, tribe):
     #             "State wise Tribe distribution across ORP for " + tribe + " in the state of " + states + " from 2011"), None
     # else:
     #     return None, dbc.Label("Select a State and a Tribe before getting data."), None
+    ind_info = get_ind_tribe_info(tribe)
     ind_table1 = make_state_tribe_distribution(states, tribe)
     ind_label1 = dbc.Label("District wise demography of " + tribe)
     ind_graph1 = None
@@ -854,7 +892,7 @@ def get_individual_tribe_data(n, states, tribe):
             figure=fig_orp
         )
     ind_map = make_map(states, tribe)
-    return ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, ind_table3, ind_graph3, ind_label3, ind_map, None
+    return ind_info, ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, ind_table3, ind_graph3, ind_label3, ind_map, None
     # return make_state_tribe_distribution(states, tribe), dbc.Label(
     #             "State wise Tribe distribution for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_religions(states, tribe), dbc.Label(
     #             "State wise Tribe distribution across religions for " + tribe + " in the state of " + states + " from 2011"), make_state_tribe_distribution_across_orp(states, tribe), dbc.Label(
