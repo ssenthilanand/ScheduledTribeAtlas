@@ -435,6 +435,12 @@ layout = html.Div(children=[
     # html.P('Total Population'),
     # html.P('Total ST poulation'),
     # html.P('Hindu, Christian, Muslim, Sikh, Jain, Buddhist, ORP')
+    html.Footer(
+        children=[
+            dbc.Label("Copyright © 2022. Centre for Policy Studies.")
+        ],
+        style={'textAlign': 'center'}
+    ),
 ], style={'margin': "auto", 'width': "80%"}
 )
 

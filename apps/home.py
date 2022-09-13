@@ -174,6 +174,11 @@ layout = html.Div(children=[
             )
         ]
     ),
-
+    html.Footer(
+        children=[
+            dbc.Label("Copyright © 2022. Centre for Policy Studies.")
+        ],
+        style={'textAlign': 'center'}
+    ),
 ], style={'margin': "auto", 'width': "80%"}
 )
