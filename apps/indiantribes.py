@@ -174,6 +174,10 @@ def make_state_tribe_population_table(state):
         style_header={
             'fontWeight': 'bold'
         },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+        },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
@@ -216,6 +220,10 @@ def make_state_tribe_literacy_table(state):
         style_header={
             'fontWeight': 'bold'
         },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+        },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
@@ -251,6 +259,10 @@ def make_state_tribe_gender_ratio_table(state):
         ],
         style_header={
             'fontWeight': 'bold'
+        },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
         },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
@@ -290,6 +302,10 @@ def make_state_tribe_distribution(state, tribe):
         ],
         style_header={
             'fontWeight': 'bold'
+        },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
         },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
@@ -348,6 +364,10 @@ def make_state_tribe_distribution_across_religions(state, tribe):
         ],
         style_header={
             'fontWeight': 'bold'
+        },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
         },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
@@ -408,6 +428,10 @@ def make_state_tribe_distribution_across_orp(state, tribe):
         ],
         style_header={
             'fontWeight': 'bold'
+        },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
         },
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
