@@ -129,7 +129,7 @@ def make_state_orp_graph(orp):
     if orp_state_list.empty:
         return None
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (32 * len(orp_state_list)),
+        # height=100 + (32 * len(orp_state_list)),
         yaxis=dict(title='Population'),
         xaxis=dict(title='State Name'),
         title=dict(text=orp + " population across states")
@@ -152,7 +152,7 @@ def make_state_tribe_orp_graph(orp):
     if orp_state_tribe_list.empty:
         return None
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (32 * len(orp_state_tribe_list)),
+        # height=100 + (32 * len(orp_state_tribe_list)),
         yaxis=dict(title='Population'),
         xaxis=dict(title='Tribe Name'),
         title=dict(text=orp + " population across tribes")
