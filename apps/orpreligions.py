@@ -146,6 +146,29 @@ def make_state_orp_graph(orp):
     return fig_all
 
 
+def make_state_tribe_orp_graph(orp):
+    orp_state_tribe_list = get_orp_distribution_across_tribes(orp)
+    orp_state_tribe_list = orp_state_tribe_list.sort_values('state_name')
+    if orp_state_tribe_list.empty:
+        return None
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * len(orp_state_tribe_list)),
+        yaxis=dict(title='Population'),
+        xaxis=dict(title='Tribe Name'),
+        title=dict(text=orp + " population across tribes")
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        x=orp_state_tribe_list['tribe_name'],
+        y=orp_state_tribe_list['population'],
+        name='Population',
+        # orientation='h',
+        text=orp_state_tribe_list['population']
+    ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
+
+
 def make_state_orp_tribe_table(orp):
     orp_state_tribe_list = get_orp_distribution_across_tribes(orp)
     orp_state_tribe_list = orp_state_tribe_list.sort_values('state_name')
@@ -439,5 +462,11 @@ def get_orp_data(n, orp):
         ind_label1 = dbc.Label("Population distribution along states for " + orp)
         ind_table2 = make_state_orp_tribe_table(orp)
         ind_graph2 = None
+        fig_tribe = make_state_tribe_orp_graph(orp)
+        if fig_tribe is not None:
+            ind_graph2 = dcc.Graph(
+                id='graph',
+                figure=fig_tribe
+            )
         ind_label2 = dbc.Label("Population distribution among tribes for " + orp)
         return ind_orp_info, ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, None
