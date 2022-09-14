@@ -889,7 +889,13 @@ def get_individual_tribe_data(n, states, tribe):
     #     return None, dbc.Label("Select a State and a Tribe before getting data."), None
     ind_info = get_ind_tribe_info(tribe)
     ind_table1 = make_state_tribe_distribution(states, tribe)
-    ind_label1 = dbc.Label("District wise demography of " + tribe)
+    # ind_label1 = dbc.Label(tribe + " of " + state + ".\n District wise distribution of population and other demographic parameters, 2011")
+    ind_label1 = html.Div(
+        [
+            html.H4(tribe + " of " + state + "."),
+            html.H5("District wise distribution of population and other demographic parameters, 2011")
+        ]
+    )
     ind_graph1 = None
     fig_dist = make_state_tribe_distribution_graph(states, tribe)
     if fig_dist is not None:
@@ -898,7 +904,12 @@ def get_individual_tribe_data(n, states, tribe):
             figure=fig_dist
         )
     ind_table2 = make_state_tribe_distribution_across_religions(states, tribe)
-    ind_label2 = dbc.Label("Distribution of " + tribe + " among major religions")
+    ind_label2 = html.Div(
+        [
+            html.H4(tribe + " of " + state + "."),
+            html.H5("Religious Distribution (major religions), 2011")
+        ]
+    )
     ind_graph2 = None
     fig_religion = make_state_tribe_distribution_across_religion_graph(states, tribe)
     if fig_religion is not None:
@@ -907,7 +918,12 @@ def get_individual_tribe_data(n, states, tribe):
             figure=fig_religion
         )
     ind_table3 = make_state_tribe_distribution_across_orp(states, tribe)
-    ind_label3 = dbc.Label("Distribution of " + tribe + " among ORP")
+    ind_label3 = html.Div(
+        [
+            html.H4(tribe + " of " + state + "."),
+            html.H5("Details of ORP Religion")
+        ]
+    )
     ind_graph3 = None
     fig_orp = make_state_tribe_distribution_across_orp_graph(states, tribe)
     if fig_orp is not None:
