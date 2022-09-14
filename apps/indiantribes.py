@@ -892,7 +892,7 @@ def get_individual_tribe_data(n, states, tribe):
     # ind_label1 = dbc.Label(tribe + " of " + state + ".\n District wise distribution of population and other demographic parameters, 2011")
     ind_label1 = html.Div(
         [
-            html.H4(tribe + " of " + state + "."),
+            html.H4(tribe + " of " + states + "."),
             html.H5("District wise distribution of population and other demographic parameters, 2011")
         ]
     )
@@ -906,7 +906,7 @@ def get_individual_tribe_data(n, states, tribe):
     ind_table2 = make_state_tribe_distribution_across_religions(states, tribe)
     ind_label2 = html.Div(
         [
-            html.H4(tribe + " of " + state + "."),
+            html.H4(tribe + " of " + states + "."),
             html.H5("Religious Distribution (major religions), 2011")
         ]
     )
@@ -920,7 +920,7 @@ def get_individual_tribe_data(n, states, tribe):
     ind_table3 = make_state_tribe_distribution_across_orp(states, tribe)
     ind_label3 = html.Div(
         [
-            html.H4(tribe + " of " + state + "."),
+            html.H4(tribe + " of " + states + "."),
             html.H5("Details of ORP Religion")
         ]
     )
