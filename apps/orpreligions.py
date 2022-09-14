@@ -465,7 +465,7 @@ def get_orp_data(n, orp):
                 id='graph',
                 figure=fig_dist
             )
-        ind_label1 = dbc.Label("Population distribution along states for " + orp)
+        ind_label1 = dbc.Label("ORP: " + orp + " across States")
         ind_table2 = make_state_orp_tribe_table(orp)
         ind_graph2 = None
         fig_tribe = make_state_tribe_orp_graph(orp)
@@ -474,5 +474,5 @@ def get_orp_data(n, orp):
                 id='graph',
                 figure=fig_tribe
             )
-        ind_label2 = dbc.Label("Population distribution among tribes for " + orp)
+        ind_label2 = dbc.Label("ORP: " + orp + " across Tribes")
         return ind_orp_info, ind_table1, ind_graph1, ind_label1, ind_table2, ind_graph2, ind_label2, None
