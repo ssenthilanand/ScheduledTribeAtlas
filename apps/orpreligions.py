@@ -209,6 +209,12 @@ def make_state_orp_tribe_table(orp):
             'whiteSpace': 'normal',
             'height': 'auto',
         },
+        tooltip_data=[{
+            'state_name': {'value': row['tribe_name'], 'type': 'markdown'},
+        } for row in orp_state_tribe_list.to_dict('records')],
+
+        tooltip_delay=0,
+        tooltip_duration=None,
         css=[{"selector": ".show-hide", "rule": "display: none"}]
     )
     return all_country_table
