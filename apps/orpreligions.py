@@ -195,7 +195,8 @@ def make_state_orp_tribe_table(orp):
             },
             {
                 'if': {'column_id': 'tribe_name'},
-                'textAlign': 'left'
+                'textAlign': 'left',
+                'width': '60%'
             },
             {
                 'if': {'column_id': 'state_name'},
@@ -205,12 +206,17 @@ def make_state_orp_tribe_table(orp):
         style_header={
             'fontWeight': 'bold'
         },
-        style_data={
-            'whiteSpace': 'normal',
-            'height': 'auto',
+        # style_data={
+        #     'whiteSpace': 'normal',
+        #     # 'height': 'auto',
+        # },
+        style_cell={
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+            'maxWidth': 0
         },
         tooltip_data=[{
-            'state_name': {'value': row['tribe_name'], 'type': 'markdown'},
+            'tribe_name': {'value': row['tribe_name'], 'type': 'markdown'},
         } for row in orp_state_tribe_list.to_dict('records')],
 
         tooltip_delay=0,
