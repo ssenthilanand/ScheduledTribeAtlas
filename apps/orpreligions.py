@@ -468,6 +468,7 @@ def get_orp_data(n, orp):
     # if orp == 'All' and aoi != 'India':
     #     return make_state_orp_table(states), dbc.Label("State wise ORP Data for " + states + " from 2011"), None
     else:
+        all_india_total = get_orp_distribution_across_states(orp)
         ind_orp_info = get_ind_orp_info(orp)
         ind_table1 = make_state_orp_table(orp)
         ind_graph1 = None
@@ -477,7 +478,7 @@ def get_orp_data(n, orp):
                 id='graph',
                 figure=fig_dist
             )
-        ind_label1 = dbc.Label("ORP: " + orp + " across States")
+        ind_label1 = dbc.Label("ORP: " + orp + " across States (" + str(all_india_total['sum(t1.population)'].sum()) + ")")
         ind_table2 = make_state_orp_tribe_table(orp)
         ind_graph2 = None
         fig_tribe = make_state_tribe_orp_graph(orp)
