@@ -148,15 +148,18 @@ n_states = len(state_list)
 
 state_gender_ratio = get_state_gender_ratio_data()
 
-
+all_categories = ['ST', 'SC', 'General']
 # districts_list = fetch_districts()
 # n_districts = len(districts_list)
 
 
-def make_all_india_population_table():
+def make_all_india_population_table(cats='ST'):
+    hidden_categories = [x for x in all_categories if x not in cats]
+    column_names = {'ST': 'population_st', 'SC': 'population_sc', 'General': 'population_gn'}
+    columns_to_hide=[column_names.get(y) for y in hidden_categories]
     columns = [
         dict(id='state_name', name='State Name'),
-        dict(id='population_total', name='State Population', type='numeric',
+        dict(id='population_total', name='Total Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='population_st', name='ST Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
@@ -178,6 +181,7 @@ def make_all_india_population_table():
         sort_mode="single",
         column_selectable="single",
         style_as_list_view=True,
+        hidden_columns=columns_to_hide,
         style_cell_conditional=[
             {
                 'if': {'column_id': 'state_name'},
@@ -307,7 +311,7 @@ def make_all_india_literacy_graph():
     return fig_all
 
 
-def make_all_india_population_graph():
+def make_all_india_population_graph(cats='ST'):
     state_population_d = state_population.sort_values('state_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=100 + (32 * n_states),
@@ -323,20 +327,22 @@ def make_all_india_population_graph():
         orientation='h',
         # text=sorted_all_df['ST %']
     ))
-    fig_all.add_trace(go.Bar(
-        y=state_population_d['state_name'],
-        x=state_population_d['population_sc'],
-        name='SC',
-        orientation='h',
-        # visible='legendonly'
-    ))
-    fig_all.add_trace(go.Bar(
-        y=state_population_d['state_name'],
-        x=state_population_d['population_gn'],
-        name='General',
-        orientation='h',
-        # visible='legendonly'
-    ))
+    if 'SC' in cats:
+        fig_all.add_trace(go.Bar(
+            y=state_population_d['state_name'],
+            x=state_population_d['population_sc'],
+            name='SC',
+            orientation='h',
+            # visible='legendonly'
+        ))
+    if 'General' in cats:
+        fig_all.add_trace(go.Bar(
+            y=state_population_d['state_name'],
+            x=state_population_d['population_gn'],
+            name='General',
+            orientation='h',
+            # visible='legendonly'
+        ))
     fig_all.update_layout(barmode='group')
     return fig_all
 
@@ -637,12 +643,12 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
             #     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
             # )
             if dbi == 'Population':
-                fig_pop = make_all_india_population_graph()
+                fig_pop = make_all_india_population_graph(cats)
                 population_visualization = dcc.Graph(
                     id='graph',
                     figure=fig_pop
                 )
-                all_india_table = make_all_india_population_table()
+                all_india_table = make_all_india_population_table(cats)
                 fig_pop.for_each_trace(
                     lambda trace: trace.update(visible=True) if trace.name in cats else (),
                 )
@@ -682,8 +688,8 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, gender_ratio_visualization, \
                        dbc.Label("Gender Ratio Data for India from 2011"), make_map(dbi, aoi, states), n
         else:
-            if dbi == 'Population:':
-                all_india_table = make_all_india_population_table()
+            if dbi == 'Population':
+                all_india_table = make_all_india_population_table(cats)
                 return all_india_table, [], dbc.Label("Population Data for India from 2011"), \
                        make_map(dbi, aoi, states), n
             elif dbi == 'Literacy':
