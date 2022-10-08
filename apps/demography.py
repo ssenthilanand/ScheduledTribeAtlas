@@ -196,7 +196,10 @@ def make_all_india_population_table(cats='ST'):
     return all_country_table
 
 
-def make_all_india_literacy_table():
+def make_all_india_literacy_table(cats='ST'):
+    hidden_categories = [x for x in all_categories if x not in cats]
+    column_names = {'ST': 'literacy_st', 'SC': 'literacy_sc', 'General': 'literacy_gn'}
+    columns_to_hide = [column_names.get(y) for y in hidden_categories]
     columns = [
         dict(id='state_name', name='State Name'),
         dict(id='literacy_tot', name='State Literacy', type='numeric',
@@ -221,6 +224,7 @@ def make_all_india_literacy_table():
         sort_mode="single",
         column_selectable="single",
         style_as_list_view=True,
+        hidden_columns=columns_to_hide,
         style_cell_conditional=[
             {
                 'if': {'column_id': 'state_name'},
@@ -274,7 +278,7 @@ def make_all_india_gender_ratio_table():
     return all_country_table
 
 
-def make_all_india_literacy_graph():
+def make_all_india_literacy_graph(cats='ST'):
     state_literacy_d = state_literacy.sort_values('state_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=100 + (32 * n_states),
@@ -290,22 +294,24 @@ def make_all_india_literacy_graph():
         orientation='h',
         text=state_literacy_d['literate_st'].apply(lambda x: format_decimal(x, locale='en_IN')),
     ))
-    fig_all.add_trace(go.Bar(
-        y=state_literacy_d['state_name'],
-        x=state_literacy_d['literacy_sc'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
-        # locale='en')),
-        name='SC',
-        orientation='h',
-        text=state_literacy_d['literate_sc'].apply(lambda x: format_decimal(x, locale='en_IN')),
-    ))
-    fig_all.add_trace(go.Bar(
-        y=state_literacy_d['state_name'],
-        x=state_literacy_d['literacy_gn'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
-        # locale='en')),
-        name='General',
-        orientation='h',
-        text=state_literacy_d['literate_gn'].apply(lambda x: format_decimal(x, locale='en_IN')),
-    ))
+    if 'SC' in cats:
+        fig_all.add_trace(go.Bar(
+            y=state_literacy_d['state_name'],
+            x=state_literacy_d['literacy_sc'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
+            # locale='en')),
+            name='SC',
+            orientation='h',
+            text=state_literacy_d['literate_sc'].apply(lambda x: format_decimal(x, locale='en_IN')),
+        ))
+    if 'General' in cats:
+        fig_all.add_trace(go.Bar(
+            y=state_literacy_d['state_name'],
+            x=state_literacy_d['literacy_gn'],  # .apply(lambda x: format_percent(x/100, format='00.00\u0025',
+            # locale='en')),
+            name='General',
+            orientation='h',
+            text=state_literacy_d['literate_gn'].apply(lambda x: format_decimal(x, locale='en_IN')),
+        ))
     fig_all.update_layout(barmode='group')
     fig_all.update_traces(textposition="outside")
     return fig_all
@@ -658,7 +664,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, population_visualization, \
                        dbc.Label("Population Data for India from 2011"), make_map(dbi, aoi, states), n
             elif dbi == 'Literacy':
-                fig_lit = make_all_india_literacy_graph()
+                fig_lit = make_all_india_literacy_graph(cats)
                 literacy_visualization = dcc.Graph(
                     id='graph',
                     figure=fig_lit
@@ -669,7 +675,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 fig_lit.for_each_trace(
                     lambda trace: trace.update(visible='legendonly') if trace.name not in cats else (),
                 )
-                all_india_table = make_all_india_literacy_table()
+                all_india_table = make_all_india_literacy_table(cats)
                 return all_india_table, literacy_visualization, \
                        dbc.Label("Literacy Data for India from 2011"), make_map(dbi, aoi, states), n
             elif dbi == 'Gender Ratio':
@@ -693,7 +699,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, [], dbc.Label("Population Data for India from 2011"), \
                        make_map(dbi, aoi, states), n
             elif dbi == 'Literacy':
-                all_india_table = make_all_india_literacy_table()
+                all_india_table = make_all_india_literacy_table(cats)
                 return all_india_table, [], dbc.Label("Literacy Data for India from 2011"), \
                        make_map(dbi, aoi, states), n
             elif dbi == 'Gender Ratio':
