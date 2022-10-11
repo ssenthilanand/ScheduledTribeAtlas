@@ -742,8 +742,8 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     # print(states)
                     district_literacy = get_district_literacy_data(states)
                     # print(district_literacy)
-                    state_table = make_filtered_state_literacy_table(district_literacy)
-                    fig_lit = make_filtered_state_literacy_graph(district_literacy, states)
+                    state_table = make_filtered_state_literacy_table(district_literacy, cats)
+                    fig_lit = make_filtered_state_literacy_graph(district_literacy, states, cats)
                     literacy_visualization = dcc.Graph(
                         id='graph',
                         figure=fig_lit
@@ -784,7 +784,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     return state_table, [], dbc.Label("Population Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
                 elif dbi == 'Literacy':
-                    state_table = make_filtered_state_literacy_table(get_district_literacy_data(states))
+                    state_table = make_filtered_state_literacy_table(get_district_literacy_data(states), cats)
                     return state_table, [], dbc.Label("Literacy Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
                 elif dbi == 'Gender Ratio':  # TODO
@@ -836,8 +836,11 @@ def make_filtered_state_population_table(districts, cats='ST'):
     return filtered_state_table
 
 
-def make_filtered_state_literacy_table(districts):
+def make_filtered_state_literacy_table(districts, cats='ST'):
     # districts = districts.sort_values('district_code')
+    hidden_categories = [x for x in all_categories if x not in cats]
+    column_names = {'ST': 'literacy_st', 'SC': 'literacy_sc', 'General': 'literacy_gn'}
+    columns_to_hide = [column_names.get(y) for y in hidden_categories]
     columns = [
         dict(id='district_name', name='District Name'),
         # dict(id='literacy_tot', name='District Literacy', type='numeric',
@@ -862,9 +865,10 @@ def make_filtered_state_literacy_table(districts):
         sort_mode="single",
         column_selectable="single",
         style_as_list_view=True,
+        hidden_columns=columns_to_hide,
         style_cell_conditional=[
             {
-                'if': {'column_id': 'state_name'},
+                'if': {'column_id': 'district_name'},
                 'textAlign': 'left'
             },
         ],
@@ -960,13 +964,13 @@ def make_filtered_state_population_graph(districts, states, cats='ST'):
     return fig_districts
 
 
-def make_filtered_state_literacy_graph(districts, states):
+def make_filtered_state_literacy_graph(districts, states, cats='ST'):
     districts = districts.sort_values('district_name', ascending=False)
     n_district = len(districts['district_name'])
 
     fig_districts = go.Figure(layout=go.Layout(
         height=200 + (32 * n_district),
-        xaxis=dict(title='Population'),
+        xaxis=dict(title='Literacy %'),
         # xaxis_title='Population',
         yaxis=dict(title='Districts'),
         title_text="Literacy Details for " + states
@@ -978,22 +982,24 @@ def make_filtered_state_literacy_graph(districts, states):
         orientation='h',
         text=districts['literate_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['literacy_sc'],
-        name='SC',
-        orientation='h',
-        text=districts['literate_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
-        visible='legendonly'
-    ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['literacy_gn'],
-        name='General',
-        orientation='h',
-        text=districts['literate_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
-        visible='legendonly'
-    ))
+    if 'SC' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['literacy_sc'],
+            name='SC',
+            orientation='h',
+            text=districts['literate_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            visible='legendonly'
+        ))
+    if 'General' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['literacy_gn'],
+            name='General',
+            orientation='h',
+            text=districts['literate_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            visible='legendonly'
+        ))
     fig_districts.update_layout(barmode='group')
     fig_districts.update_traces(textposition="outside")
 
