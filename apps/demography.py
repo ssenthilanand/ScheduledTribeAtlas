@@ -760,8 +760,8 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     # print(states)
                     district_gender_ratio = get_district_gender_ratio_data(states)
                     # print(district_literacy)
-                    state_table = make_filtered_state_gender_ratio_table(district_gender_ratio)
-                    fig_lit = make_filtered_state_gender_ratio_graph(district_gender_ratio, states)
+                    state_table = make_filtered_state_gender_ratio_table(district_gender_ratio, cats)
+                    fig_lit = make_filtered_state_gender_ratio_graph(district_gender_ratio, states, cats)
                     gratio_visualization = dcc.Graph(
                         id='graph',
                         figure=fig_lit
@@ -787,8 +787,8 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     state_table = make_filtered_state_literacy_table(get_district_literacy_data(states), cats)
                     return state_table, [], dbc.Label("Literacy Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
-                elif dbi == 'Gender Ratio':  # TODO
-                    state_table = make_filtered_state_gender_ratio_table(get_district_gender_ratio_data(states))
+                elif dbi == 'Gender Ratio':
+                    state_table = make_filtered_state_gender_ratio_table(get_district_gender_ratio_data(states), cats)
                     return state_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
         else:
@@ -880,7 +880,10 @@ def make_filtered_state_literacy_table(districts, cats='ST'):
     return all_country_table
 
 
-def make_filtered_state_gender_ratio_table(districts):
+def make_filtered_state_gender_ratio_table(districts, cats='ST'):
+    hidden_categories = [x for x in all_categories if x not in cats]
+    column_names = {'ST': 'st_gr', 'SC': 'sc_gr', 'General': 'gn_gr'}
+    columns_to_hide = [column_names.get(y) for y in hidden_categories]
     districts = districts.sort_values('district_name')
     columns = [
         dict(id='district_name', name='District Name'),
@@ -908,9 +911,10 @@ def make_filtered_state_gender_ratio_table(districts):
         sort_mode="single",
         column_selectable="single",
         style_as_list_view=True,
+        hidden_columns=columns_to_hide,
         style_cell_conditional=[
             {
-                'if': {'column_id': 'state_name'},
+                'if': {'column_id': 'district_name'},
                 'textAlign': 'left'
             },
         ],
@@ -1006,7 +1010,7 @@ def make_filtered_state_literacy_graph(districts, states, cats='ST'):
     return fig_districts
 
 
-def make_filtered_state_gender_ratio_graph(districts, states):
+def make_filtered_state_gender_ratio_graph(districts, states, cats='ST'):
     districts = districts.sort_values('district_name', ascending=False)
     n_district = len(districts['district_name'])
 
@@ -1023,20 +1027,22 @@ def make_filtered_state_gender_ratio_graph(districts, states):
         name='ST',
         orientation='h',
     ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['sc_gr'],
-        name='SC',
-        orientation='h',
-        visible='legendonly'
-    ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['gn_gr'],
-        name='General',
-        orientation='h',
-        visible='legendonly'
-    ))
+    if 'SC' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['sc_gr'],
+            name='SC',
+            orientation='h',
+            visible='legendonly'
+        ))
+    if 'General' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['gn_gr'],
+            name='General',
+            orientation='h',
+            visible='legendonly'
+        ))
     fig_districts.update_layout(barmode='group')
     fig_districts.update_traces(textposition="outside")
 
