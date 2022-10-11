@@ -724,12 +724,12 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
             if viz[-1] == 'graph':
                 if dbi == 'Population':
                     district_population = get_district_population_data(states)
-                    fig_pop = make_filtered_state_population_graph(district_population, states)
+                    fig_pop = make_filtered_state_population_graph(district_population, states, cats)
                     population_visualization = dcc.Graph(
                         id='graph',
                         figure=fig_pop
                     )
-                    state_table = make_filtered_state_population_table(district_population)
+                    state_table = make_filtered_state_population_table(district_population, cats)
                     fig_pop.for_each_trace(
                         lambda trace: trace.update(visible=True) if trace.name in cats else (),
                     )
@@ -780,7 +780,7 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
             #     return filtered_table, [], dbc.Label("Population Data for " + states + "  from 2011")
             else:
                 if dbi == 'Population':
-                    state_table = make_filtered_state_population_table(get_district_population_data(states))
+                    state_table = make_filtered_state_population_table(get_district_population_data(states), cats)
                     return state_table, [], dbc.Label("Population Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
                 elif dbi == 'Literacy':
@@ -797,11 +797,14 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
         return None, None, None, None, None
 
 
-def make_filtered_state_population_table(districts):
+def make_filtered_state_population_table(districts, cats='ST'):
+    hidden_categories = [x for x in all_categories if x not in cats]
+    column_names = {'ST': 'population_st', 'SC': 'population_sc', 'General': 'population_gn'}
+    columns_to_hide = [column_names.get(y) for y in hidden_categories]
     districts = districts.sort_values('district_name')
     district_columns = [
         dict(id='district_name', name='District Name'),
-        dict(id='population_total', name='State Population', type='numeric',
+        dict(id='population_total', name='Total Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='population_st', name='ST Population', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
@@ -813,11 +816,11 @@ def make_filtered_state_population_table(districts):
     filtered_state_table = dash_table.DataTable(
         id='all_country_table',
         columns=district_columns,
-        hidden_columns=['population_sc, population_gn'],
         data=districts.to_dict('records'),
         sort_action="native",
         sort_mode="single",
         column_selectable="single",
+        hidden_columns=columns_to_hide,
         style_as_list_view=True,
         style_cell_conditional=[
             {
@@ -915,7 +918,7 @@ def make_filtered_state_gender_ratio_table(districts):
     return all_country_table
 
 
-def make_filtered_state_population_graph(districts, states):
+def make_filtered_state_population_graph(districts, states, cats='ST'):
     districts = districts.sort_values('district_name', ascending=False)
     n_district = len(districts['district_name'])
 
@@ -933,22 +936,24 @@ def make_filtered_state_population_graph(districts, states):
         orientation='h',
         text=districts['population_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['population_sc'],
-        name='SC',
-        orientation='h',
-        text=districts['population_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
-        visible='legendonly'
-    ))
-    fig_districts.add_trace(go.Bar(
-        y=districts['district_name'],
-        x=districts['population_gn'],
-        name='General',
-        orientation='h',
-        text=districts['population_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
-        visible='legendonly'
-    ))
+    if 'SC' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['population_sc'],
+            name='SC',
+            orientation='h',
+            text=districts['population_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            visible='legendonly'
+        ))
+    if 'General' in cats:
+        fig_districts.add_trace(go.Bar(
+            y=districts['district_name'],
+            x=districts['population_gn'],
+            name='General',
+            orientation='h',
+            text=districts['population_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            visible='legendonly'
+        ))
     fig_districts.update_layout(barmode='group')
     fig_districts.update_traces(textposition="outside")
 
