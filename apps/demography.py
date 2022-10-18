@@ -699,6 +699,11 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 all_india_table = make_all_india_gender_ratio_table(cats)
                 return all_india_table, gender_ratio_visualization, \
                        dbc.Label("Gender Ratio Data for India from 2011"), make_map(dbi, aoi, states), n
+            elif dbi == 'Fertility Rate':  # TODO
+                # all_india_table = make_all_india_population_table()
+                all_india_table = None
+                return all_india_table, [], dbc.Label("Fertility Rate data for India from 2011 is not currently available"), \
+                        make_map(dbi, aoi, states), n
         else:
             if dbi == 'Population':
                 all_india_table = make_all_india_population_table(cats)
@@ -713,9 +718,10 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                 return all_india_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
                        make_map(dbi, aoi, states), n
             elif dbi == 'Fertility Rate':  # TODO
-                all_india_table = make_all_india_population_table()
-                return all_india_table, [], dbc.Label("Fertility Data for India from 2011"), \
-                       make_map(dbi, aoi, states), n
+                # all_india_table = make_all_india_population_table()
+                all_india_table = None
+                return all_india_table, [], dbc.Label("Fertility Rate data for India from 2011 is not currently available"), \
+                        make_map(dbi, aoi, states), n
             else:
                 all_india_table = make_all_india_population_table()
                 return all_india_table, [], dbc.Label(''), make_map(dbi, aoi, states), n
@@ -774,6 +780,12 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     )
                     return state_table, gratio_visualization, \
                            dbc.Label("Gender Ratio Data for " + states + " from 2011"), make_map(dbi, aoi, states), n
+                elif dbi == 'Fertility Rate':  # TODO
+                    # all_india_table = make_all_india_population_table()
+                    all_india_table = None
+                    return all_india_table, [], dbc.Label(
+                        "Fertility Rate data for " + states + " from 2011 is not currently available")   , \
+                            make_map(dbi, aoi, states), n
             #     return filtered_table, filtered_visualization, dbc.Label(
             #         "Population Data for " + states + "  from 2011")
             # else:
@@ -791,6 +803,12 @@ def get_partial_data(n, dbi, aoi, cats, states, viz):
                     state_table = make_filtered_state_gender_ratio_table(get_district_gender_ratio_data(states), cats)
                     return state_table, [], dbc.Label("Gender Ratio Data for India from 2011"), \
                            make_map(dbi, aoi, states), n
+                elif dbi == 'Fertility Rate':  # TODO
+                    # all_india_table = make_all_india_population_table()
+                    all_india_table = None
+                    return all_india_table, [], dbc.Label(
+                        "Fertility Rate data for " + states + " from 2011 is not currently available")   , \
+                            make_map(dbi, aoi, states), n
         else:
             return None, None, None, None, None
     else:
