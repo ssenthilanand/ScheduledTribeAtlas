@@ -401,6 +401,10 @@ layout = html.Div(children=[
         type="circle",
         children=html.Div(id="loading-output-2", style={'display': 'none'}),
     ),
+    dbc.Card(
+        id='rel-map-card',
+        children=''
+    ),
     html.H4(
         id='rel-area-label',
         children=[],
@@ -458,8 +462,8 @@ def update_religion_states_select_status(selected):
 
 @app.callback(
     [Output('rel-viz-table', 'children'),
+     Output('rel-map-card', 'children'),
      Output('religion-visualization', 'children'),
-     # Output('demography-visualization1', 'children')],
      Output('rel-area-label', 'children'),
      Output("loading-output-2", "children")],
     [Input('rel-viz-button', 'n_clicks'),
@@ -477,11 +481,11 @@ def get_religions_data(n, rel, aoi, states):
                 id='graph',
                 figure=fig_rel_demo
             )
-            return make_all_india_religious_demography_table(), rel_demo_visualization, \
+            return make_all_india_religious_demography_table(), rel_make_map(rel, aoi, states), rel_demo_visualization, \
                    dbc.Label("ST Religious Population Data for India in 2011"), n
         elif aoi == 'States':
             if states != '':
-                return make_religious_demography_state_table(states), [], \
+                return make_religious_demography_state_table(states), rel_make_map(rel, aoi, states), [], \
                     dbc.Label("ST Religious population for " + states + " in 2011"), n
     else:
         if aoi == 'India':
@@ -490,9 +494,110 @@ def get_religions_data(n, rel, aoi, states):
             #     id='graph',
             #     figure=fig_rel
             # )
-            return make_all_india_religion_table(rel.lower()), [], \
+            return make_all_india_religion_table(rel.lower()), rel_make_map(rel, aoi, states), [], \
                     dbc.Label("ST " + rel + " Population Data for India in 2011"), n
         else:
-            return make_religion_state_table(rel.lower(), states), [], \
+            return make_religion_state_table(rel.lower(), states), rel_make_map(rel, aoi, states), [], \
                     dbc.Label("ST " + rel + " Population Data for " + states + " in 2011"), n
-    return None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
+    return None, None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
+
+
+def rel_make_map(rel, aoi, states):
+    if rel == 'All':
+        if aoi == 'India':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_total.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of India religion wise in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        elif aoi == 'States':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_total.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of India religion wise in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        else:
+            map_india = ''
+        return map_india
+    elif rel == 'Hindus':
+        if aoi == 'India':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_hindu.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Hindus in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        elif aoi == 'States':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_hindu.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Hindus in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        else:
+            map_india = ''
+        return map_india
+    elif rel == 'Muslims':
+        if aoi == 'India':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_muslim.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Muslims in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        elif aoi == 'States':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_muslim.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Muslims in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        else:
+            map_india = ''
+        return map_india
+    elif rel == 'Christians':
+        if aoi == 'India':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_christian.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Christians in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        elif aoi == 'States':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/religion/india/st_christian.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'ST Population of Indian Christians in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        else:
+            map_india = ''
+        return map_india
+    return ''
+
