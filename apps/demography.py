@@ -1071,7 +1071,7 @@ def make_map(dbi, aoi, states):
     if dbi == 'Population':
         if aoi == 'India':
             map_india = [
-                dbc.CardImg(src='/assets/ST2011.png', top=True),
+                dbc.CardImg(src='/assets/maps/demography/india/population/population.png', top=True),
                 dbc.CardBody(
                     [
                         html.Label(
@@ -1081,7 +1081,7 @@ def make_map(dbi, aoi, states):
             ]
         elif aoi == 'States':
             map_india = [
-                dbc.CardImg(src='/assets/ST2011.png', top=True),
+                dbc.CardImg(src='/assets/maps/demography/india/population/population.png', top=True),
                 dbc.CardBody(
                     [
                         html.Label(
@@ -1095,7 +1095,7 @@ def make_map(dbi, aoi, states):
     elif dbi == 'Literacy':
         if aoi == 'India':
             map_india = [
-                dbc.CardImg(src='/assets/India_literacy.svg', top=True),
+                dbc.CardImg(src='/assets/maps/demography/india/literacy/literacy.png', top=True),
                 dbc.CardBody(
                     [
                         html.Label(
@@ -1105,7 +1105,31 @@ def make_map(dbi, aoi, states):
             ]
         elif aoi == 'States':
             map_india = [
-                dbc.CardImg(src='/assets/India_literacy.svg', top=True),
+                dbc.CardImg(src='/assets/maps/demography/india/literacy/literacy.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'Literacy of India in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        else:
+            map_india = ''
+        return map_india
+    elif dbi == 'Gender Ratio':
+        if aoi == 'India':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/demography/india/genderratio/genderratio.png', top=True),
+                dbc.CardBody(
+                    [
+                        html.Label(
+                            f'Literacy of India in 2011')
+                    ], style={'margin': "auto", 'text-align': "center"},
+                )
+            ]
+        elif aoi == 'States':
+            map_india = [
+                dbc.CardImg(src='/assets/maps/demography/india/genderratio/genderratio.png', top=True),
                 dbc.CardBody(
                     [
                         html.Label(
