@@ -473,7 +473,7 @@ def update_religion_states_select_status(selected):
 )
 def get_religions_data(n, rel, aoi, states):
     if n == 0:
-        return None, None, None, None
+        return None, None, None, None, None
     if rel == 'All':
         if aoi == 'India':
             fig_rel_demo = make_all_india_religious_demography_graph()
