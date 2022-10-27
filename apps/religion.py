@@ -403,7 +403,9 @@ layout = html.Div(children=[
     ),
     dbc.Card(
         id='rel-map-card',
-        children=''
+        children='',
+        style={"margin": "auto", "width": "794px"},
+        # className="w-75",
     ),
     html.H4(
         id='rel-area-label',
