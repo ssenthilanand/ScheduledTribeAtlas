@@ -45,6 +45,8 @@ def get_religion_demography_state(religion, state):
     state_code = get_state_code(state)
     data = pd.read_json(fetch_data('religiousdemo/' + religion + '/' + state_code))
     data_rel = pd.json_normalize(data['data'])
+    if data_rel.empty:
+        return None
     int_cols = [religion, 'district_code', 'total']
     float_cols = ['per_'+religion]
     for col in int_cols:
@@ -57,6 +59,8 @@ def get_religion_demography_state(religion, state):
 
 def get_religious_demography_state(state):
     data = fetch_rel_district_demo(state)
+    if data.empty:
+        return None
     int_cols = ['buddhists', 'christians', 'hindus', 'jains', 'muslims', 'orp', 'rns', 'sikhs', 'total']
     for col in int_cols:
         data[col] = pd.to_numeric(data[col], errors='coerce').fillna(0).astype('int')
@@ -199,6 +203,8 @@ def make_religious_demography_state_table(state):
 
 def make_religion_state_table(religion, state):
     religion_state = get_religion_demography_state(religion, state)
+    if religion_state is None:
+        return None
     columns = [
         dict(id='district_name', name='District Name'),
         dict(id='total', name='State Population', type='numeric',
@@ -499,12 +505,20 @@ def get_religions_data(n, rel, aoi, states):
             return make_all_india_religion_table(rel.lower()), rel_make_map(rel, aoi, states), [], \
                     dbc.Label("ST " + rel + " Population Data for India in 2011"), n
         else:
-            return make_religion_state_table(rel.lower(), states), rel_make_map(rel, aoi, states), [], \
+            state_code = get_state_code(states)
+            missing_codes = [3, 6, 7, 22, 32, 34, 36]
+            if state_code not in missing_codes:
+                return make_religion_state_table(rel.lower(), states), rel_make_map(rel, aoi, states), [], \
                     dbc.Label("ST " + rel + " Population Data for " + states + " in 2011"), n
+            else:
+                return None, None, None, dbc.Label("Requested data not available"), None
     return None, None, None, dbc.Label("ST Religious Population Data for India from 2011"), None
 
 
 def rel_make_map(rel, aoi, states):
+    state_code = get_state_code(states)
+    print(state_code)
+    missing_codes = [3, 6, 7, 22, 32, 34, 36]
     if rel == 'All':
         if aoi == 'India':
             map_india = [
@@ -560,20 +574,26 @@ def rel_make_map(rel, aoi, states):
                 dbc.CardBody(
                     [
                         html.Label(
-                            f'ST Population of Indian Muslims in 2011')
+                            f'ST Population of Indian {rel} in 2011')
                     ], style={'margin': "auto", 'text-align': "center"},
                 )
             ]
         elif aoi == 'States':
-            map_india = [
-                dbc.CardImg(src='/assets/maps/religion/india/st_muslim.png', top=True),
-                dbc.CardBody(
-                    [
-                        html.Label(
-                            f'ST Population of Indian Muslims in 2011')
-                    ], style={'margin': "auto", 'text-align': "center"},
-                )
-            ]
+            if state_code not in missing_codes:
+                map_url = "/assets/maps/religion/states/" + rel.lower() + "/" + state_code + ".png"
+                map_india = [
+                    dbc.CardImg(src=map_url, top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'ST Population of Indian {rel} in {states} in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for ST population of Indian {rel} in {states} in 2011 is not available']
+                ]
         else:
             map_india = ''
         return map_india
@@ -584,20 +604,25 @@ def rel_make_map(rel, aoi, states):
                 dbc.CardBody(
                     [
                         html.Label(
-                            f'ST Population of Indian Christians in 2011')
+                            f'ST Population of Indian {rel} in 2011')
                     ], style={'margin': "auto", 'text-align': "center"},
                 )
             ]
         elif aoi == 'States':
-            map_india = [
-                dbc.CardImg(src='/assets/maps/religion/india/st_christian.png', top=True),
-                dbc.CardBody(
-                    [
-                        html.Label(
-                            f'ST Population of Indian Christians in 2011')
-                    ], style={'margin': "auto", 'text-align': "center"},
-                )
-            ]
+            if state_code not in missing_codes:
+                map_india = [
+                    dbc.CardImg(src="/assets/maps/religion/states/" + rel.lower() + "/" + state_code + ".png", top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'ST Population of Indian {rel} in {states} in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for ST population of Indian {rel} in {states} in 2011 is not available']
+                ]
         else:
             map_india = ''
         return map_india
