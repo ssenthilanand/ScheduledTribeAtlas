@@ -312,6 +312,28 @@ def make_all_india_religious_demography_graph():
     return fig_all
 
 
+def make_state_religious_demography_graph(religion, state):
+    religious_demography_d = get_religion_demography_state(religion, state).sort_values('district_name', ascending=False)
+    if religious_demography_d.empty:
+        return None
+    fig_all = go.Figure(layout=go.Layout(
+        height=100 + (32 * religious_demography_d.shape[0]),
+        xaxis=dict(title='ST Population %'),
+        yaxis=dict(title='District'),
+        title=dict(text="ST Religious Population Data for " + state + ".")
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['district_name'],
+        x=religious_demography_d["per_" + religion],
+        name="Religion " + "Population",
+        orientation='h',
+        text=religious_demography_d[religion]
+    ))
+    fig_all.update_layout(barmode='group')
+    return fig_all
+
+
 religions = ['All', 'Hindus', 'Muslims', 'Christians']
 aoi_card = dbc.Card(
     [
@@ -507,8 +529,14 @@ def get_religions_data(n, rel, aoi, states):
         else:
             state_code = get_state_code(states)
             missing_codes = [3, 6, 7, 22, 32, 34, 36]
+            fig_rel_demo = make_state_religious_demography_graph(rel.lower(), states)
+            if fig_rel_demo is not None:
+                rel_demo_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_rel_demo
+                )
             if state_code not in missing_codes:
-                return make_religion_state_table(rel.lower(), states), rel_make_map(rel, aoi, states), [], \
+                return make_religion_state_table(rel.lower(), states), rel_make_map(rel, aoi, states), rel_demo_visualization, \
                     dbc.Label("ST " + rel + " Population Data for " + states + " in 2011"), n
             else:
                 return None, None, None, dbc.Label("Requested data not available"), None
