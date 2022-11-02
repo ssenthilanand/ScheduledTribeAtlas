@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 10.0, SVG Export Plug-In . SVG Version: 3.0.0 Build 76)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
+	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
+]>
+<svg 
+	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" i:viewOrigin="1.1626 834.7632" i:rulerOrigin="1 -1.1104" i:pageBounds="-1 843 594.2754 1.1104"
+	 xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 width="592.453" height="819.955" viewBox="0 0 592.453 819.955" overflow="visible" enable-background="new 0 0 592.453 819.955"
+	 xml:space="preserve">
+	<style type="text/css">
+	<![CDATA[
+@font-face{font-family:'Helvetica-Condensed';src:url("data:;base64,\
+T1RUTwACACAAAQAAQ0ZGIEmVTkIAAAAsAAAQEWNtYXAGEgPTAAAQQAAAAMoBAAQCAAEBARRIZWx2\
+ZXRpY2EtQ29uZGVuc2VkAAEBATf4GwwA+BgE+/T8pBwIjRwIGwUeoABIgoEl/4uLHqAASIKBJf+L\
+iwwH9zAP93AQ93IRkhwQChIAAQEBP0NvcHlyaWdodCAyMDAwIEFnZmEgTW9ub3R5cGUgQ29ycG9y\
+YXRpb24uIEFsbCBSaWdodHMgUmVzZXJ2ZWQuAAABAAEAAAkBAA0AABEEABgAABoBACQEACoAAC0E\
+ADMDADoAAEIAAEQCAEkAAEwAAE4BAFEAAFQAAFgAAGgAAKEAAAAAKgIAAQAbAB4AdwDQAPMBggGj\
+AhMCtALeAxYDtQPOBGMExwT7BRUFrQXUBf8GPQaABwkHXwfxCMEI7glFCXcKMQq5CzQL1QwSDE0M\
+vA0GDW4OFw5YDmgO1Pt01xYcBID5+hz7gAf8+veUFff6+RT7+gYO/XIO/Mj4cBwGABUk+z88+zRS\
++ycIUvsnbvs8+1Ea+0qj+ze6+yUeuvsk4Ps99w37Vwj3AAYv90NJ9zdi9ywIYvctd/c690ka91Cg\
+9z+29y8etfcv0Pcy7Pc3CA78yPdiHAYAFfL7P9r7NMT7JwjE+yeo+zz7URr7SnP7N1z7JR5c+yQ2\
++z37DftXCPsABuf3Q833N7T3LAi09y2f9zr3SRr3UHb3P2D3Lx5h9y9G9zIq9zcIDv1y9zf7ZxWL\
+B82arNL3ERoo92T3TvtiBvs5TSX7EGQeiwcO6flZFfIH942v90vS9wge9wnS78X3FBueBvcP7Vgk\
+1R/WJLD7Pft/GvtQB/uQaPtLRvsFHvsFRiNT+x8b+yMhvfBIH0jwavc0924a90T3rRX7kwf7X5/7\
+GrJJHkmzx2rcG+TJuOSuH6/knfca90ca94AH9zR29w1i3R7dYk20NxtDUmI5Yh9iOnf7Evs/Gg73\
+NBwE4xX3F+Sgtrsfu7ap1JjzCPcYHPoB+z/68/vUBg7mFpL3G5ruo8mjyrvL0873yve/GL26r7ig\
+uAihuJbI2hr3SEHl+yn7Lz0h+2geU/tB7Af3Ga700Nge2NHwsvcXG/cT7mZA0B/QQK4h+x4aJXg2\
+ZEceZUdIPyw3+537gRhARmQ+iDcIi/ki+y790gcO2PhVFfdEBol6inp4GvtK4DD3PtPFo7q3Hre6\
+odDlGvcDddtevB68Xyij+y4biweLB/cuB4sHiwf3FuGesrYftrKg0O4a9zpG3vsdOlJzXGoealx7\
+QSUa+0G6BvcPre3P0x7T0Oqv9w8b9wnoZ0PQH9BDri/7BBr7R0L7B/snWR7fe8tjuEoIuEuiOywa\
++9P7Jfsz+7X7o/sc9zT31B6LBw7F+LEV+Nf6dgX3Mf559x77Lvse/BT7P/gU/MkG9xv3LhWL+EL5\
+eQeLBw73iRay963Q95Hw93fw93f3CPdZ9xn3OQiL/Vj3Lvnk+yEH+xL7MfsB+1sv+4Uw+4VO+5Rt\
++6EIDvcQ9+UV90QG+yPPRPcd5M245rYetuaj9zGR93MI+xdRKkn7Gxv7FSm35EYfR+Rp9wL3Fhr3\
+Ma/3FtTwHvDU7773FRv3LvcFVfsB0h/S+wCv+0j7kBr7zWf7ckP7Fx77F0T7Ckn7OBv7AzStz0wf\
+TM9r5Ij3AQj3IPk3FfsBoDq1VR5Vtclw3hv3Ntz3A/dy94U39wz7PPs1O/sP+4ofDv1y9zf69BX3\
+Tvth+04G/VoE9077YftOBg4g+fH4vBX3QwZ7+0t/+w5fKD5AGUA/KGX7DRv7PvsPx/cLPx9A9wxl\
+90T3fRr3BQf3obL3W9r3Fx73F9r3Dsz3Ohv3GfZhN9wf3Dez+wH7GRpfB4v7Q4sH93iDL/cG+0Ub\
+LEJdLlYfVi5x+1L7tBr7WqP7KbomHie611nzG/cw5PX3aaEf+4wcBOcViweWHPloFYsHDpD3OxYc\
+BgD4PQf3RPcYViLjH+Qit/tc+7ka+5Bj+1U6+xoe+xo6+xRI+0Ub+6n3LhX3oQb3CeG45MIfwuSm\
+9zj3gRr3WnL3KlnxHvJZML77Fxv7mgb3hPfGFYsH/NX7BBWLBw73KxYcBgD5jvsu/OT8kPi/+y78\
+v/zK+On7Lgf8EBwGmBWLB/dhHPloFYsH/XscBigViwcO++X3KxYcBgD5Xvsu/LT8iPiM+y78jP1s\
+Bw6Q+Nn5EhX3LviO/bz7FveMB/tJWvsLMPtQG/sz+w7H9w04Hzj3DWH3X/ewGve5tPdn3vcVHvcV\
+3vcSzPc/G/cl9wVgNdsf2zaz+wn7KRqL+0OLB/dtgiz3AftLG/sHOFkoWB9YKHL7RfuTGvuFpPs5\
+vjIeMr7bX/cCG/cN3rvrth+366H3E/cxGvvN+q4ViweXHPloFYsHDv05914cBgAV9z4c+gD7Pgbh\
+HAaYFYsHfRz5aBWLB/umHAYoFYsHDvc+HAYAFfc+HPqa+QT7Lv2uBvcvHAaYFYsH964c+WgViwf8\
+8xwGKBWLBw737/cxHAYAFffABvfuHPq6BYsH9+wcBUYF98Ac+gD7PhwFlAaLB/wKHPpsBfteBvwK\
+HAWUBYsHHPps+z4HDpD3MRwGABX3qwb4fRz6kAWLBxwFcPc+HPoA+6sH/H0cBXYFiwcc+or7Pgf4\
+exwGmBWLB7sc+WgViwf9SBwGKBWLBw6Q9w75zRX3irX3T973Ex73E9/3E8v3Pxv3OfcRUPsJ3x/f\
++wm1+1/7sxr702D7bzb7Ch77Cjb7EFD7Nxv7TPsXyvcSPh8+9xJl93X32Rr3Q4AV+5+i+0u6Jx4n\
+uuJZ9xMb9xLhvvK4H7nyovdL950a+Cb7A/dd+3P7a/sA+1/8KR736Pn+FYsHDiD3QxwGABX4Kwb3\
+QPcPZT/WH9ZAsSH7Gxr7KWT7Bj09Hj09+x1k+1kb+1P9HPs+Bvc+HAVmFfzY9z4H9yzvo7q8H7y6\
+pNbxGu5y01m4HrlZK6L7IxsOkBwEfhb7XgZ40H/KhMMIhMOIxMYa9wFz2ly8Hr1cSqQ6G/u3/TT7\
+PhwGAPgnBvdV9xhnQtIf0kOvJ/sVGvtpJ/sP+1xrHvR+0m6wX7FgoEqONY4+lvsCnvsll0afZqiH\
+CPuI+sQV90sg5vtrHvuD/MD3nwb3WO3p91Af+9z42BWLB8Qc+WgViwf9DxwGKBWLBw4g9wT4fBX3\
+Q4sGPwcgoj+6XR5dutN07Rvs06S8vB+8vaPO3hrYf8R0rx50r2OoVKH70fcPGPsBtkPAaMkIacl6\
+1+Ua9w+y8NraHtra8rP3ERv3IfcBaEXWH9dGsTUmGnSKc4lzHvtDBo2bjJ2gGorGdL5guAi4YFGi\
+RBsrRXReXx9gXnVHLhokvkPwZB73qyD3C1zcV7VRGbZRoDskGvshY/sFOzUeNTv7CmD7MRv7H/sD\
+sdY6HzrWYvcK9zQayQf4WhwEsBWLB5Uc+WgViwcOqxwGABX6Xvsu/CQc+pr7PhwFZvwkBviB98YV\
+iweeHPloFYsH/LQcBigViwcOkPc5HAYAFfc+/uUG+2fsIfdW91bs8fdgHvrw9z4c+24H+xliJjhG\
+HkY5+wNp+yAb+y37B6/SPB880mTx9xga+FYcBSQViwfsHPloFYsH/VwcBigViwcOIJscBgAV91EG\
+9/z9lAWLB/f8+ZQF91EG/GT+QgX85vs++OYH6fraFYsH/NL7BBWLBw775fcA+dIVswf3WfcF7vd1\
+8dhyWsAewFqmSToa/VUHWqFzt5aWjIyWHvsJB4N4codtG1BimKRzH3SlfriJynNSZlxaZwhoWlh5\
+VRv7WCn3Afdu9yHH6vcNvR/3uvcLpZadl5aaGZaakKi4GuJ7wmyiHqJsXZdQG01ffnJxH3FyfmJU\
+GmMH9+n7ahVSaDZk+wVeCEFsZkchGvsPwU33AMa7obeyHrK4nsDKGvsi+kQViwf3mBz7AhWLBw77\
+5fk0+CYV9y4GiPsdayBOQAhATjZl+wMb+xcrt+JNH03ibPcq92ca92iq9zDI7h7vye699xwb9N5o\
+Rccfx0WpLvsIGov7LosH9zlO3fsPPFNnQmgeaEN6+xL7Rxr7OJz7Bq5MHkyuwmvUG8i5nrKrH6yy\
+n9qS9wsI+1H6ABWLB44c+wIViwcO+VT6ghX4pvc2HPoA+zH3NgdtTGhcY2oIamNRez4bIjm34lAf\
+UeNu90L3mRr3Maj3FcbxHvLG3773ARv3A+VWIM4f/E38ThX7RZz7DK1LHkuuw2vYG9DCqsqyH7LK\
+n9/yGvcmB/crefcCaM8e0GhSrT4b+yZC+y/7yh8O++X3k/jBFYsHiwc2B/siniuxWB5Ysr1yyhvI\
+up+yrB+ss53Ajc0In4ydjJwe9ydkBiJtM09EHkRQNWf7BRv7i/sQ91v4I/dNq/clyvYf9srnwfcL\
+G/cV5mE4wh/COKf7NvuDGosHiweLB/zE9xkV+B2LBosHiwf3HXrlaLgeuGlfoVUbQFZxVmwfbFZ7\
+NYj7DQj3cvjgFYsH0hz7AhWLBw73KRwGABX3NvymBvbU6cD3CRvo0XJauB+4WqJBKBr9+vs2+cwH\
+9x1Uz/sDP1FzW2QeZFt3UUga/aT7NgcO++X3IhYcBgD3Nv49B4sH+CT4rQX3VAb7+vxQBYsH+AT9\
+SAX7Ugb7tvjIBYsH+w77NAX8KAf3WBaLBw737/cxHARwFfcx+yYG9wnS5sb3Axv3CeRQ+wnKH/cJ\
+2vHG9xAb18x0XcIfwl2mPyIa/fr7NvnMB9V+wHCqHqpxX5tOG1FXdV5cH1xfdFBAGv2k+zb5zAf3\
+HVLP+wZMVnZhXh5fYnVFKBr9iPs2Bw73KRYcBHD3MfsWB/bU68D3DBvkz3Nauh+7WqNBJxr9+vs2\
++cwH9x1Uz/sDSFN0XV8eYF11UEQa/aQH91gcBP4ViwelHPsCFYsHDvfE+oIVoLmqsbapCKq2vJrC\
+G/cJ5l0uzB/MLqz7Evs1GvxX+xD7dvuLIDzA9lge/Jb7NhwF8PcxB5D85RX7t9P7Jfcl2sSx164e\
+rted9w/3Phr3uUH3JvsoQFRqSmceaEp5+xb7VRoO++Xm9+YV9y6LBkGYUqRjHmOlv3fYG/cl1Mr3\
+E757smqnH2uoUqg4qPsjvS69Yr0IYr12ytYa9qvcy8Iewsvcp+wb9333CPsE+3Qfi/suiwfMf71y\
+rB6tclucQxv7D05R+whgmWanbR+obdBn9wFh9xRa31uyXgizXp9QQxr7BWc0Qk8eUEMxbfsBG/sB\
+NafETB9MxGzX6BrEB/fu+kAViweWHPsCFYsHDvcMsRwEcBX3Owb3X/5/BYsH91L6fwX3Owb3Uf5/\
+BYsH92D6fwX3Owb7tBz7kAX7Owb7UPp/BYsH+1H+fwX7OwYO/XL3ZBwF6BX3APxk+wAGDvw/6xwE\
+0hXap9DDyB7IxNSq5Rvk02xNxB/ETqdEPBo3bUNPUB5QUENuOBs2Q6fDUB9Rw27V5xr3E4cVWZxh\
+rmoeaq60erwbvLWcrq0fra6ctLoau3q1aK4ermlhnVobWWF5aGkfamh6YloaDvqUFBwE3hUAAAAA\
+AAABAAAAAwAAAAwABAC+AAAAKgAgAAQACgAgACkALAA0ADcAOgBHAEkAUABVAFkAYQBlAGgAawBu\
+AHAAcwB3ALD//wAAACAAJwAsADAANwA5AEMASQBMAFIAWQBhAGMAaABrAG0AcABzAHcAsP///+EA\
+AP/Y/9X/0//S/8r/yf/H/8b/w/+8/7v/uf+3/7b/tf+z/7D/eQABAAAAKAAAAAAAAAAAAAAAAAAA\
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAgADAAA=")}
+	]]>
+	</style>
+	<metadata>
+		<variableSets  xmlns="&ns_vars;">
+			<variableSet  varSetName="binding1" locked="none">
+				<variables></variables>
+				<v:sampleDataSets  xmlns="&ns_custom;" xmlns:v="&ns_vars;"></v:sampleDataSets>
+			</variableSet>
+		</variableSets>
+		<sfw  xmlns="&ns_sfw;">
+			<slices></slices>
+			<sliceSourceBounds  y="14.809" x="1.163" width="592.453" height="819.955" bottomLeftOrigin="true"></sliceSourceBounds>
+		</sfw>
+	</metadata>
+	<switch>
+		<foreignObject requiredExtensions="&ns_ai;" x="0" y="0" width="1" height="1">
+			<i:pgfRef  xlink:href="#adobe_illustrator_pgf">
+			</i:pgfRef>
+		</foreignObject>
+		<g i:extraneous="self">
+			<g id="Layers" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+				<g id="Lakshadweeo" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+					<g>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M285.434,762.611h0.144v0.145h0.144v0.144h-0.144h-0.144v-0.144l-0.144-0.145H285.434"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M294.363,763.907l-0.144,0.288l-0.288,0.288l-0.288,0.288l-0.144,0.145l-0.288,0.432l-0.288,0.144l-0.288,0.145l-0.432,0.144
+							h-0.288l-1.008-0.144h-0.432l-0.864-0.145l-0.72-0.432l-0.72-0.144l-0.288-0.145l-0.288-0.144l-0.144-0.145h-0.144
+							l-0.144-0.144l-0.144-0.145v-0.288v-0.287l-0.144-0.288v-0.145v-0.144h0.144h0.144v0.144h0.144v0.145h0.144h0.144v0.144v0.145
+							h0.144v0.144v0.144h-0.144v-0.144l-0.144-0.144l-0.144-0.145v-0.144h-0.144h-0.144l0.144,0.144l0.144,0.145v0.144l0.144,0.144
+							l0.144,0.145h0.144h0.288l0.288,0.144h0.72h0.144l0.864-0.144h0.144l0.576-0.145l0.144,0.145h0.432h0.144l0.576-0.145
+							l0.288-0.144l0.432-0.144l0.288-0.145l0.144-0.144v-0.145l0.288-0.144l0.576-0.433l0.432-0.287l0.288-0.145l0.288-0.432
+							l0.288-0.433l0.144-0.287l0.288-0.433l0.288-0.432l0.432-0.432l0.144-0.288l0.144-0.145v-0.288l0.145-0.433l0.144-0.431
+							v-0.145l0.288-0.576l0.144-0.288l0.145-0.288v-0.145l0.288-0.432l0.288-0.576l0.432-0.72l0.288-0.432l0.144-0.145l0.288-0.432
+							l0.288-0.144l0.145-0.145v0.145h-0.145l-0.288,0.288l-0.144,0.287l-0.145,0.288l-0.287,0.576l-0.864,1.152l-0.145,0.432
+							l-0.575,1.152v0.287l-0.145,0.288v0.145v0.144v0.145v0.145l-0.144,0.288v0.431v0.145v0.288v0.433v0.144v0.145l0.144,0.287
+							l-0.144,0.144v0.145l-0.289,0.288l-0.72,0.72l-0.288,0.145l-0.72,0.576l-0.432,0.432L294.363,763.907"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M430.172,398.582h-0.145v-0.144h0.145h0.144v0.144H430.172"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M430.604,398.438h-0.144v-0.144h0.144V398.438"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M430.892,397.862l-0.145,0.144v-0.144v-0.144h0.145V397.862"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M430.172,397.574v-0.144h0.144L430.172,397.574"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M429.596,397.43h0.144v0.144h-0.144v0.144h-0.145h-0.144h-0.144v-0.144h0.144l0.144-0.144l0.145-0.144h0.144L429.596,397.43"
+							/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M433.628,397.862v0.432v0.576v0.144v0.288v0.288l-0.144,0.144v0.288v0.288v0.288l-0.145,0.144l-0.144,0.144l-0.145,0.144
+							h-0.288h-0.144h-0.288l-0.144-0.144l-0.289-0.144v-0.144l-0.144-0.144v-0.144l0.144-0.144v-0.144l-0.144-0.288v-0.288
+							l-0.144-0.144v-0.288l-0.145-0.288l-0.145-0.144l-0.144-0.288l-0.145-0.144v-0.144v-0.144h0.145l0.144,0.144l0.145,0.144
+							h0.145h0.144h0.144l0.145-0.144l0.145-0.144l0.144-0.144h0.144l0.145-0.144v-0.144l0.144-0.288l0.144-0.144v-0.144
+							l0.145-0.144v-0.144l0.145-0.288v-0.288l0.144-0.288l0.145-0.288l0.144-0.432l0.145-0.144v-0.288l0.144-0.144v-0.432
+							l0.144-0.144v-0.288l0.145-0.144v-0.144l0.144-0.144v-0.288l0.145-0.288v-0.288v-0.288l0.144-0.144v0.144v0.144v0.144v0.288
+							l-0.144,0.432l-0.145,0.576l-0.144,0.144v0.288v0.288l-0.145,0.288v0.288v0.144l-0.144,0.144v0.144l-0.144,0.288v0.288v0.144
+							l-0.145,0.432v0.288v0.144v0.144v0.288v0.432V397.862"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M434.925,390.518l-0.145-0.144v-0.144h0.145v0.144V390.518"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M155.241,390.374h-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144h0.144l0.144-0.144
+							v-0.144h0.144v-0.144h0.144v-0.144l0.288-0.576h0.144l-0.144,0.432l-0.144,0.144v0.432v0.144v0.144h-0.144v0.144l-0.144,0.144
+							l-0.144,0.144l-0.144,0.288h-0.144v0.144l-0.288,0.144H155.241"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M436.941,381.158v0.144l0.145,0.288v0.288v0.288v0.288l0.144,0.144l0.144,0.288v0.144l0.145,0.288v0.432l0.144,0.144
+							l-0.144,0.288v0.288l-0.145,0.288v0.288l-0.144,0.144v0.288l-0.144,0.144l-0.145,0.432v0.144h-0.144v0.144h-0.145v-0.144
+							h0.145v-0.144v-0.288v-0.144l0.144-0.288v-0.288l0.145-0.144v-0.288l0.144-0.288v-0.432v-0.288v-0.144l-0.144-0.288
+							l-0.145-0.288v-0.432l-0.144-0.144l-0.145-0.288v-0.144v-0.288v-0.144l-0.144-0.144v-0.144v0.144v0.144h-0.145v-0.144v-0.144
+							l0.145-0.144l0.144-0.144h0.145h0.144v0.144V381.158"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M166.907,377.99l-0.144,0.288v0.144l-0.144,0.288l-0.288,0.144l0.144-0.288l0.144-0.144l0.144-0.288v-0.288v-0.144
+							l-0.144-0.144h0.144h0.144v0.144l0.144,0.144L166.907,377.99"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M166.042,372.662h0.144v0.144v0.144v0.144h-0.144v-0.144v-0.144h-0.144l-0.144-0.144h-0.144h-0.144l-0.144,0.144l-0.144-0.144
+							h-0.144v-0.144v-0.144h0.144v-0.144l0.144-0.144v-0.144v-0.144v-0.144v-0.144l-0.144-0.144v-0.144v-0.144v-0.144l0.144-0.144
+							h0.144v0.144h-0.144l0.144,0.144l0.144,0.144v0.144v0.144l0.144,0.144v0.144l0.144,0.144l0.144,0.144v0.144v0.144v0.144
+							V372.662"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M234.451,283.958h0.144h0.144h0.144l0.144,0.145l0.144,0.144l0.144,0.144l0.144,0.144v0.288l0.144,0.288l0.144,0.144v0.288
+							v0.145v0.144v0.144v0.144l-0.144,0.288v0.144l-0.144,0.144v0.144v0.144h-0.144v0.144h-0.144l-0.144,0.145l-0.144,0.144h-0.144
+							l-0.144,0.144h-0.288h-0.144h-0.144l-0.144,0.144h-0.144l-0.288,0.144l-0.288,0.144h-0.144h-0.144l-0.144,0.144h-0.144
+							l-0.144,0.144l-0.288,0.144l-0.432,0.288l-0.288,0.288l-0.288,0.144l-0.288,0.144l-0.432,0.288l-0.144,0.144v0.144h-0.144
+							l-0.144,0.144v0.144h-0.144v0.144h-0.144l-0.144,0.145v0.144h-0.144v0.144h-0.144v0.144h-0.144l-0.144,0.144h-0.144v0.144
+							h-0.144h-0.144v-0.144h-0.144v-0.144v-0.144v-0.144h0.144v-0.144h0.144v-0.145h0.144v-0.144h0.144h0.144l0.144-0.144h0.144
+							h0.144v-0.144h0.144v0.144h0.144v-0.144h0.144v-0.144l0.144-0.144h0.144v-0.144l0.144-0.144l0.144-0.144v-0.144v-0.144h0.144
+							v-0.145l0.144-0.144l0.288-0.288l0.144-0.288l0.144-0.144l0.144-0.288l0.144-0.144l0.144-0.144l0.144-0.145v-0.144
+							l0.144-0.144l0.288-0.432l0.288-0.432v-0.144l0.144-0.144l0.144-0.288l0.144-0.144v-0.144l0.144-0.144v-0.144h0.144v-0.144
+							l0.144-0.144v-0.144v-0.144l0.144-0.144v-0.145v-0.144v-0.144h0.144l0.144,0.144h0.288L234.451,283.958"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M444.574,244.935h0.288l0.145,0.144h0.144h0.144h0.145h0.144h0.289l0.144,0.144h0.144h0.145h0.145l0.144-0.144h0.144
+							l0.144,0.144h0.145h0.144h0.145h0.145h0.287l0.145,0.144h0.288h0.145h0.144h0.144h0.145h0.144v-0.144h0.289l0.144,0.144h0.144
+							h0.145h0.287h0.288h0.145l0.433,0.144h0.287h0.145l0.145,0.144l0.144,0.144v0.144l-0.144,0.144v0.144h-0.145v0.144h-0.145
+							l-0.144,0.144h-0.144h-0.145h-0.288l-0.145,0.144h-0.288h-0.144l-0.144,0.144h-0.145h-0.144l-0.288,0.144l-0.433,0.144
+							l-0.432,0.144l-0.433,0.144l-0.144,0.144h-0.433l-0.288,0.144h-0.287l-0.144,0.144h-0.433h-0.144h-0.289h-0.288l-0.287-0.144
+							h-0.145h-0.144h-0.289l-0.432-0.144l-0.287-0.144l-0.288-0.144l-0.288-0.288v-0.144l-0.145-0.288l-0.145-0.288v-0.288v-0.144
+							v-0.144v-0.144l0.145-0.144v-0.144l0.145-0.144h0.144h0.145l0.144-0.144h0.145h0.287h0.145h0.144H444.574"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M140.551,230.247v0.144v0.144v0.144h-0.144h-0.144h-0.144h-0.144h-0.144v-0.144h-0.144h0.144v-0.144l0.144-0.144h0.144h0.144
+							h0.144l0.144-0.144V230.247"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M148.472,217.575h0.144h0.144h0.144v0.144v0.144v0.144l-0.144,0.144l-0.144,0.288l-0.144,0.288l-0.144,0.144l-0.144,0.288
+							l-0.144,0.288v0.144l-0.144,0.144l-0.144,0.144l-0.144,0.288l-0.144,0.288l-0.144,0.144l-0.144,0.288l-0.288,0.288
+							l-0.144,0.288l-0.144,0.144l-0.144,0.288l-0.144,0.144l-0.144,0.144l-0.144,0.144l-0.144,0.144l-0.144,0.288l-0.144,0.144
+							l-0.144,0.144l-0.144,0.144v0.144l-0.144,0.288l-0.288,0.288l-0.144,0.288l-0.144,0.144v0.144l-0.144,0.144l-0.144,0.288
+							l-0.144,0.144l-0.144,0.288l-0.144,0.144v0.144l-0.144,0.144v0.144l-0.144,0.144l-0.144,0.288v0.144l-0.144,0.144v0.144
+							l-0.144,0.144v0.144L143,227.223v0.288l-0.144,0.144l-0.288,0.144v0.144l-0.144,0.144l-0.144,0.144v0.144h-0.144l-0.144,0.144
+							v0.144l-0.144,0.144l-0.144,0.144l-0.144,0.144l-0.144,0.144l-0.288,0.144v0.144h-0.144h-0.144l0.144-0.288h0.144v-0.144
+							l0.432-0.432l0.144-0.288l0.288-0.144l0.144-0.288l0.144-0.288l0.144-0.144l0.144-0.144l0.288-0.288l0.144-0.288l0.144-0.288
+							l0.144-0.144l0.144-0.432l0.144-0.288l0.144-0.288l0.144-0.288l0.144-0.288l0.144-0.144l0.144-0.144l0.144-0.288l0.144-0.144
+							v-0.288l0.144-0.144l0.144-0.288l0.144-0.144v-0.144l0.144-0.288v-0.288l0.144-0.288l0.144-0.288v-0.288l0.144-0.144v-0.288
+							l0.144-0.288v-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144v-0.432h0.144v-0.144l0.144-0.288l0.144-0.288v-0.144h0.144
+							l0.144-0.144v-0.144h0.144l0.144-0.288h0.144v-0.144l0.288-0.288h0.144l0.144-0.288l0.144-0.144h0.144l0.144,0.144h0.144
+							H148.472"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M166.331,204.615h0.144h0.144h0.144h0.288h0.144h0.144v0.144h-0.144h-0.144v-0.144l-0.144,0.144v-0.144h-0.144v0.144h-0.144
+							v0.144l-0.144,0.144v0.144l0.144,0.144v0.288v0.144v0.144l0.144,0.144l0.144,0.144v0.144h0.144v0.144v0.144h-0.144h-0.144
+							l-0.144,0.144h-0.144h-0.144h-0.144h-0.144l-0.144-0.144h-0.144h-0.144l-0.144-0.144v-0.144v-0.144l0.144-0.144v-0.288
+							l0.144-0.144v-0.144l0.144-0.144v-0.144v-0.288l0.144-0.144v-0.144v-0.144h0.144h0.144V204.615"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M173.819,204.183l-0.144,0.144l-0.144,0.144l-0.144,0.144l-0.288,0.144l-0.144,0.144l-0.144,0.144h-0.144l-0.288,0.144
+							l-0.144,0.144l-0.144,0.144h-0.144h-0.144h-0.144l0.144-0.144l-0.144-0.144l0.144-0.144v-0.144v-0.144v-0.144v-0.144h0.144
+							v-0.144l0.144-0.144h0.144h0.144h0.144h0.144h0.144h0.144h0.144h0.144h0.288H173.819l0.144-0.144h0.144v-0.144l0.144,0.144
+							h-0.144l-0.144,0.144H173.819"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M175.404,203.896v0.144h-0.144l-0.144,0.144h-0.144l-0.144-0.144h0.144l0.144-0.144h0.144l0.144-0.144h0.144v0.144H175.404"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M175.836,203.319v0.144h-0.144v0.144v0.144h-0.144v-0.144v-0.144h-0.144v-0.144h0.144h0.144H175.836"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M175.98,203.031h-0.144h-0.144v-0.144v-0.144v-0.144v-0.144h0.144v0.144h0.144v0.144v0.144V203.031"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M255.622,174.952h-0.144l-0.144-0.144l-0.144-0.144v-0.144l-0.144-0.144v-0.144l-0.144-0.144v-0.289v-0.144v-0.144v-0.144
+							v-0.288l0.144-0.144v-0.288l0.288-0.288v-0.144l0.144-0.288l0.288-0.288l0.144-0.144l0.144-0.144l0.288-0.144l0.288-0.144
+							h0.144l0.144-0.144l0.144-0.144l0.288-0.145l0.144-0.144h0.144l0.144-0.145h0.144h0.288h0.144v0.145h0.144h0.144v0.144v0.145
+							v0.144v0.144l-0.144,0.432l-0.144,0.144l-0.144,0.144v0.432l-0.288,0.432l-0.144,0.288l-0.288,0.288l-0.432,0.432
+							l-0.144,0.144l-0.432,0.289l-0.576,0.432l-0.144,0.144l-0.144,0.144V174.952"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M264.695,161.271v-0.144h0.144v-0.144l0.144-0.145v-0.144v-0.432l0.144-0.144v-0.144h-0.144v-0.288l0.144-0.145V159.4v-0.288
+							l0.144-0.144v-0.144l0.144-0.288v-0.144l0.144-0.288v-0.145l0.144-0.144v-0.145l0.144-0.144l0.144-0.288v-0.144h0.144v-0.144
+							v-0.144v-0.144l0.144-0.144v-0.145l0.144-0.144v-0.144v-0.144l0.144-0.144v-0.144l0.144-0.288l0.144-0.144v-0.144l0.144-0.288
+							v-0.289l0.144-0.144v-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144v-0.144v-0.144h0.144v-0.289v-0.144l0.144-0.288
+							l0.144-0.288V152.2l0.144-0.288v-0.288l0.144-0.144l0.144-0.288v-0.288l0.144-0.288v-0.288l0.144-0.144v-0.144v-0.144
+							l0.144-0.145v-0.144l0.144-0.144v-0.144v-0.144l0.144-0.144v-0.144l0.144-0.144l0.144-0.288l0.144-0.288v-0.144l0.144-0.144
+							l0.144-0.288v-0.144l0.144-0.144v-0.144l0.144-0.144l0.144-0.144v-0.288l0.144-0.288l0.144-0.144l0.144-0.144l0.144-0.144
+							h0.144v-0.144h0.144h0.144v-0.144h0.144v0.144v0.288v0.144l-0.144,0.144v0.144v0.144l-0.144,0.144v0.144v0.144l-0.144,0.144
+							v0.144l-0.144,0.144l-0.144,0.288l-0.144,0.144v0.288l-0.144,0.145l-0.144,0.144v0.288l-0.144,0.144v0.144l-0.144,0.144v0.144
+							l-0.144,0.288v0.144l-0.144,0.145v0.144l-0.144,0.144v0.144l-0.144,0.144v0.144v0.288h-0.144v0.144v0.144l-0.144,0.144v0.145
+							l-0.144,0.144v0.144v0.144l-0.144,0.288v0.144v0.144l-0.144,0.288v0.144v0.144l-0.144,0.144v0.145v0.144v0.144l-0.144,0.288
+							l-0.144,0.144v0.288l-0.144,0.144v0.145l-0.144,0.288l-0.144,0.144l-0.288,0.288l-0.144,0.288l-0.144,0.144L267,155.944
+							l-0.144,0.144l-0.144,0.144l-0.144,0.288v0.144l-0.144,0.144v0.288l-0.144,0.144l-0.144,0.144l-0.144,0.432v0.144
+							l-0.144,0.145v0.144v0.144v0.144h-0.144v0.144l-0.144,0.288l-0.144,0.288v0.288l-0.144,0.288l-0.144,0.144v0.432v0.144
+							l-0.144,0.144v0.288v0.144h-0.144v0.144H264.695"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M317.55,104.968h-0.145h-0.145v-0.144v-0.144l0.145-0.144v-0.144v-0.288v-0.144h-0.145v-0.288l-0.144-0.144v-0.288
+							l-0.145-0.144v-0.144v-0.288v-0.288l-0.144-0.144v-0.144V101.8v-0.144v-0.144v-0.144l-0.145-0.288v-0.144v-0.288l-0.144-0.288
+							v-0.144v-0.144h-0.144h-0.145h-0.144v-0.144l-0.145-0.144V99.64h-0.144v-0.144l-0.145-0.144v-0.144h0.145v-0.144h0.144h0.145
+							h0.144h0.145h0.144l0.144,0.144h0.145v0.144l0.144,0.144l0.145,0.144l0.144,0.144v0.144l0.145,0.144l0.145,0.432l0.144,0.288
+							l0.144,0.288l0.145,0.288v0.288v0.288v0.288v0.288v0.288v0.288v0.288v0.144v0.144l0.145,0.288l0.144,0.432l-0.144,0.144
+							l-0.145,0.144l-0.288,0.288H317.55"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M153.801,69.833v0.144h-0.144h-0.144h-0.144h-0.144h-0.144v-0.144v-0.144v-0.144h-0.144V69.4l-0.144-0.144h0.144h0.144h0.144
+							V69.4h0.144h0.144v0.144h0.144v0.144L153.801,69.833"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M259.942,57.592l-0.144,0.288l-0.144,0.144v0.144v0.144h-0.144h-0.144v0.144h-0.144h-0.144h-0.144h-0.144h-0.144v-0.144
+							v-0.144v-0.144h0.144V57.88h0.144v0.144V57.88h0.144h0.144l0.144-0.144v-0.288l0.288-0.72V56.44l0.144-0.288l0.288-0.432
+							l0.144-0.288l0.144-0.288V55l0.144-0.288l0.288-0.288l0.144-0.144l0.144-0.144v0.288v0.288v0.72v0.576l-0.144,0.288
+							l-0.144,0.288l-0.288,0.432l-0.288,0.289l-0.144,0.144h0.144h-0.144L259.942,57.592"/>
+					</g>
+				</g>
+				<g id="Lakshadweeo_1_" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+					<g>
+						
+							<path i:knockout="Off" fill="#FA676B" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M232.326,258.914h10.082v-43.632h-10.082V258.914z"/>
+						
+							<path i:knockout="Off" fill="#3690C0" stroke="#666666" stroke-width="0.4321" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M242.839,258.914h10.082H242.839z"/>
+						
+							<path i:knockout="Off" fill="#FF9900" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M253.353,258.914h9.937v-50.112h-9.937V258.914z"/>
+					</g>
+				</g>
+				<g id="Labels" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+					<g id="Lakshadweeo_-_Default" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+						<g>
+							<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+								<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+									<flowDef  xmlns="&ns_flows;">
+										<region>
+											<path d="M247.908,200.686"/>
+										</region>
+										<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="7" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+											<p><span>Lakshadweep</span></p>
+										</flow>
+									</flowDef>
+									<x:targetRef  xlink:href="#XMLID_1_" />
+								</foreignObject>
+								<text id="XMLID_1_" transform="matrix(1.0001 0 0 1 229.2505 200.686)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="7">Lakshadweep</tspan></text>
+							</switch>
+						</g>
+					</g>
+					<g id="Lakshadweeo_-_Default_1_" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+						<g>
+							<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+								<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+									<flowDef  xmlns="&ns_flows;">
+										<region  textMatrix="0 -1 1 0 0 0">
+											<path d="M260.958,217.473"/>
+										</region>
+										<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="7" line-height="12.528" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+											<p><span>1041</span></p>
+										</flow>
+									</flowDef>
+									<x:targetRef  xlink:href="#XMLID_2_" />
+								</foreignObject>
+								<text id="XMLID_2_" transform="matrix(0 -1.0001 1 0 260.958 224.4736)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="7">1041</tspan></text>
+							</switch>
+						</g>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="0 -1 1 0 0 0">
+										<path d="M239.616,221.763"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="7" line-height="12.528" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+										<p><span>907</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_3_" />
+							</foreignObject>
+							<text id="XMLID_3_" transform="matrix(0 -1.0001 1 0 239.6157 227.0137)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="7">907</tspan></text>
+						</switch>
+					</g>
+				</g>
+				<g id="Other" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+				</g>
+				<g id="Graticule" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+					<g>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M488.5,801.347l7.921-184.319l8.785-206.206l8.642-205.342l8.064-186.911"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M281.257,801.347l9.649-193.823l10.225-206.062l10.226-205.342l8.929-177.551"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M73.871,801.347l11.666-204.767l11.665-205.918l11.666-205.199l9.505-166.895"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,186.184l172.998,9.936l185.064,9.216l159.742,7.056"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,392.246l162.053,9.216l186.36,9.36l169.392,7.344"/>
+						
+							<path i:knockout="Off" fill="none" stroke="#6E6E6E" stroke-width="0.144" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,599.028l151.107,8.641l187.656,9.359l179.041,7.921"/>
+					</g>
+					<g>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M488.5,801.347v3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M488.5,817.376"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>74</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_4_" />
+							</foreignObject>
+							<text id="XMLID_4_" transform="matrix(10.0813 0 0 10.0799 472.7476 817.3765)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">74</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M521.912,18.569v-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M521.912,10"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>74</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_5_" />
+							</foreignObject>
+							<text id="XMLID_5_" transform="matrix(10.0813 0 0 10.0799 506.1597 10.0005)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">74</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M281.257,801.347v3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M281.257,817.376"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>73</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_6_" />
+							</foreignObject>
+							<text id="XMLID_6_" transform="matrix(10.0813 0 0 10.0799 265.5054 817.3765)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">73</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M320.286,18.569v-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M320.286,10"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>73</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_7_" />
+							</foreignObject>
+							<text id="XMLID_7_" transform="matrix(10.0813 0 0 10.0799 304.5337 10.0005)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">73</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M73.871,801.347v3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M73.871,817.376"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>72</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_8_" />
+							</foreignObject>
+							<text id="XMLID_8_" transform="matrix(10.0813 0 0 10.0799 58.1191 817.3765)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">72</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M118.373,18.569v-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region  textMatrix="10.0813 0 0 10.0799 0 0">
+										<path d="M118.373,10"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="0.9921" line-height="1.243" text-align="center" text-align-last="center">
+										<p><span>72</span><span>°</span><span>00&apos;E</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_9_" />
+							</foreignObject>
+							<text id="XMLID_9_" transform="matrix(10.0813 0 0 10.0799 102.6206 10.0005)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">72</tspan><tspan x="0.992" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">°</tspan><tspan x="1.389" y="0" font-family="'Helvetica-Condensed'" font-size="0.9921">00&apos;E</tspan></text>
+						</switch>
+					</g>
+					<g>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,186.184h-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M32.612,189.927"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" text-align="right" text-align-last="right" a:adobe-horizontal-scale="1.0001">
+										<p><span>11</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_10_" />
+							</foreignObject>
+							<text id="XMLID_10_" transform="matrix(1.0001 0 0 1 0 189.9272)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">11</tspan><tspan x="10" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="13.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M554.63,212.391h3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M559.841,216.135"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" a:adobe-horizontal-scale="1.0001">
+										<p><span>11</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_11_" />
+							</foreignObject>
+							<text id="XMLID_11_" transform="matrix(1.0001 0 0 1 559.8413 216.1353)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">11</tspan><tspan x="10" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="13.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,392.246h-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M32.612,395.99"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" text-align="right" text-align-last="right" a:adobe-horizontal-scale="1.0001">
+										<p><span>10</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_12_" />
+							</foreignObject>
+							<text id="XMLID_12_" transform="matrix(1.0001 0 0 1 0 395.9897)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">10</tspan><tspan x="10" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="13.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M554.63,418.166h3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M559.841,421.91"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" a:adobe-horizontal-scale="1.0001">
+										<p><span>10</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_13_" />
+							</foreignObject>
+							<text id="XMLID_13_" transform="matrix(1.0001 0 0 1 559.8413 421.9097)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">10</tspan><tspan x="10" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="13.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,599.028h-3.024"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M32.612,602.773"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" text-align="right" text-align-last="right" a:adobe-horizontal-scale="1.0001">
+										<p><span>9</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_14_" />
+							</foreignObject>
+							<text id="XMLID_14_" transform="matrix(1.0001 0 0 1 5.0005 602.7729)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">9</tspan><tspan x="5" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="8.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+						
+							<path i:knockout="Off" fill="none" stroke="#828282" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M554.63,624.949h3.023"/>
+						<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+							<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+								<flowDef  xmlns="&ns_flows;">
+									<region>
+										<path d="M559.841,628.693"/>
+									</region>
+									<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="12.528" a:adobe-horizontal-scale="1.0001">
+										<p><span>9</span><span>°</span><span>00&apos;N</span></p>
+									</flow>
+								</flowDef>
+								<x:targetRef  xlink:href="#XMLID_15_" />
+							</foreignObject>
+							<text id="XMLID_15_" transform="matrix(1.0001 0 0 1 559.8413 628.6929)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">9</tspan><tspan x="5" y="0" font-family="'Helvetica-Condensed'" font-size="10">°</tspan><tspan x="8.999" y="0" font-family="'Helvetica-Condensed'" font-size="10">00&apos;N</tspan></text>
+						</switch>
+					</g>
+					<g>
+						
+							<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="1.4402" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+							M36.826,801.347V18.569H554.63v782.778H36.826z"/>
+					</g>
+				</g>
+			</g>
+			<g id="Other_2" i:layer="yes" i:dimmedPercent="100" i:rgbTrio="#4F008000FFFF">
+				<g>
+					
+						<path i:knockout="Off" fill="#FFFFFF" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M56.45,782.907v-4.463h18.435v4.463H56.45z"/>
+					
+						<path i:knockout="Off" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M56.45,778.444v-4.32h18.435v4.32H56.45z"/>
+					
+						<path i:knockout="Off" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M74.884,782.907v-4.463h18.435v4.463H74.884z"/>
+					
+						<path i:knockout="Off" fill="#FFFFFF" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M74.884,778.444v-4.32h18.435v4.32H74.884z"/>
+					
+						<path i:knockout="Off" fill="#FFFFFF" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M93.319,782.907v-4.463h36.868v4.463H93.319z"/>
+					
+						<path i:knockout="Off" stroke="#000000" stroke-width="0.288" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M93.319,778.444v-4.32h36.868v4.32H93.319z"/>
+					<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+						<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+							<flowDef  xmlns="&ns_flows;">
+								<region>
+									<path d="M56.45,770.558"/>
+								</region>
+								<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="10.8" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+									<p><span>0</span></p>
+								</flow>
+							</flowDef>
+							<x:targetRef  xlink:href="#XMLID_16_" />
+						</foreignObject>
+						<text id="XMLID_16_" transform="matrix(1.0001 0 0 1 53.9492 770.5581)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">0</tspan></text>
+					</switch>
+					<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+						<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+							<flowDef  xmlns="&ns_flows;">
+								<region>
+									<path d="M93.319,770.558"/>
+								</region>
+								<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="10.8" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+									<p><span>20</span></p>
+								</flow>
+							</flowDef>
+							<x:targetRef  xlink:href="#XMLID_17_" />
+						</foreignObject>
+						<text id="XMLID_17_" transform="matrix(1.0001 0 0 1 88.3184 770.5581)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">20</tspan></text>
+					</switch>
+					<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+						<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+							<flowDef  xmlns="&ns_flows;">
+								<region>
+									<path d="M130.187,770.558"/>
+								</region>
+								<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="10.8" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+									<p><span>40</span></p>
+								</flow>
+							</flowDef>
+							<x:targetRef  xlink:href="#XMLID_18_" />
+						</foreignObject>
+						<text id="XMLID_18_" transform="matrix(1.0001 0 0 1 125.1865 770.5581)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">40</tspan></text>
+					</switch>
+					<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+						<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+							<flowDef  xmlns="&ns_flows;">
+								<region>
+									<path d="M74.884,770.558"/>
+								</region>
+								<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="10.8" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+									<p><span>10</span></p>
+								</flow>
+							</flowDef>
+							<x:targetRef  xlink:href="#XMLID_19_" />
+						</foreignObject>
+						<text id="XMLID_19_" transform="matrix(1.0001 0 0 1 69.8838 770.5581)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">10</tspan></text>
+					</switch>
+					<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+						<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+							<flowDef  xmlns="&ns_flows;">
+								<region>
+									<path d="M135.515,770.558"/>
+								</region>
+								<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="10.8" a:adobe-horizontal-scale="1.0001">
+									<p><span>km</span></p>
+								</flow>
+							</flowDef>
+							<x:targetRef  xlink:href="#XMLID_20_" />
+						</foreignObject>
+						<text id="XMLID_20_" transform="matrix(1.0001 0 0 1 135.5151 770.5581)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">km</tspan></text>
+					</switch>
+				</g>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M385.366,786.995"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" line-height="9.792" a:adobe-horizontal-scale="1">
+								<p><span>CENTRE FOR POLICY STUDIES</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_21_" />
+					</foreignObject>
+					<text id="XMLID_21_" transform="matrix(1 0 0 1 385.3657 786.9946)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">CENTRE FOR POLICY STUDIES</tspan></text>
+				</switch>
+				<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.25" d="M383.533,783.327c0,2.143-1.581,3.881-3.525,3.881
+					c-1.947,0-3.527-1.738-3.527-3.881c0-2.141,1.58-3.879,3.527-3.879C381.952,779.448,383.533,781.186,383.533,783.327z"/>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M377.981,785.961"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="9" a:adobe-horizontal-scale="1">
+								<p><span>c</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_22_" />
+					</foreignObject>
+					<text id="XMLID_22_" transform="matrix(1 0 0 1 377.981 785.9614)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="9">c</tspan></text>
+				</switch>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M439.196,67.56"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="16" line-height="26" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+								<p><span>Lakshadweep FMR</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_23_" />
+					</foreignObject>
+					<text id="XMLID_23_" transform="matrix(1.0001 0 0 1 379.8872 67.5596)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="16">Lakshadweep FMR</tspan></text>
+				</switch>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M439.431,86.51"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+								<p><span>(ST: 907, SC: 0, Gen: 1041)</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_24_" />
+					</foreignObject>
+					<text id="XMLID_24_" transform="matrix(1.0001 0 0 1 384.978 86.5103)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">(ST: 907, SC: 0, Gen: 1041)</tspan></text>
+				</switch>
+				<g>
+					
+						<path i:knockout="Off" fill="#FF9900" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M121.572,745.783v-13.968h28.084v13.968H121.572z"/>
+					
+						<path i:knockout="Off" fill="#FA676B" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M47.572,745.791v-13.968h28.084v13.968H47.572z"/>
+					
+						<path i:knockout="Off" fill="#3690C0" stroke="#666666" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+						M84.906,745.798v-14.111h28.084v14.111H84.906z"/>
+				</g>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M61.06,743.18"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+								<p><span>ST</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_25_" />
+					</foreignObject>
+					<text id="XMLID_25_" transform="matrix(1.0001 0 0 1 55.7788 743.1802)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">ST</tspan></text>
+				</switch>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M98.394,743.18"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+								<p><span>SC</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_26_" />
+					</foreignObject>
+					<text id="XMLID_26_" transform="matrix(1.0001 0 0 1 92.8315 743.1802)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">SC</tspan></text>
+				</switch>
+				<switch i:knockout="Off" i:objectNS="&ns_flows;" i:objectType="pointText">
+					<foreignObject requiredExtensions="&ns_flows;" x="0" y="0" width="1" height="1" overflow="visible">
+						<flowDef  xmlns="&ns_flows;">
+							<region>
+								<path d="M135.06,743.18"/>
+							</region>
+							<flow  xmlns="&ns_flows;"  font-family="'Helvetica-Condensed'" font-size="10" text-align="center" text-align-last="center" a:adobe-horizontal-scale="1.0001">
+								<p><span>GEN</span></p>
+							</flow>
+						</flowDef>
+						<x:targetRef  xlink:href="#XMLID_27_" />
+					</foreignObject>
+					<text id="XMLID_27_" transform="matrix(1.0001 0 0 1 126.4507 743.1802)"><tspan x="0" y="0" font-family="'Helvetica-Condensed'" font-size="10">GEN</tspan></text>
+				</switch>
+			</g>
+		</g>
+	</switch>
+	<i:pgf  id="adobe_illustrator_pgf">
+		<![CDATA[
+		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
+		]]>
+		<![CDATA[
+		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
+		]]>
+		<![CDATA[
+		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
+		]]>
+	</i:pgf>
+</svg>
