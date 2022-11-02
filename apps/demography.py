@@ -1068,6 +1068,7 @@ def make_filtered_state_gender_ratio_graph(districts, states, cats='ST'):
 
 
 def make_map(dbi, aoi, states):
+    missing_codes = [3, 4, 6, 7, 9, 34]
     if dbi == 'Population':
         if aoi == 'India':
             map_india = [
@@ -1123,20 +1124,26 @@ def make_map(dbi, aoi, states):
                 dbc.CardBody(
                     [
                         html.Label(
-                            f'Literacy of India in 2011')
+                            f'{dbi} of India in 2011')
                     ], style={'margin': "auto", 'text-align': "center"},
                 )
             ]
         elif aoi == 'States':
-            map_india = [
-                dbc.CardImg(src='/assets/maps/demography/india/genderratio/genderratio.png', top=True),
-                dbc.CardBody(
-                    [
-                        html.Label(
-                            f'Literacy of India in 2011')
-                    ], style={'margin': "auto", 'text-align': "center"},
-                )
-            ]
+            state_code = get_state_code(states)
+            if state_code not in missing_codes:
+                map_india = [
+                    dbc.CardImg(src="/assets/maps/demography/states/genderratio/" + state_code + ".svg", top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'{dbi} of India in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for {dbi} of ST population in {states} in 2011 is not available']
+                ]
         else:
             map_india = ''
         return map_india
