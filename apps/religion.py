@@ -162,22 +162,23 @@ def make_religious_demography_state_table(state):
         dict(id='district_name', name='District Name'),
         dict(id='total', name='State', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='buddhists', name='Buddhist', type='numeric',
+        dict(id='hindus', name='Hindu', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='muslims', name='Muslim', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='christians', name='Christian', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='hindus', name='Hindu', type='numeric',
+        dict(id='sikhs', name='Sikh', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='buddhists', name='Buddhist', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='jains', name='Jain', type='numeric',
-             format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='muslims', name='Muslim', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='orp', name='ORP', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='rns', name='RNS', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='sikhs', name='Sikh', type='numeric',
-             format=Format(group=Group.yes).groups([3, 2, 2])),
+
     ]
     state_table = dash_table.DataTable(
         id='rel_state_table',
@@ -318,6 +319,29 @@ def make_all_india_religious_demography_graph():
     ))
     fig_all.update_layout(barmode='group')
     fig_all.update_layout(legend=dict(orientation='h'))
+    return fig_all
+
+
+def make_all_india_religion_graph(religion):
+    religious_demography_d = get_religion_demography(religion)
+    if religious_demography_d.empty:
+        return None
+    fig_all = go.Figure(layout=go.Layout(
+        height=(32 * n_states),
+        xaxis=dict(title=religion.title() + ' ST Population %'),
+        yaxis=dict(title='State'),
+        title=dict(text=religion.title() + " ST Population Data for India")
+    ))
+    fig_all.update_layout(legend=dict(orientation='h'))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['state_name'],
+        x=religious_demography_d["per_" + religion],
+        name=religion.title() + " Population",
+        orientation='h',
+        hovertemplate="%{x}%",
+        # text=religious_demography_d[religion]
+    ))
+    fig_all.update_layout(barmode='group')
     return fig_all
 
 
@@ -528,12 +552,13 @@ def get_religions_data(n, rel, aoi, states):
                     dbc.Label("ST Religious population for " + states + " in 2011"), n
     else:
         if aoi == 'India':
-            # fig_rel = make_all_india_religion_table(rel)
-            # rel_visualization = dcc.Grapj(
-            #     id='graph',
-            #     figure=fig_rel
-            # )
-            return make_all_india_religion_table(rel.lower()), rel_make_map(rel, aoi, states), [], \
+            fig_rel_demo = make_all_india_religion_graph(rel.lower())
+            if fig_rel_demo is not None:
+                rel_demo_visualization = dcc.Graph(
+                    id='graph',
+                    figure=fig_rel_demo
+                )
+            return make_all_india_religion_table(rel.lower()), rel_make_map(rel, aoi, states), rel_demo_visualization, \
                     dbc.Label("ST " + rel + " Population Data for India in 2011"), n
         else:
             state_code = get_state_code(states)
