@@ -81,22 +81,23 @@ def make_all_india_religious_demography_table():
         dict(id='state_name', name='State Name'),
         dict(id='total', name='State', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='buddhists', name='Buddhist', type='numeric',
+        dict(id='hindus', name='Hindu', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='muslims', name='Muslim', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='christians', name='Christian', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='hindus', name='Hindu', type='numeric',
+        dict(id='sikhs', name='Sikh', type='numeric',
+             format=Format(group=Group.yes).groups([3, 2, 2])),
+        dict(id='buddhists', name='Buddhist', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='jains', name='Jain', type='numeric',
-             format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='muslims', name='Muslim', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='orp', name='ORP', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
         dict(id='rns', name='RNS', type='numeric',
              format=Format(group=Group.yes).groups([3, 2, 2])),
-        dict(id='sikhs', name='Sikh', type='numeric',
-             format=Format(group=Group.yes).groups([3, 2, 2])),
+
     ]
     all_country_table = dash_table.DataTable(
         id='all_country_table',
@@ -240,12 +241,11 @@ def make_religion_state_table(religion, state):
 def make_all_india_religious_demography_graph():
     religious_demography_d = religious_demography.sort_values('state_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (64 * n_states),
+        height=(96 * n_states),
         xaxis=dict(title='ST Population %'),
         yaxis=dict(title='State'),
         title=dict(text="ST Religious Population Data for India")
     ))
-    fig_all.update_layout(legend=dict(orientation='h'))
     # fig_all.add_trace(go.Bar(
     #     y=religious_demography_d['state_name'],
     #     x=religious_demography_d['total'],
@@ -254,61 +254,70 @@ def make_all_india_religious_demography_graph():
     # ))
     fig_all.add_trace(go.Bar(
         y=religious_demography_d['state_name'],
-        x=religious_demography_d['%buddhists'],
-        name='Buddhist Population',
-        orientation='h',
-        text=religious_demography_d['buddhists']
-    ))
-    fig_all.add_trace(go.Bar(
-        y=religious_demography_d['state_name'],
-        x=religious_demography_d['%christians'],
-        name='Christian Population',
-        orientation='h',
-        text=religious_demography_d['christians']
-    ))
-    fig_all.add_trace(go.Bar(
-        y=religious_demography_d['state_name'],
         x=religious_demography_d['%hindus'],
         name='Hindu Population',
         orientation='h',
-        text=religious_demography_d['hindus']
-    ))
-    fig_all.add_trace(go.Bar(
-        y=religious_demography_d['state_name'],
-        x=religious_demography_d['%jains'],
-        name='Jain Population',
-        orientation='h',
-        text=religious_demography_d['jains']
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%hindus']
     ))
     fig_all.add_trace(go.Bar(
         y=religious_demography_d['state_name'],
         x=religious_demography_d['%muslims'],
         name='Muslim Population',
         orientation='h',
-        text=religious_demography_d['muslims']
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%muslims']
     ))
     fig_all.add_trace(go.Bar(
         y=religious_demography_d['state_name'],
-        x=religious_demography_d['%orp'],
-        name='ORP Population',
+        x=religious_demography_d['%christians'],
+        name='Christian Population',
         orientation='h',
-        text=religious_demography_d['orp']
-    ))
-    fig_all.add_trace(go.Bar(
-        y=religious_demography_d['state_name'],
-        x=religious_demography_d['%rns'],
-        name='RNS Population',
-        orientation='h',
-        text=religious_demography_d['rns']
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%christians']
     ))
     fig_all.add_trace(go.Bar(
         y=religious_demography_d['state_name'],
         x=religious_demography_d['%sikhs'],
         name='Sikh Population',
         orientation='h',
-        text=religious_demography_d['sikhs']
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%sikhs']
+    ))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['state_name'],
+        x=religious_demography_d['%buddhists'],
+        name='Buddhist Population',
+        orientation='h',
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%buddhists']
+    ))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['state_name'],
+        x=religious_demography_d['%jains'],
+        name='Jain Population',
+        orientation='h',
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%jains']
+    ))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['state_name'],
+        x=religious_demography_d['%orp'],
+        name='ORP Population',
+        orientation='h',
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%orp']
+    ))
+    fig_all.add_trace(go.Bar(
+        y=religious_demography_d['state_name'],
+        x=religious_demography_d['%rns'],
+        name='RNS Population',
+        orientation='h',
+        hovertemplate="%{x}%",
+        # text=religious_demography_d['%rns']
     ))
     fig_all.update_layout(barmode='group')
+    fig_all.update_layout(legend=dict(orientation='h'))
     return fig_all
 
 
