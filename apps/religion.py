@@ -334,7 +334,7 @@ def make_state_religious_demography_graph(religion, state):
     return fig_all
 
 
-religions = ['All', 'Hindus', 'Muslims', 'Christians']
+religions = ['All', 'Hindus', 'Muslims', 'Christians', 'Sikhs', 'Buddhists', 'Jains', 'ORP', 'RNS']
 aoi_card = dbc.Card(
     [
         dbc.CardHeader("Areas of Interest"),
