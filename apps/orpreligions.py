@@ -93,7 +93,7 @@ def get_orp_distribution_across_tribes(orp):
 
 def make_state_orp_table(orp):
     orp_state_list = get_orp_distribution_across_states(orp)
-    orp_state_list = orp_state_list.sort_values('state_name')
+    orp_state_list = orp_state_list.sort_values('sum(t1.population)', ascending=False)
     columns = [
         # dict(id='religion_code', name='Religion Code'),  # , type='numeric',
         # format=Format(group=Group.yes).groups([3, 2, 2])),
@@ -125,7 +125,7 @@ def make_state_orp_table(orp):
 
 def make_state_orp_graph(orp):
     orp_state_list = get_orp_distribution_across_states(orp)
-    orp_state_list = orp_state_list.sort_values('state_name')
+    orp_state_list = orp_state_list.sort_values('sum(t1.population)', ascending=False)
     if orp_state_list.empty:
         return None
     fig_all = go.Figure(layout=go.Layout(
@@ -140,7 +140,8 @@ def make_state_orp_graph(orp):
         y=orp_state_list['sum(t1.population)'],
         name='Population',
         # orientation='h',
-        text=orp_state_list['sum(t1.population)']
+        hovertemplate="%{y}",
+        # text=orp_state_list['sum(t1.population)']
     ))
     fig_all.update_layout(barmode='group')
     return fig_all
@@ -148,7 +149,7 @@ def make_state_orp_graph(orp):
 
 def make_state_tribe_orp_graph(orp):
     orp_state_tribe_list = get_orp_distribution_across_tribes(orp)
-    orp_state_tribe_list = orp_state_tribe_list.sort_values('state_name')
+    orp_state_tribe_list = orp_state_tribe_list.sort_values('population', ascending=False)
     if orp_state_tribe_list.empty:
         return None
     fig_all = go.Figure(layout=go.Layout(
@@ -163,7 +164,8 @@ def make_state_tribe_orp_graph(orp):
         y=orp_state_tribe_list['population'],
         name='Population',
         # orientation='h',
-        text=orp_state_tribe_list['population']
+        hovertemplate="%{y}",
+        # text=orp_state_tribe_list['population']
     ))
     fig_all.update_layout(barmode='group')
     return fig_all
@@ -171,10 +173,10 @@ def make_state_tribe_orp_graph(orp):
 
 def make_state_orp_tribe_table(orp):
     orp_state_tribe_list = get_orp_distribution_across_tribes(orp)
-    orp_state_tribe_list = orp_state_tribe_list.sort_values('state_name')
+    orp_state_tribe_list = orp_state_tribe_list.sort_values('population', ascending=False)
     columns = [
-        dict(id='state_name', name='State Name'),
         dict(id='tribe_name', name='Tribe Name'),  # , type='numeric',
+        dict(id='state_name', name='State Name'),
         # format=Format(group=Group.yes).groups([3, 2, 2])),
         # dict(id='religion_name', name='ORP Name'),
         dict(id='population', name='Population', type='numeric',
