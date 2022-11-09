@@ -77,6 +77,8 @@ n_states = len(state_list)
 
 
 def make_all_india_religious_demography_table():
+    religious_demography = get_religious_demography_all()
+    religious_demography = religious_demography.sort_values('state_name', ascending=True)
     columns = [
         dict(id='state_name', name='State Name'),
         dict(id='total', name='State', type='numeric',
@@ -124,6 +126,7 @@ def make_all_india_religious_demography_table():
 
 def make_all_india_religion_table(religion):
     rel_india_table = get_religion_demography(religion)
+    rel_india_table = rel_india_table.sort_values('state_name', ascending=True)
     columns = [
         dict(id='state_name', name='State Name'),
         dict(id='total', name='State', type='numeric',
@@ -158,6 +161,7 @@ def make_all_india_religion_table(religion):
 
 def make_religious_demography_state_table(state):
     religious_demography_state = fetch_rel_district_demo(state)
+    religious_demography_state = religious_demography_state.sort_values('district_name', ascending=True)
     columns = [
         dict(id='district_name', name='District Name'),
         dict(id='total', name='State', type='numeric',
@@ -207,6 +211,7 @@ def make_religion_state_table(religion, state):
     religion_state = get_religion_demography_state(religion, state)
     if religion_state is None:
         return None
+    religion_state = religion_state.sort_values('district_name', ascending=True)
     columns = [
         dict(id='district_name', name='District Name'),
         dict(id='total', name='State Population', type='numeric',
@@ -326,6 +331,7 @@ def make_all_india_religion_graph(religion):
     religious_demography_d = get_religion_demography(religion)
     if religious_demography_d.empty:
         return None
+    religious_demography_d = religious_demography_d.sort_values('state_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=(32 * n_states),
         xaxis=dict(title=religion.title() + ' ST Population %'),
@@ -346,9 +352,10 @@ def make_all_india_religion_graph(religion):
 
 
 def make_state_religious_demography_graph(religion, state):
-    religious_demography_d = get_religion_demography_state(religion, state).sort_values('district_name', ascending=False)
+    religious_demography_d = get_religion_demography_state(religion, state)
     if religious_demography_d.empty:
         return None
+    religious_demography_d = religious_demography_d.sort_values('district_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
         height=100 + (32 * religious_demography_d.shape[0]),
         xaxis=dict(title='ST Population %'),
@@ -359,9 +366,10 @@ def make_state_religious_demography_graph(religion, state):
     fig_all.add_trace(go.Bar(
         y=religious_demography_d['district_name'],
         x=religious_demography_d["per_" + religion],
-        name="Religion " + "Population",
+        name=religion.title() + " Population",
         orientation='h',
-        text=religious_demography_d[religion]
+        hovertemplate="%{x}%",
+        # text=religious_demography_d[religion]
     ))
     fig_all.update_layout(barmode='group')
     return fig_all
