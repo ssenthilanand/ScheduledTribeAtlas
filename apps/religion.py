@@ -109,7 +109,7 @@ def make_all_india_religious_demography_table():
         sort_action="native",
         sort_mode="single",
         column_selectable="single",
-        style_as_list_view=True,
+        # style_as_list_view=True,
         style_cell_conditional=[
             {
                 'if': {'column_id': 'state_name'},
