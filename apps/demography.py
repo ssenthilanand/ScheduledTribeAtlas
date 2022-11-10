@@ -296,7 +296,8 @@ def make_all_india_literacy_graph(cats='ST'):
         x=state_literacy_d['literacy_st'],  # .apply(lambda x: format_decimal(x, format='00.00', locale='en')),
         name='ST',
         orientation='h',
-        text=state_literacy_d['literate_st'].apply(lambda x: format_decimal(x, locale='en_IN')),
+        hovertemplate="%{x}%",
+        # text=state_literacy_d['literate_st'].apply(lambda x: format_decimal(x, locale='en_IN')),
     ))
     if 'SC' in cats:
         fig_all.add_trace(go.Bar(
@@ -305,7 +306,8 @@ def make_all_india_literacy_graph(cats='ST'):
             # locale='en')),
             name='SC',
             orientation='h',
-            text=state_literacy_d['literate_sc'].apply(lambda x: format_decimal(x, locale='en_IN')),
+            hovertemplate="%{x}%",
+            # text=state_literacy_d['literate_sc'].apply(lambda x: format_decimal(x, locale='en_IN')),
         ))
     if 'General' in cats:
         fig_all.add_trace(go.Bar(
@@ -314,7 +316,8 @@ def make_all_india_literacy_graph(cats='ST'):
             # locale='en')),
             name='General',
             orientation='h',
-            text=state_literacy_d['literate_gn'].apply(lambda x: format_decimal(x, locale='en_IN')),
+            hovertemplate="%{x}%",
+            # text=state_literacy_d['literate_gn'].apply(lambda x: format_decimal(x, locale='en_IN')),
         ))
     fig_all.update_layout(barmode='group')
     fig_all.update_traces(textposition="outside")
@@ -1002,7 +1005,8 @@ def make_filtered_state_literacy_graph(districts, states, cats='ST'):
         x=districts['literacy_st'],
         name='ST',
         orientation='h',
-        text=districts['literate_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+        hovertemplate="%{x}%",
+        # text=districts['literate_st']  # .apply(lambda x: '{0:1.2f}%'.format(x)),
     ))
     if 'SC' in cats:
         fig_districts.add_trace(go.Bar(
@@ -1010,7 +1014,8 @@ def make_filtered_state_literacy_graph(districts, states, cats='ST'):
             x=districts['literacy_sc'],
             name='SC',
             orientation='h',
-            text=districts['literate_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            hovertemplate="%{x}%",
+            # text=districts['literate_sc'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
             visible='legendonly'
         ))
     if 'General' in cats:
@@ -1019,7 +1024,8 @@ def make_filtered_state_literacy_graph(districts, states, cats='ST'):
             x=districts['literacy_gn'],
             name='General',
             orientation='h',
-            text=districts['literate_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
+            hovertemplate="%{x}%",
+            # text=districts['literate_gn'],  # .apply(lambda x: '{0:1.2f}%'.format(x)),
             visible='legendonly'
         ))
     fig_districts.update_layout(barmode='group')
