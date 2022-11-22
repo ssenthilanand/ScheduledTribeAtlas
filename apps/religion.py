@@ -357,7 +357,7 @@ def make_state_religious_demography_graph(religion, state):
         return None
     religious_demography_d = religious_demography_d.sort_values('district_name', ascending=False)
     fig_all = go.Figure(layout=go.Layout(
-        height=100 + (32 * religious_demography_d.shape[0]),
+        height=200 + (32 * religious_demography_d.shape[0]),
         xaxis=dict(title='ST Population %'),
         yaxis=dict(title='District'),
         title=dict(text="ST Religious Population Data for " + state + ".")
