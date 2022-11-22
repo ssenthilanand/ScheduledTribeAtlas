@@ -612,6 +612,7 @@ def rel_make_map(rel, aoi, states):
             map_india = ''
         return map_india
     elif rel == 'Hindus':
+        hindu_missing_codes = [3, 4, 6, 7, 32, 34, 36]
         if aoi == 'India':
             map_india = [
                 dbc.CardImg(src='/assets/maps/religion/india/st_hindu.png', top=True),
@@ -624,19 +625,24 @@ def rel_make_map(rel, aoi, states):
             ]
         elif aoi == 'States':
             state_code = get_state_code(states)
-            map_india = [
-                dbc.CardImg(src='/assets/maps/religion/india/st_hindu.png', top=True),
-                dbc.CardBody(
-                    [
-                        html.Label(
-                            f'ST Population of Indian Hindus in 2011')
-                    ], style={'margin': "auto", 'text-align': "center"},
-                )
-            ]
-        else:
-            map_india = ''
+            if state_code not in hindu_missing_codes:
+                map_url = "/assets/maps/religion/states/" + rel.lower() + "/" + state_code + ".png"
+                map_india = [
+                    dbc.CardImg(src=map_url, top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'ST Population of Indian {rel} in {states} in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for ST population of Indian {rel} in {states} in 2011 is not available']
+                ]
         return map_india
     elif rel == 'Muslims':
+        muslim_missing_codes = [3, 4, 6, 7, 32, 34, 36]
         if aoi == 'India':
             map_india = [
                 dbc.CardImg(src='/assets/maps/religion/india/st_muslim.png', top=True),
@@ -649,7 +655,7 @@ def rel_make_map(rel, aoi, states):
             ]
         elif aoi == 'States':
             state_code = get_state_code(states)
-            if state_code not in missing_codes:
+            if state_code not in muslim_missing_codes:
                 map_url = "/assets/maps/religion/states/" + rel.lower() + "/" + state_code + ".png"
                 map_india = [
                     dbc.CardImg(src=map_url, top=True),
@@ -668,6 +674,7 @@ def rel_make_map(rel, aoi, states):
             map_india = ''
         return map_india
     elif rel == 'Christians':
+        christian_missing_codes = [3, 4, 6, 7, 32, 34, 36]
         if aoi == 'India':
             map_india = [
                 dbc.CardImg(src='/assets/maps/religion/india/st_christian.png', top=True),
@@ -680,7 +687,7 @@ def rel_make_map(rel, aoi, states):
             ]
         elif aoi == 'States':
             state_code = get_state_code(states)
-            if state_code not in missing_codes:
+            if state_code not in christian_missing_codes:
                 map_india = [
                     dbc.CardImg(src="/assets/maps/religion/states/" + rel.lower() + "/" + state_code + ".png", top=True),
                     dbc.CardBody(
