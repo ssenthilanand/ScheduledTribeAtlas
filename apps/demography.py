@@ -1111,15 +1111,22 @@ def make_map(dbi, aoi, states):
                 )
             ]
         elif aoi == 'States':
-            map_india = [
-                dbc.CardImg(src='/assets/maps/demography/india/literacy/literacy.png', top=True),
-                dbc.CardBody(
-                    [
-                        html.Label(
-                            f'Literacy of India in 2011')
-                    ], style={'margin': "auto", 'text-align': "center"},
-                )
-            ]
+            literacy_missing_codes = [3, 4, 6, 7, 9, 23, 25, 31, 34, 36]
+            state_code = get_state_code(states)
+            if state_code not in literacy_missing_codes:
+                map_india = [
+                    dbc.CardImg(src='/assets/maps/demography/states/literacy/total/' + state_code + ".jpg", top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'Literacy of India in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for ST population literacy in {states} in 2011 is not available']
+                ]
         else:
             map_india = ''
         return map_india
