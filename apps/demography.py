@@ -1160,4 +1160,36 @@ def make_map(dbi, aoi, states):
         else:
             map_india = ''
         return map_india
+    elif dbi == 'Fertility Rate':
+        if aoi == 'India':
+            map_india = ''
+            # map_india = [
+            #     dbc.CardImg(src='/assets/maps/demography/india/genderratio/genderratio.png', top=True),
+            #     dbc.CardBody(
+            #         [
+            #             html.Label(
+            #                 f'{dbi} of India in 2011')
+            #         ], style={'margin': "auto", 'text-align': "center"},
+            #     )
+            # ]
+        elif aoi == 'States':
+            fertility_missing_codes = [3, 4, 6, 7, 34, 36]
+            state_code = get_state_code(states)
+            if state_code not in fertility_missing_codes:
+                map_india = [
+                    dbc.CardImg(src="/assets/maps/demography/states/fertilityrate/" + state_code + ".svg", top=True),
+                    dbc.CardBody(
+                        [
+                            html.Label(
+                                f'{dbi} of India in 2011')
+                        ], style={'margin': "auto", 'text-align': "center"},
+                    )
+                ]
+            else:
+                map_india = [
+                    dbc.Label[f'Data for {dbi} of ST population in {states} in 2011 is not available']
+                ]
+        else:
+            map_india = ''
+        return map_india
     return ''
